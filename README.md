@@ -3,6 +3,8 @@
 Független dashboard a magyarországi mentő-kiérkezési időkről, az Országos Mentőszolgálat
 nyilvános statisztikái alapján: https://holamento.hu
 
+![A holamento.hu áttekintő nézete: P1 kiérkezési idők országosan és Budapesten, havi esetszámok és a hívásfeldolgozás ideje](assets/images/attekintes.png)
+
 Ez az oldal nem az Országos Mentőszolgálat hivatalos felülete. Az adatok forrása az OMSZ
 nyilvános statisztikai oldala (https://stat.mentok.hu/), az oldal ugyanazokból a számokból
 több nézetet és származtatott mutatót számol (év/év összevetés, szóródás, régiós
