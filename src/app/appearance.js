@@ -25,14 +25,12 @@ function apply() {
 	document.dispatchEvent(new CustomEvent('holamento:themechange'));
 }
 
-export function cycleTheme() {
-	const next = { light: 'dark', dark: 'auto', auto: 'light' }[currentMode()];
+export function setMode(mode) {
 	try {
-		if (next === 'auto') localStorage.removeItem(THEME_KEY);
-		else localStorage.setItem(THEME_KEY, next);
+		if (mode === 'auto') localStorage.removeItem(THEME_KEY);
+		else localStorage.setItem(THEME_KEY, mode);
 	} catch {}
 	apply();
-	return next;
 }
 
 export function initAppearance() {

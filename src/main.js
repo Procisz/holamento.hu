@@ -1,5 +1,5 @@
 import { APP_VERSION, RANGE_BAR_KEY, RANGE_KEY, SOURCE_URL, STALE_WARN_DAYS } from "./config.js";
-import { currentMode, cycleTheme, initAppearance } from "./app/appearance.js";
+import { currentMode, initAppearance, setMode } from "./app/appearance.js";
 import { LANGS, currentLang, currentLocale, initLang, setLang, t, tPlural } from "./app/i18n.js";
 import { destroyAllCharts } from "./ui/charts.js";
 import { clearCache, fetchData, loadCache, parsePayload, saveCache } from "./data/fetchData.js";
@@ -487,18 +487,20 @@ function wireRangeBar() {
 	toEl.addEventListener("change", () => onChange(toEl));
 }
 
+const THEME_MODES = [
+	{ id: "auto", icon: "i-theme-auto", key: "header.themeAuto" },
+	{ id: "light", icon: "i-sun", key: "header.themeLight" },
+	{ id: "dark", icon: "i-moon", key: "header.themeDark" },
+];
+
+const currentThemeMode = () =>
+	THEME_MODES.find((m) => m.id === currentMode()) ?? THEME_MODES[0];
+
 function updateThemeBtn() {
 	const btn = document.getElementById("theme-btn");
-	const mode = currentMode();
-	const ic = mode === "light" ? "i-sun" : mode === "dark" ? "i-moon" : "i-theme-auto";
-	btn.innerHTML = icon(ic);
-	const name =
-		mode === "auto"
-			? t("header.themeAuto")
-			: mode === "dark"
-				? t("header.themeDark")
-				: t("header.themeLight");
-	btn.dataset.tip = t("header.theme", { mode: name });
+	const mode = currentThemeMode();
+	btn.innerHTML = icon(mode.icon);
+	btn.dataset.tip = t("header.theme", { mode: t(mode.key) });
 	btn.setAttribute("aria-label", btn.dataset.tip);
 	refreshTip(btn);
 }
@@ -512,30 +514,82 @@ function updateLangBtn() {
 	refreshTip(btn);
 }
 
-function wireLangMenu() {
-	const btn = document.getElementById("lang-btn");
-	const panel = document.getElementById("lang-panel");
+const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+
+function popoverControls(btn, panel, render) {
+	let timer = 0;
+	const shown = () => !panel.hidden && panel.classList.contains("is-open");
+	const flushLayout = () => panel.offsetHeight;
+	const setExpanded = (v) => btn?.setAttribute("aria-expanded", v);
 	const close = () => {
-		panel.hidden = true;
-		btn.setAttribute("aria-expanded", "false");
+		if (!shown()) return;
+		panel.classList.remove("is-open");
+		setExpanded("false");
+		clearTimeout(timer);
+		timer = setTimeout(() => {
+			panel.hidden = true;
+		}, reducedMotion.matches ? 0 : 170);
+	};
+	const open = () => {
+		clearTimeout(timer);
+		render();
+		panel.hidden = false;
+		flushLayout();
+		panel.classList.add("is-open");
+		setExpanded("true");
+	};
+	return { open, close, toggle: () => (shown() ? close() : open()) };
+}
+
+let themeMenu = null;
+
+function wireThemeMenu() {
+	const btn = document.getElementById("theme-btn");
+	const panel = document.getElementById("theme-panel");
+	const label = (key) => {
+		const s = t(key);
+		return s.charAt(0).toLocaleUpperCase(currentLocale()) + s.slice(1);
 	};
 	const render = () => {
-		panel.innerHTML = LANGS.map(
-			(l) =>
-				`<button class="lang-item" data-lang="${l.id}" aria-current="${l.id === currentLang()}">
-					${icon(`i-flag-${l.id}`, "icon flag")}<span>${esc(l.name)}</span>${icon("i-check", "icon lang-check")}
+		panel.innerHTML = THEME_MODES.map(
+			(m) =>
+				`<button class="popover-item" data-mode="${m.id}" aria-current="${m.id === currentMode()}">
+					${icon(m.icon)}<span>${esc(label(m.key))}</span>${icon("i-check", "icon popover-check")}
 				</button>`,
 		).join("");
 	};
-	btn.onclick = () => {
-		if (panel.hidden) {
-			render();
-			panel.hidden = false;
-			btn.setAttribute("aria-expanded", "true");
-		} else {
-			close();
-		}
+	themeMenu = popoverControls(btn, panel, render);
+	btn.onclick = themeMenu.toggle;
+	panel.addEventListener("click", (e) => {
+		const item = e.target.closest("[data-mode]");
+		if (!item) return;
+		e.stopPropagation();
+		themeMenu.close();
+		setMode(item.dataset.mode);
+		updateThemeBtn();
+	});
+	document.addEventListener("click", (e) => {
+		if (!panel.hidden && !panel.contains(e.target) && !btn.contains(e.target)) themeMenu.close();
+	});
+	document.addEventListener("keydown", (e) => {
+		if (e.key === "Escape") themeMenu.close();
+	});
+	window.addEventListener("resize", () => themeMenu.close());
+}
+
+function wireLangMenu() {
+	const btn = document.getElementById("lang-btn");
+	const panel = document.getElementById("lang-panel");
+	const { close, toggle } = popoverControls(btn, panel, () => render());
+	const render = () => {
+		panel.innerHTML = LANGS.map(
+			(l) =>
+				`<button class="popover-item" data-lang="${l.id}" aria-current="${l.id === currentLang()}">
+					${icon(`i-flag-${l.id}`, "icon flag")}<span>${esc(l.name)}</span>${icon("i-check", "icon popover-check")}
+				</button>`,
+		).join("");
 	};
+	btn.onclick = toggle;
 	panel.addEventListener("click", (e) => {
 		const item = e.target.closest("[data-lang]");
 		if (!item) return;
@@ -596,42 +650,25 @@ function onLangChange() {
 function wireMenu() {
 	const btn = document.getElementById("menu-btn");
 	const panel = document.getElementById("menu-panel");
-	const close = () => {
-		panel.hidden = true;
-		btn.setAttribute("aria-expanded", "false");
-	};
+	const { close, toggle } = popoverControls(btn, panel, () => render());
 	const render = () => {
-		const rangeAvailable = !document.getElementById("range-toggle").hidden;
 		const note = document.getElementById("range-note-top");
 		panel.innerHTML =
 			(state.range
 				? `<div class="menu-item menu-info" data-tip="${esc(note.dataset.tip ?? "")}">${icon("i-info")}<span>${esc(note.querySelector("span")?.textContent ?? "")}</span></div>`
 				: "") +
-			(rangeAvailable
-				? `<button class="menu-item" data-menu="range">${icon("i-calendar")}<span>${esc(rangeBarOpen() ? t("range.hide") : t("range.show"))}</span></button>`
-				: "") +
-			`<button class="menu-item" data-menu="theme">${icon("i-theme-auto")}<span>${esc(document.getElementById("theme-btn").dataset.tip ?? "")}</span></button>
-			<button class="menu-item" data-menu="lang">${icon("i-info")}<span>${esc(t("header.lang"))}</span></button>
-			<a class="menu-item" href="${SOURCE_URL}" rel="noopener" target="_blank">${icon("i-home")}<span>${esc(t("header.sourceMenu"))}</span></a>`;
+			`<button class="menu-item" data-menu="lang" aria-haspopup="true">${icon(`i-flag-${currentLang()}`, "icon flag")}<span>${esc(document.getElementById("lang-btn").dataset.tip ?? "")}</span></button>
+				<button class="menu-item" data-menu="theme" aria-haspopup="true">${icon(currentThemeMode().icon)}<span>${esc(document.getElementById("theme-btn").dataset.tip ?? "")}</span></button>
+				<a class="menu-item" href="${SOURCE_URL}" rel="noopener" target="_blank">${icon("i-home")}<span>${esc(t("header.sourceMenu"))}</span></a>`;
 	};
-	btn.onclick = () => {
-		if (panel.hidden) {
-			render();
-			panel.hidden = false;
-			btn.setAttribute("aria-expanded", "true");
-		} else {
-			close();
-		}
-	};
+	btn.onclick = toggle;
 	panel.addEventListener("click", (e) => {
 		const item = e.target.closest("[data-menu]");
 		if (!item) return;
+		e.stopPropagation();
 		close();
-		if (item.dataset.menu === "range") setRangeBar(!rangeBarOpen());
-		else if (item.dataset.menu === "theme") {
-			cycleTheme();
-			updateThemeBtn();
-		} else if (item.dataset.menu === "lang") document.getElementById("lang-btn").click();
+		if (item.dataset.menu === "theme") themeMenu.open();
+		else if (item.dataset.menu === "lang") document.getElementById("lang-btn").click();
 	});
 	document.addEventListener("click", (e) => {
 		if (!panel.hidden && !panel.contains(e.target) && !btn.contains(e.target)) close();
@@ -705,14 +742,11 @@ function watchHeaderHeight() {
 	watchTabBar();
 	window.addEventListener("hashchange", () => activate(initialTab()));
 
-	document.getElementById("theme-btn").onclick = () => {
-		cycleTheme();
-		updateThemeBtn();
-	};
 	document.getElementById("warn-chip").onclick = toggleWarnPanel;
 	wirePanelDismiss();
 	wireMenu();
 	wireLangMenu();
+	wireThemeMenu();
 	wireRangeBar();
 	document.getElementById("range-toggle").onclick = () => setRangeBar(!rangeBarOpen());
 

@@ -120,7 +120,7 @@
 #menu-btn { display: none; }
 
 @media (--mobile-s) {
-  #range-toggle, #theme-btn, #site-link, #range-note-top { display: none; }
+  #lang-btn, #theme-btn, #site-link, #range-note-top { display: none; }
   #menu-btn { display: grid; }
 }
 

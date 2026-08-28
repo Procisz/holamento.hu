@@ -17,6 +17,7 @@ export function render(model, mount) {
 
 	const statLink = link("https://stat.mentok.hu/", "stat.mentok.hu");
 	const codeLink = link("https://github.com/Procisz/holamento.hu", "GitHub");
+	const issuesLink = link("https://github.com/Procisz/holamento.hu/issues", "GitHub");
 	const mailLink = `<a href="mailto:holamento.hu@gmail.com">holamento.hu@gmail.com</a>`;
 	const notWord = `<strong>${esc(t("adatok.about.notWord"))}</strong>`;
 
@@ -69,7 +70,7 @@ export function render(model, mount) {
           <p>${t("adatok.about.independent", { not: notWord })}</p>
           <p>${t("adatok.about.source", { link: statLink })}</p>
           <p>${t("adatok.about.contact", { code: codeLink, mail: mailLink })}</p>
-          <p class="muted small">${t("adatok.about.code", { link: codeLink })}</p>`,
+          <p class="muted small">${t("adatok.about.code", { link: issuesLink })}</p>`,
 			})}
       ${card({
 				span: 6,
