@@ -18,7 +18,8 @@
 		"build": "vite build",
 		"preview": "vite preview",
 		"pull": "node scripts/pull-data.mjs",
-		"check:themes": "node scripts/check-themes.mjs"
+		"check:themes": "node scripts/check-themes.mjs",
+		"check:i18n": "node scripts/check-i18n.mjs"
 	},
 	"dependencies": {
 		"apexcharts": "^5.3.5"
