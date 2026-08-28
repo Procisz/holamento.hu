@@ -1,0 +1,8 @@
+{
+	"name": "holamento-hu",
+	"compatibility_date": "2026-08-28",
+	"preview_urls": true,
+	"assets": {
+		"directory": "./dist"
+	}
+}
