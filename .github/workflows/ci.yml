@@ -31,6 +31,9 @@ jobs:
       - name: Temak ellenorzese
         run: npm run check:themes
 
+      - name: Nyelvek es forraskod ellenorzese
+        run: npm run check:i18n
+
       - name: Kimenet ellenorzese
         run: |
           test -f dist/index.html || { echo "dist/index.html hianyzik"; exit 1; }
@@ -43,7 +46,5 @@ jobs:
             exit 1
           fi
           grep -q "apexcharts" dist/index.html || { echo "a diagramkonyvtar nem kerult a buildbe"; exit 1; }
-          if grep -qE '\{[a-z]+\}' dist/index.html; then
-            echo "kitoltetlen forditasi helyorzo maradt a kimenetben"
-            exit 1
-          fi
+          grep -q "width<=[0-9]" dist/index.html && { echo "range szintaxisu media query kerult a kimenetbe"; exit 1; }
+          exit 0
