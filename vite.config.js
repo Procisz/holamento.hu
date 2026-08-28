@@ -14,5 +14,6 @@ export default defineConfig({
   },
   build: {
     target: 'esnext',
+    cssTarget: ['chrome100', 'firefox100', 'safari15'],
   },
 });

@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Temak ellenorzese
+        run: npm run check:themes
+
+      - name: Kimenet ellenorzese
+        run: |
+          test -f dist/index.html || { echo "dist/index.html hianyzik"; exit 1; }
+          test -f dist/data.json || { echo "dist/data.json hianyzik"; exit 1; }
+          test -f dist/CNAME || { echo "dist/CNAME hianyzik"; exit 1; }
+          SIZE=$(wc -c < dist/index.html)
+          echo "dist/index.html: ${SIZE} byte"
+          if [ "$SIZE" -lt 500000 ]; then
+            echo "A build gyanusan kicsi, valami kimaradt"
+            exit 1
+          fi
+          grep -q "apexcharts" dist/index.html || { echo "a diagramkonyvtar nem kerult a buildbe"; exit 1; }
+          if grep -qE '\{[a-z]+\}' dist/index.html; then
+            echo "kitoltetlen forditasi helyorzo maradt a kimenetben"
+            exit 1
+          fi
