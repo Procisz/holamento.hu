@@ -21,7 +21,7 @@
 		"check:themes": "node scripts/check-themes.mjs"
 	},
 	"dependencies": {
-		"apexcharts": "^5.3.5"
+		"apexcharts": "^7.0.0"
 	},
 	"devDependencies": {
 		"@csstools/postcss-global-data": "^4.0.0",
