@@ -1,0 +1,14 @@
+.apexcharts-tooltip {
+  background: var(--surface) !important;
+  color: var(--text) !important;
+  border: var(--border-w) solid var(--border-strong) !important;
+  box-shadow: var(--shadow-pop) !important;
+}
+.apexcharts-tooltip-title {
+  background: var(--surface-2) !important;
+  border-bottom: var(--border-w) solid var(--border) !important;
+  font-family: inherit !important;
+}
+.apexcharts-legend-text { color: var(--text-muted) !important; }
+.apexcharts-gridline { stroke: var(--chart-grid); }
+.apexcharts-text { fill: var(--text-muted); }
