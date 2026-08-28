@@ -1,0 +1,164 @@
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: color-mix(in oklab, var(--surface) 88%, transparent);
+  backdrop-filter: blur(var(--header-blur));
+  border-bottom: var(--border-w) solid var(--border);
+}
+
+.header-inner {
+  padding: var(--header-pad-y) clamp(12px, 3vw, 32px);
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.brand { display: flex; align-items: center; gap: var(--space-2); color: var(--text); }
+.brand:hover { text-decoration: none; }
+.brand-name {
+  font-family: var(--font-display);
+  font-weight: calc(var(--fw-display) + 100);
+  font-size: 1.15rem;
+  letter-spacing: var(--title-tracking);
+}
+.brand-mark { display: grid; place-items: center; width: 26px; height: 26px; flex: none; }
+.brand-coin { width: 26px; height: 26px; }
+
+.brand-mark.has-logo {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--r-sm);
+  overflow: hidden;
+  background: var(--surface-2);
+  box-shadow: inset 0 0 0 var(--border-w) color-mix(in oklab, var(--border-strong) 45%, transparent);
+}
+.brand-logo { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+.tabs {
+  display: flex;
+  gap: var(--space-1);
+  overflow-x: auto;
+  scrollbar-width: none;
+  flex: 1;
+
+  padding: var(--space-1);
+  border-radius: calc(var(--control-radius) + var(--space-1));
+  background: color-mix(in oklab, var(--surface-2) 35%, transparent);
+}
+.tabs::-webkit-scrollbar { display: none; }
+
+.tabs [role="tab"] {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: var(--tab-pad-y) var(--tab-pad-x);
+  border-radius: var(--control-radius);
+  color: var(--text-muted);
+  white-space: nowrap;
+  font-weight: 550;
+  border-bottom: 2px solid transparent;
+}
+.tabs [role="tab"]:hover { background: var(--surface-2); color: var(--text); }
+.tabs [role="tab"][aria-selected="true"] {
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.header-actions { display: flex; align-items: center; gap: var(--space-2); }
+
+.app-main {
+  max-width: 1280px;
+  margin-inline: auto;
+  padding: var(--space-5) clamp(12px, 3vw, 32px) var(--space-8);
+}
+
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
+  gap: var(--grid-gap);
+  margin-bottom: var(--space-4);
+}
+
+.grid12 {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--grid-gap);
+}
+[data-span="3"] { grid-column: span 3; }
+[data-span="4"] { grid-column: span 4; }
+[data-span="5"] { grid-column: span 5; }
+[data-span="6"] { grid-column: span 6; }
+[data-span="7"] { grid-column: span 7; }
+[data-span="8"] { grid-column: span 8; }
+[data-span="12"] { grid-column: span 12; }
+
+@media (--desktop) {
+  .brand-name { display: none; }
+
+  #range-note-top span, #range-note span { display: none; }
+  #range-note-top .icon, #range-note .icon { width: 16px; height: 16px; }
+}
+
+@media (--tablet-landscape) {
+  [data-span="3"], [data-span="4"], [data-span="5"],
+  [data-span="7"], [data-span="8"] { grid-column: span 6; }
+
+  #refresh-btn, #warn-chip, #data-age { display: none; }
+}
+
+@media (--tablet-portrait) {
+  [data-span="5"], [data-span="6"],
+  [data-span="7"], [data-span="8"] { grid-column: span 12; }
+  .brand { display: none; }
+}
+
+@media (--mobile) {
+  .grid12 > * { grid-column: span 12 !important; }
+}
+
+#menu-btn { display: none; }
+
+@media (--mobile-s) {
+  #range-toggle, #theme-btn, #site-link, #range-note-top { display: none; }
+  #menu-btn { display: grid; }
+}
+
+.range-wrap {
+  display: grid;
+  grid-template-rows: 1fr;
+  overflow: hidden;
+  transition: grid-template-rows .25s ease;
+}
+.range-wrap > .range-bar {
+  min-height: 0;
+  transition:
+    opacity .18s ease .07s,
+    translate .25s ease,
+    padding-top .25s ease,
+    padding-bottom .25s ease,
+    border-top-width .25s ease,
+    visibility 0s;
+}
+:root[data-range-bar="closed"] .range-wrap { grid-template-rows: 0fr; }
+:root[data-range-bar="closed"] .range-wrap > .range-bar {
+  opacity: 0;
+  translate: 0 -10px;
+  visibility: hidden;
+  padding-top: 0;
+  padding-bottom: 0;
+  border-top-width: 0;
+  transition:
+    opacity .14s ease,
+    translate .25s ease,
+    padding-top .25s ease,
+    padding-bottom .25s ease,
+    border-top-width .25s ease,
+    visibility 0s .25s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .range-wrap,
+  .range-wrap > .range-bar,
+  :root[data-range-bar="closed"] .range-wrap > .range-bar { transition: none; }
+}

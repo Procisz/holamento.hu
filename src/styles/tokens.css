@@ -1,0 +1,141 @@
+:root {
+
+  --r-sm: .375rem;
+  --r-md: .625rem;
+  --r-lg: 1rem;
+  --r-pill: 999px;
+  --card-radius: var(--r-lg);
+  --control-radius: var(--r-md);
+  --chip-radius: var(--r-pill);
+  --border-w: 1px;
+  --card-border-w: var(--border-w);
+  --card-accent-w: 3px;
+
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-5: 20px; --space-6: 24px; --space-7: 32px; --space-8: 48px;
+  --card-pad-x: var(--space-5);
+  --card-pad-y: var(--space-4);
+  --grid-gap: var(--space-4);
+  --control-h: 34px;
+
+  --control-pad-x: 12px;
+  --tab-pad-x: 11px;
+  --tab-pad-y: 7px;
+  --cell-pad-x: 10px;
+  --cell-pad-y: 7px;
+  --header-pad-y: var(--space-2);
+
+  --font-ui: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: var(--font-ui);
+  --fs-base: 15px;
+  --fs-card-title: .95rem;
+  --fs-stat-value: clamp(1.3rem, 2.2vw, 1.7rem);
+  --fs-table: 13.5px;
+
+  --fs-scale: 1;
+  --fs-micro: calc(10.5px * var(--fs-scale));
+  --fs-label: calc(11px * var(--fs-scale));
+  --fs-caption: calc(11.5px * var(--fs-scale));
+  --fs-note: calc(12px * var(--fs-scale));
+  --fs-small: calc(12.5px * var(--fs-scale));
+  --fs-body: calc(13px * var(--fs-scale));
+  --fs-item: calc(13.5px * var(--fs-scale));
+  --fw-title: 650;
+  --fw-display: 650;
+  --label-transform: uppercase;
+  --label-tracking: .06em;
+  --title-tracking: -0.01em;
+
+  --shadow-card: 0 1px 2px oklch(var(--shadow-hue) / var(--shadow-o1)),
+                 0 4px 14px oklch(var(--shadow-hue) / var(--shadow-o2));
+  --shadow-pop: 0 12px 40px oklch(0 0 0 / 0.28);
+  --header-blur: 10px;
+}
+
+:root {
+  color-scheme: light;
+  --bg: oklch(0.970 0.005 250);
+  --surface: oklch(1 0 0);
+  --surface-2: oklch(0.950 0.007 250);
+  --surface-3: oklch(0.950 0.007 250);
+  --border: oklch(0.90 0.010 250);
+  --border-strong: oklch(0.82 0.012 250);
+  --text: oklch(0.27 0.020 265);
+  --text-muted: oklch(0.49 0.018 265);
+  --text-faint: oklch(0.54 0.014 265);
+  --accent: oklch(0.52 0.19 26);
+  --accent-soft: oklch(0.52 0.19 26 / 0.11);
+  --on-accent: oklch(0.99 0 0);
+  --pos: oklch(0.55 0.15 150);
+  --neg: oklch(0.56 0.20 29);
+  --warn: oklch(0.65 0.14 75);
+
+  --cat-ido: oklch(0.56 0.19 27);
+  --cat-fazis: oklch(0.50 0.13 275);
+  --cat-regio: oklch(0.56 0.11 195);
+  --cat-eset: oklch(0.55 0.14 245);
+  --cat-szoras: oklch(0.55 0.15 310);
+  --cat-cel: oklch(0.57 0.12 160);
+  --cat-adat: oklch(0.58 0.10 80);
+
+  --prio-p1: oklch(0.55 0.20 27);
+  --prio-p2: oklch(0.62 0.16 55);
+  --prio-p3: oklch(0.65 0.13 95);
+  --prio-p4: oklch(0.52 0.12 250);
+
+  --chart-grid: oklch(0.91 0.008 250);
+  --overlay-bg: oklch(0 0 0 / 0.55);
+  --shadow-hue: 0.2 0.02 265;
+  --shadow-o1: 0.05;
+  --shadow-o2: 0.06;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: oklch(0.205 0.014 265);
+  --surface: oklch(0.255 0.016 265);
+  --surface-2: oklch(0.30 0.018 265);
+  --surface-3: oklch(0.30 0.018 265);
+  --border: oklch(0.34 0.018 265);
+  --border-strong: oklch(0.42 0.02 265);
+  --text: oklch(0.92 0.006 250);
+  --text-muted: oklch(0.72 0.010 250);
+  --text-faint: oklch(0.64 0.010 250);
+  --accent: oklch(0.68 0.17 26);
+  --accent-soft: oklch(0.68 0.17 26 / 0.16);
+  --on-accent: oklch(0.16 0.02 265);
+  --pos: oklch(0.72 0.15 150);
+  --neg: oklch(0.70 0.17 29);
+  --warn: oklch(0.78 0.13 85);
+
+  --cat-ido: oklch(0.70 0.17 27);
+  --cat-fazis: oklch(0.70 0.11 275);
+  --cat-regio: oklch(0.72 0.10 195);
+  --cat-eset: oklch(0.70 0.12 245);
+  --cat-szoras: oklch(0.71 0.13 310);
+  --cat-cel: oklch(0.73 0.12 160);
+  --cat-adat: oklch(0.74 0.09 80);
+
+  --prio-p1: oklch(0.68 0.18 27);
+  --prio-p2: oklch(0.74 0.14 55);
+  --prio-p3: oklch(0.80 0.12 95);
+  --prio-p4: oklch(0.68 0.11 250);
+
+  --chart-grid: oklch(0.33 0.016 265);
+  --overlay-bg: oklch(0 0 0 / 0.55);
+  --shadow-hue: 0.14 0.02 265;
+  --shadow-o1: 0;
+  --shadow-o2: 0;
+}
+
+[data-cat="ido"] { --c: var(--cat-ido); }
+[data-cat="fazis"] { --c: var(--cat-fazis); }
+[data-cat="regio"] { --c: var(--cat-regio); }
+[data-cat="eset"] { --c: var(--cat-eset); }
+[data-cat="szoras"] { --c: var(--cat-szoras); }
+[data-cat="cel"] { --c: var(--cat-cel); }
+[data-cat="adat"] { --c: var(--cat-adat); }
+[data-prio="p1"] { --c: var(--prio-p1); }
+[data-prio="p2"] { --c: var(--prio-p2); }
+[data-prio="p3"] { --c: var(--prio-p3); }
+[data-prio="p4"] { --c: var(--prio-p4); }

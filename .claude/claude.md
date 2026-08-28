@@ -1,0 +1,4 @@
+- Never use em dash: (— or –). Prefer using comma (,), colon (:) or hyphen (-) instead. Prefer these, in this order: comma, colon, hyphen.
+- Avoid leave comments in the code. Use comments only if absolute necessary to highlight something. Prefer to use TODO if something is needed later.
+- Don't create a new release pack by using `npm run release` on each modification unless I specifically ask for it.
+- In all cases, when you produce a text or description, be brief and to the point. Avoid baroque circular sentences and do not repeat yourself. A description of a thing/event/concept is adequate if it is mentioned only once, without having to refer to it in multiple ways and explain it.
