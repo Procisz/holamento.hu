@@ -132,7 +132,12 @@
 						aria-expanded="true"
 						aria-controls="range-bar"
 					></button>
-					<button class="icon-btn" id="theme-btn"></button>
+					<button
+						class="icon-btn"
+						id="theme-btn"
+						aria-haspopup="true"
+						aria-expanded="false"
+					></button>
 					<button
 						class="icon-btn"
 						id="lang-btn"
@@ -168,8 +173,9 @@
 		</header>
 
 		<div class="warn-panel" id="warn-panel" hidden></div>
-		<div class="lang-panel" id="lang-panel" hidden></div>
-		<div class="menu-panel" id="menu-panel" hidden></div>
+		<div class="lang-panel popover" id="lang-panel" hidden></div>
+		<div class="theme-panel popover" id="theme-panel" hidden></div>
+		<div class="menu-panel popover" id="menu-panel" hidden></div>
 
 		<main class="app-main" id="app-main"></main>
 

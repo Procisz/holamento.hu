@@ -1,7 +1,11 @@
 {
 	"name": "holamento",
+	"author": {
+		"name": "Procisz",
+		"email": "holamento.hu@gmail.com"
+	},
 	"private": true,
-	"version": "0.1.0",
+	"version": "1.1.0",
 	"description": "Fuggetlen dashboard a magyarorszagi mento kierkezesi idokrol, az Orszagos Mentoszolgalat nyilvanos statisztikai alapjan.",
 	"license": "MIT",
 	"homepage": "https://holamento.hu",
