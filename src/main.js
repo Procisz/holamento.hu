@@ -1,7 +1,9 @@
 import { APP_VERSION, RANGE_BAR_KEY, RANGE_KEY, SOURCE_URL, STALE_WARN_DAYS } from "./config.js";
+import { initAnalytics } from "./app/analytics.js";
 import { currentMode, initAppearance, setMode } from "./app/appearance.js";
 import { LANGS, currentLang, currentLocale, initLang, setLang, t, tPlural } from "./app/i18n.js";
 import { destroyAllCharts } from "./ui/charts.js";
+import { socialLinks } from "./ui/links.js";
 import { clearCache, fetchData, loadCache, parsePayload, saveCache } from "./data/fetchData.js";
 import { fmtDate, fmtYm, fmtYmFull } from "./utils/fmt.js";
 import { buildModel } from "./data/model.js";
@@ -625,6 +627,7 @@ function applyStaticTexts() {
 	document.getElementById("tab-nav").setAttribute("aria-label", t("app.brand"));
 	const brand = document.querySelector(".brand");
 	if (brand) brand.dataset.tip = t("app.version", { v: APP_VERSION });
+	document.getElementById("app-footer").innerHTML = socialLinks();
 }
 
 function onLangChange() {
@@ -725,6 +728,7 @@ function watchHeaderHeight() {
 
 (async function boot() {
 	injectIcons();
+	initAnalytics();
 	initLang();
 	initAppearance();
 	watchHeaderHeight();
