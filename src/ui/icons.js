@@ -16,6 +16,8 @@ export const ICON_SPRITE = `<svg style="display:none" xmlns="http://www.w3.org/2
 <symbol id="i-theme-auto" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18Z" fill="var(--icon-fill, currentColor)"/></symbol>
 <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20.5 11A8.5 8.5 0 1 0 19 16.5"/><path d="M21 6.5V11h-4.5"/></symbol>
 <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 10.5 12 3.5l8 7"/><path d="M5.5 9.2V20h13V9.2" fill="var(--icon-fill, transparent)"/><path d="M10 20v-5.5h4V20"/></symbol>
+<symbol id="i-linkedin" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3.5" fill="var(--icon-fill, transparent)"/><path d="M8 10.8V17"/><path d="M8 7.7v.01"/><path d="M11.8 17v-6.2"/><path d="M11.8 13.6a2.6 2.6 0 0 1 5.2 0V17"/></symbol>
+<symbol id="i-coffee" viewBox="0 0 24 24"><path d="M4 9.5h12v5.2a4.3 4.3 0 0 1-4.3 4.3H8.3A4.3 4.3 0 0 1 4 14.7Z" fill="var(--icon-fill, transparent)"/><path d="M16 11h2a2.5 2.5 0 0 1 0 5h-2"/><path d="M8 3.4v2.5M12 3.4v2.5"/></symbol>
 <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6.5h16M4 12h16M4 17.5h16"/></symbol>
 <symbol id="i-warn" viewBox="0 0 24 24"><path d="M12 3.5 22 20H2Z" fill="var(--icon-fill, transparent)"/><path d="M12 10v4.5M12 17.4v.01"/></symbol>
 <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="var(--icon-fill, transparent)"/><path d="M12 11v5M12 7.6v.01"/></symbol>

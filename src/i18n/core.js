@@ -6,6 +6,9 @@ export const CORE = {
 			"Független dashboard a magyarországi mentő kiérkezési időkről, az Országos Mentőszolgálat nyilvános statisztikái alapján.",
 		"app.version": "App verzió: {v}",
 
+		"social.linkedin": "LinkedIn",
+		"social.coffee": "Buy Me a Coffee",
+
 		"boot.fetch": "Adatok lekérése",
 		"boot.parse": "Feldolgozás",
 		"boot.compute": "Számítások",
@@ -178,6 +181,9 @@ export const CORE = {
 		"app.description":
 			"Independent dashboard of Hungarian ambulance response times, based on the public statistics of the National Ambulance Service.",
 		"app.version": "App version: {v}",
+
+		"social.linkedin": "LinkedIn",
+		"social.coffee": "Buy Me a Coffee",
 
 		"boot.fetch": "Downloading data",
 		"boot.parse": "Processing",
@@ -353,6 +359,9 @@ export const CORE = {
 		"app.description":
 			"Unabhängiges Dashboard zu den ungarischen Rettungsdienst-Ausrückzeiten, auf Basis der öffentlichen Statistiken des Landesrettungsdienstes.",
 		"app.version": "App-Version: {v}",
+
+		"social.linkedin": "LinkedIn",
+		"social.coffee": "Buy Me a Coffee",
 
 		"boot.fetch": "Daten werden geladen",
 		"boot.parse": "Verarbeitung",

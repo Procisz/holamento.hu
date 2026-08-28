@@ -675,3 +675,38 @@ table.tbl { width: 100%; border-collapse: collapse; font-size: var(--fs-table); 
   border-color: var(--border);
   color: var(--text-muted);
 }
+
+.app-footer {
+  max-width: 1280px;
+  margin-inline: auto;
+  padding: 0 clamp(12px, 3vw, 32px) var(--space-6);
+}
+.social-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  justify-content: center;
+  padding-top: var(--space-5);
+  border-top: var(--border-w) solid var(--border);
+}
+.social-row.in-card {
+  justify-content: flex-start;
+  margin-top: var(--space-4);
+}
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: var(--border-w) solid var(--border);
+  border-radius: var(--control-radius);
+  color: var(--text-muted);
+  font-size: var(--fs-label);
+  transition: color .15s ease, border-color .15s ease, background .15s ease;
+}
+.social-link:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+.social-link .icon { flex: none; }
