@@ -39,12 +39,22 @@ jobs:
           test -f dist/index.html || { echo "dist/index.html hianyzik"; exit 1; }
           test -f dist/data.json || { echo "dist/data.json hianyzik"; exit 1; }
           test -f dist/CNAME || { echo "dist/CNAME hianyzik"; exit 1; }
-          SIZE=$(wc -c < dist/index.html)
-          echo "dist/index.html: ${SIZE} byte"
-          if [ "$SIZE" -lt 500000 ]; then
-            echo "A build gyanusan kicsi, valami kimaradt"
+          APP_JS=$(ls dist/assets/index-*.js 2>/dev/null | head -1)
+          CHARTS=$(ls dist/assets/apexcharts*.js 2>/dev/null | head -1)
+          test -n "$APP_JS" || { echo "az alkalmazas JS csomagja hianyzik"; exit 1; }
+          test -n "$CHARTS" || { echo "a diagramkonyvtar kulon csomagja hianyzik"; exit 1; }
+          ls dist/assets/*.css >/dev/null 2>&1 && { echo "kulon CSS fajl maradt, a beagyazas nem futott le"; exit 1; }
+          grep -q "<style>" dist/index.html || { echo "a CSS nem kerult be az index.html-be"; exit 1; }
+          HTML_SIZE=$(wc -c < dist/index.html)
+          APP_SIZE=$(wc -c < "$APP_JS")
+          echo "index.html: ${HTML_SIZE} byte | app JS: ${APP_SIZE} byte | diagramok: $(wc -c < "$CHARTS") byte"
+          if [ "$APP_SIZE" -lt 100000 ]; then
+            echo "Az alkalmazas csomagja gyanusan kicsi, valami kimaradt"
             exit 1
           fi
-          grep -q "apexcharts" dist/index.html || { echo "a diagramkonyvtar nem kerult a buildbe"; exit 1; }
+          if [ "$HTML_SIZE" -lt 20000 ] || [ "$HTML_SIZE" -gt 120000 ]; then
+            echo "Az index.html merete gyanus: ${HTML_SIZE} byte"
+            exit 1
+          fi
           grep -q "width<=[0-9]" dist/index.html && { echo "range szintaxisu media query kerult a kimenetbe"; exit 1; }
           exit 0

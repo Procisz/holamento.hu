@@ -61,7 +61,7 @@
 }
 .tabs [role="tab"]:hover { background: var(--surface-2); color: var(--text); }
 .tabs [role="tab"][aria-selected="true"] {
-  color: var(--accent);
+  color: var(--accent-text);
   background: var(--accent-soft);
 }
 
@@ -71,6 +71,7 @@
   max-width: 1280px;
   margin-inline: auto;
   padding: var(--space-5) clamp(12px, 3vw, 32px) var(--space-8);
+  min-height: 100dvh;
 }
 
 .kpi-row {
