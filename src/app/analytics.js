@@ -1,12 +1,27 @@
-import { ANALYTICS_HOST, ANALYTICS_TOKEN } from '../config.js';
+import { ANALYTICS_ENDPOINT, ANALYTICS_HOST, CF_BEACON_TOKEN } from '../config.js';
 
-const BEACON_SRC = 'https://static.cloudflareinsights.com/beacon.min.js';
+const CF_BEACON_SRC = 'https://static.cloudflareinsights.com/beacon.min.js';
+
+function addScript(setup) {
+	const s = document.createElement('script');
+	setup(s);
+	document.head.appendChild(s);
+}
 
 export function initAnalytics() {
-	if (!ANALYTICS_TOKEN || location.hostname !== ANALYTICS_HOST) return;
-	const s = document.createElement('script');
-	s.type = 'module';
-	s.src = BEACON_SRC;
-	s.setAttribute('data-cf-beacon', JSON.stringify({ token: ANALYTICS_TOKEN }));
-	document.head.appendChild(s);
+	if (location.hostname !== ANALYTICS_HOST) return;
+	if (ANALYTICS_ENDPOINT) {
+		addScript((s) => {
+			s.async = true;
+			s.src = `${ANALYTICS_ENDPOINT}/count.js`;
+			s.setAttribute('data-goatcounter', `${ANALYTICS_ENDPOINT}/count`);
+		});
+	}
+	if (CF_BEACON_TOKEN) {
+		addScript((s) => {
+			s.type = 'module';
+			s.src = CF_BEACON_SRC;
+			s.setAttribute('data-cf-beacon', JSON.stringify({ token: CF_BEACON_TOKEN }));
+		});
+	}
 }
