@@ -547,7 +547,7 @@ table.tbl { width: 100%; border-collapse: collapse; font-size: var(--fs-table); 
   font-weight: 700;
   letter-spacing: .02em;
   color: var(--on-accent);
-  background: var(--c, var(--accent));
+  background: var(--badge-c, var(--c, var(--accent)));
 }
 
 .range-bar {
