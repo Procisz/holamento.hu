@@ -104,7 +104,8 @@ export function makeChart(el, options, decorate) {
   if (typeof reserved === "number") el.style.minHeight = `${reserved}px`;
   loadCharts().then(() => {
     if (!el.isConnected || el.children.length) return;
-    decorate?.(buildChart(el, options));
+    const chart = buildChart(el, options);
+    decorate?.(chart);
   });
   return null;
 }
