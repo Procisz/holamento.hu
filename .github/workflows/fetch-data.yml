@@ -1,8 +1,6 @@
 name: Adatfrissites
 
 on:
-  schedule:
-    - cron: "23 5 * * *"
   workflow_dispatch:
 
 permissions:
@@ -17,7 +15,20 @@ jobs:
 
       - name: Adat letoltese es ellenorzese
         run: |
-          curl -sSf --max-time 60 -o fresh.json https://stat.mentok.hu/data.json
+          UA="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36"
+          CODE=$(curl -sS --max-time 60 --retry 3 --retry-delay 5 --retry-all-errors \
+            -H "User-Agent: $UA" \
+            -H "Accept: application/json,text/plain,*/*" \
+            -H "Accept-Language: hu-HU,hu;q=0.9,en;q=0.8" \
+            -H "Referer: https://stat.mentok.hu/" \
+            -o fresh.json -w "%{http_code}" https://stat.mentok.hu/data.json || echo "000")
+          echo "A forras valasza: HTTP ${CODE}"
+          if [ "$CODE" != "200" ]; then
+            echo "A letoltes nem sikerult. A valasz elso 600 karaktere:"
+            head -c 600 fresh.json 2>/dev/null || echo "(ures valasz)"
+            echo
+            exit 1
+          fi
           jq -e '
             (.meta.updatedDate | type == "string" and test("^[0-9]{4}-[0-9]{2}-[0-9]{2}$")) and
             (.meta.latestMonth | type == "string" and test("^[0-9]{4}-[0-9]{2}$")) and
