@@ -31,7 +31,6 @@
 	"devDependencies": {
 		"@csstools/postcss-global-data": "^4.0.0",
 		"postcss-custom-media": "^12.0.1",
-		"vite": "^8.2.2",
-		"vite-plugin-singlefile": "^2.2.0"
+		"vite": "^8.2.2"
 	}
 }

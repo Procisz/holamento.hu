@@ -12,9 +12,10 @@ egyenlőtlenségek, normalizált esetszámok).
 
 ## Működés
 
-Egyoldalas, statikus dashboard: vanilla JS + Vite + ApexCharts, a build egyetlen HTML fájl
-(`vite-plugin-singlefile`). Az app egyetlen JSON-t tölt be, a saját originjéről:
-`public/data.json`.
+Egyoldalas, statikus dashboard: vanilla JS + Vite + ApexCharts. A build egy kis HTML vázból,
+egy CSS fájlból és két JavaScript csomagból áll: az alkalmazásból, illetve a diagramkönyvtárból,
+amit az oldal csak akkor tölt be, amikor az első diagramra szükség van. Így az első festés nem
+vár a diagramokra. Az app egyetlen JSON-t tölt be, a saját originjéről: `public/data.json`.
 
 ### Az archívum szerepe
 

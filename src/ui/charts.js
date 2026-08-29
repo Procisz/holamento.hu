@@ -1,4 +1,16 @@
-import ApexCharts from 'apexcharts';
+let Apex = null;
+let apexLoading = null;
+
+export function loadCharts() {
+  if (Apex) return Promise.resolve(Apex);
+  if (!apexLoading) {
+    apexLoading = import('apexcharts').then((m) => {
+      Apex = m.default;
+      return Apex;
+    });
+  }
+  return apexLoading;
+}
 import { fmtMin, fmtMinShort } from '../utils/fmt.js';
 import { t } from '../app/i18n.js';
 
@@ -55,7 +67,7 @@ export function tokenFor(value) {
 
 const built = new Map();
 
-export function makeChart(el, options) {
+function buildChart(el, options) {
   const merged = deepMerge(baseOptions(), options);
   if (merged.chart?.type === 'heatmap') {
 
@@ -63,7 +75,7 @@ export function makeChart(el, options) {
 
     merged.chart = { ...merged.chart, animations: { ...merged.chart.animations, enabled: false } };
   }
-  const chart = new ApexCharts(el, merged);
+  const chart = new Apex(el, merged);
 
   if (Array.isArray(merged.colors)) {
     chart.holamentoColors = merged.colors;
@@ -82,6 +94,21 @@ export function makeChart(el, options) {
   return chart;
 }
 
+export function makeChart(el, options, decorate) {
+  if (Apex) {
+    const chart = buildChart(el, options);
+    decorate?.(chart);
+    return chart;
+  }
+  const reserved = options?.chart?.height;
+  if (typeof reserved === "number") el.style.minHeight = `${reserved}px`;
+  loadCharts().then(() => {
+    if (!el.isConnected || el.children.length) return;
+    decorate?.(buildChart(el, options));
+  });
+  return null;
+}
+
 export function replayCharts(root) {
   if (!root || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   for (const [el, entry] of [...built]) {
@@ -91,8 +118,7 @@ export function replayCharts(root) {
     try { entry.chart.destroy(); } catch {}
     registry.delete(entry.chart);
     try {
-      const chart = makeChart(el, entry.options);
-      decorate?.(chart);
+      makeChart(el, entry.options, decorate);
     } catch (err) {
       console.error('Diagram újrajátszás hiba:', err);
     }
