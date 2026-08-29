@@ -11,7 +11,8 @@ export const LINKEDIN_URL = 'https://www.linkedin.com/in/procisz/';
 export const COFFEE_URL = 'https://buymeacoffee.com/procisz';
 
 export const ANALYTICS_HOST = 'holamento.hu';
-export const ANALYTICS_TOKEN = '81f506fdd7294a2b85ced52612117dc1';
+export const ANALYTICS_ENDPOINT = 'https://stats.holamento.hu';
+export const CF_BEACON_TOKEN = '81f506fdd7294a2b85ced52612117dc1';
 
 export const STALE_WARN_DAYS = 45;
 
