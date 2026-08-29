@@ -65,6 +65,7 @@
   --text-faint: oklch(0.54 0.014 265);
   --accent: oklch(0.52 0.19 26);
   --accent-soft: oklch(0.52 0.19 26 / 0.11);
+  --accent-text: oklch(0.46 0.19 26);
   --on-accent: oklch(0.99 0 0);
   --pos: oklch(0.55 0.15 150);
   --neg: oklch(0.56 0.20 29);
@@ -103,6 +104,7 @@
   --text-faint: oklch(0.64 0.010 250);
   --accent: oklch(0.68 0.17 26);
   --accent-soft: oklch(0.68 0.17 26 / 0.16);
+  --accent-text: oklch(0.80 0.13 26);
   --on-accent: oklch(0.16 0.02 265);
   --pos: oklch(0.72 0.15 150);
   --neg: oklch(0.70 0.17 29);

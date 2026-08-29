@@ -561,7 +561,7 @@ table.tbl { width: 100%; border-collapse: collapse; font-size: var(--fs-table); 
   color: var(--text-muted);
 }
 .range-bar .icon { width: 1rem; height: 1rem; flex: none; }
-.range-label { font-weight: 600; }
+.range-label { font-weight: 600; min-width: 3.75rem; }
 .range-bar input[type="month"] {
   background: var(--surface-3);
   color: var(--text);
@@ -572,7 +572,17 @@ table.tbl { width: 100%; border-collapse: collapse; font-size: var(--fs-table); 
   font-size: var(--fs-small);
 }
 .range-sep { color: var(--text-faint); }
-.range-quicks { display: inline-flex; flex-wrap: wrap; gap: 5px; }
+.range-quicks {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  gap: 5px;
+  min-height: 34px;
+  max-width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.range-quicks::-webkit-scrollbar { display: none; }
+.range-quick { flex: none; }
 .range-quick {
   display: inline-flex;
   flex-direction: column;
@@ -601,9 +611,9 @@ table.tbl { width: 100%; border-collapse: collapse; font-size: var(--fs-table); 
 .range-quick[aria-pressed="true"] {
   border-color: var(--accent);
   background: var(--accent-soft);
-  color: var(--accent);
+  color: var(--accent-text);
 }
-.range-quick[aria-pressed="true"] small { color: var(--accent); }
+.range-quick[aria-pressed="true"] small { color: var(--accent-text); }
 .range-quick:disabled { opacity: .38; }
 
 .lang-panel,
