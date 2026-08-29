@@ -7,14 +7,21 @@ séma az OMSZ oldalához igazodik.
 ## Frissítési lánc
 
 A `data.json` nem küld CORS fejlécet, ezért böngészőből másik domainről nem tölthető be
-közvetlenül. A megoldás:
+közvetlenül. Ráadásul a forrás IP-cím alapján szűr: a GitHub Actions futtatóiról `403
+Forbidden` a válasz, magyar IP-ről viszont kiadja az adatot. Ezért nem GitHub-workflow,
+hanem saját szerveren futó cron végzi a letöltést.
 
-1. A `.github/workflows/fetch-data.yml` naponta letölti a friss JSON-t.
-2. Ha változott, elmenti `public/data.json`-ba (ezt tölti be az oldal, saját originről),
+1. A szerveren napi cron futtatja a `scripts/server-update.sh`-t.
+2. Az szinkronba hozza a klónt a main ággal, majd lefuttatja a `scripts/pull-data.mjs`-t,
+   ami letölti és ellenőrzi a JSON szerkezetét.
+3. Ha változott, elmenti `public/data.json`-ba (ezt tölti be az oldal, saját originről),
    és lerakja az `archive/<updatedDate>.json` pillanatképet is (azonos napi, de eltérő
    tartalmú újraközlés `-2`, `-3` utótagot kap, felülírás nincs).
-3. A workflow ezután kézzel elindítja a deploy workflow-t (a GITHUB_TOKEN-nel készült
-   push önmagában nem váltana ki workflow-futást, ez GitHub-korlát), az oldal újraépül.
+4. A szerver commitol és pushol a main ágra. A push magától elindítja a deploy
+   workflow-t, az oldal újraépül.
+
+A szerver deploy kulcsa szerepel a `Protect main` ruleset bypass listáján, különben a
+védett ágra nem tudna pusholni.
 
 Az archívum azért fontos, mert az API gördülő ablakot ad: a legtöbb blokk csak 2026-tól
 létezik, a `phases` blokk pedig mindig csak a legutolsó hónapra. A pillanatképekből idővel
