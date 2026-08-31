@@ -67,6 +67,7 @@ function onTabKey(e) {
 export function activate(id) {
   if (!panels.has(id)) id = firstPanelId();
   if (!id) return;
+  const changed = state.activeTab !== id;
   state.activeTab = id;
   history.replaceState(null, '', `#${id}`);
   document.querySelectorAll('#tab-nav [role=tab]').forEach((b) => {
@@ -82,6 +83,12 @@ export function activate(id) {
   const wasBuilt = state.renderedTabs.has(id);
   renderActive();
   if (wasBuilt) replayCharts(document.getElementById(`panel-${id}`));
+  if (changed) scrollToTop();
+}
+
+function scrollToTop() {
+  if (typeof scrollTo !== 'function') return;
+  scrollTo({ top: 0, left: 0, behavior: 'auto' });
 }
 
 const CENTER_MS = 500;

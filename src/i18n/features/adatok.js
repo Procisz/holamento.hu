@@ -16,32 +16,32 @@ export default {
 		"adatok.terms.title": "Mit jelentenek a számok?",
 		"adatok.terms.responseName": "Kiérkezési idő",
 		"adatok.terms.responseDesc":
-			"akkor indul, amikor valaki felhívja a 112-t, és akkor áll meg, amikor a mentő odaér a helyszínre",
+			"Akkor indul, amikor valaki felhívja a 112-t, és akkor áll meg, amikor a mentő odaér a helyszínre.",
 		"adatok.terms.responseNote":
 			"A telefonos beszélgetés ideje is beleszámít, tehát ez az a várakozás, amit a hívó ténylegesen végigél.",
 		"adatok.terms.avgName": "Átlag",
 		"adatok.terms.avgDesc":
-			"az összes kiérkezési idő összege elosztva az esetek számával",
+			"Az összes kiérkezési idő összege elosztva az esetek számával.",
 		"adatok.terms.avgNote":
 			"Néhány nagyon hosszú eset is érezhetően felhúzza, ezért önmagában félrevezető tud lenni. Ezen az oldalon csak a hívás szakaszainál szerepel, mert szakaszokra bontva csak az átlagok adhatók össze.",
 		"adatok.terms.medianDesc":
-			"a sorba rendezett idők közül a középső: az esetek felénél ennyi időn belül kiért a mentő",
+			"A sorba rendezett idők közül a középső: az esetek felénél ennyi időn belül kiért a mentő.",
 		"adatok.terms.medianNote":
 			"A másik felénél ennél tovább tartott. A tipikus esetet jobban jellemzi, mint az átlag, mert a szélső értékek nem húzzák el.",
 		"adatok.terms.pctName": "Percentilis",
 		"adatok.terms.pctDesc":
-			"azt mondja meg, hogy az esetek adott százalékához mennyi időn belül értek ki",
+			"Azt mondja meg, hogy az esetek adott százalékához mennyi időn belül értek ki.",
 		"adatok.terms.pctNote":
 			"A medián maga is percentilis, az 50., mert az esetek felét fedi le. Minél magasabb a percentilis, annál inkább a hosszú várakozásokról szól.",
 		"adatok.terms.p75Desc":
-			"az az idő, ami alatt száz esetből hetvenötnél kiért a mentő",
+			"A 75. percentilis rövidítése: az az idő, ami alatt száz esetből hetvenötnél kiért a mentő.",
 		"adatok.terms.p75Note": "A maradék huszonöt esetben ennél tovább tartott.",
 		"adatok.terms.p90Desc":
-			"az az idő, ami alatt száz esetből kilencvennél kiért a mentő",
+			"A 90. percentilis rövidítése: az az idő, ami alatt száz esetből kilencvennél kiért a mentő.",
 		"adatok.terms.p90Note":
 			"A maradék tíz eset ennél is tovább várt. Ez a szám a nehéz eseteket mutatja, nem a tipikusat.",
 		"adatok.terms.lineName": "15 perces vonal",
-		"adatok.terms.lineDesc": "a diagramokon látható szaggatott vonal",
+		"adatok.terms.lineDesc": "A diagramokon látható szaggatott vonal.",
 		"adatok.terms.lineNote":
 			"Nem előírás, csak könnyebb hozzá mérni a számokat.",
 
@@ -115,33 +115,33 @@ export default {
 		"adatok.terms.title": "What do the numbers mean?",
 		"adatok.terms.responseName": "Response time",
 		"adatok.terms.responseDesc":
-			"it starts when someone calls 112, and it stops when the ambulance reaches the scene",
+			"It starts when someone calls 112, and it stops when the ambulance reaches the scene.",
 		"adatok.terms.responseNote":
 			"The time spent on the phone counts as well, so this is the wait the caller actually lives through.",
 		"adatok.terms.avgName": "Average",
 		"adatok.terms.avgDesc":
-			"the sum of all response times divided by the number of cases",
+			"The sum of all response times divided by the number of cases.",
 		"adatok.terms.avgNote":
 			"Even a few very long cases pull it up noticeably, so on its own it can mislead. On this site it only appears for the phases of the call, because once the time is split into phases only averages can be added up.",
 		"adatok.terms.medianDesc":
-			"the middle value of the sorted times: in half of the cases the ambulance arrived within this time",
+			"The middle value of the sorted times: in half of the cases the ambulance arrived within this time.",
 		"adatok.terms.medianNote":
 			"In the other half it took longer. It describes the typical case better than the average, because extreme values do not drag it around.",
 		"adatok.terms.pctName": "Percentile",
 		"adatok.terms.pctDesc":
-			"it tells you within how much time a given percentage of the cases was reached",
+			"It tells you within how much time a given percentage of the cases was reached.",
 		"adatok.terms.pctNote":
 			"The median is itself a percentile, the 50th, because it covers half of the cases. The higher the percentile, the more it is about the long waits.",
 		"adatok.terms.p75Desc":
-			"the time within which the ambulance arrived in seventy five cases out of a hundred",
+			"Short for the 75th percentile: the time within which the ambulance arrived in seventy five cases out of a hundred.",
 		"adatok.terms.p75Note":
 			"In the remaining twenty five cases it took longer.",
 		"adatok.terms.p90Desc":
-			"the time within which the ambulance arrived in ninety cases out of a hundred",
+			"Short for the 90th percentile: the time within which the ambulance arrived in ninety cases out of a hundred.",
 		"adatok.terms.p90Note":
 			"The remaining ten cases waited even longer. This number shows the hard cases, not the typical one.",
 		"adatok.terms.lineName": "15 minute line",
-		"adatok.terms.lineDesc": "the dashed line on the charts",
+		"adatok.terms.lineDesc": "The dashed line on the charts.",
 		"adatok.terms.lineNote":
 			"It is not a rule, it just makes the numbers easier to measure against.",
 
@@ -216,33 +216,33 @@ export default {
 		"adatok.terms.title": "Was bedeuten die Zahlen?",
 		"adatok.terms.responseName": "Ausrückzeit",
 		"adatok.terms.responseDesc":
-			"sie beginnt, wenn jemand die 112 anruft, und endet, wenn der Rettungswagen am Einsatzort ankommt",
+			"Sie beginnt, wenn jemand die 112 anruft, und endet, wenn der Rettungswagen am Einsatzort ankommt.",
 		"adatok.terms.responseNote":
 			"Das Telefongespräch zählt mit, es ist also die Wartezeit, die der Anrufer tatsächlich erlebt.",
 		"adatok.terms.avgName": "Durchschnitt",
 		"adatok.terms.avgDesc":
-			"die Summe aller Ausrückzeiten geteilt durch die Zahl der Fälle",
+			"Die Summe aller Ausrückzeiten geteilt durch die Zahl der Fälle.",
 		"adatok.terms.avgNote":
 			"Schon wenige sehr lange Fälle ziehen ihn spürbar nach oben, allein genommen kann er also in die Irre führen. Auf dieser Seite steht er nur bei den Abschnitten des Notrufs, denn in Abschnitte zerlegt lassen sich nur Durchschnitte addieren.",
 		"adatok.terms.medianDesc":
-			"der mittlere Wert der sortierten Zeiten: bei der Hälfte der Fälle war der Rettungswagen innerhalb dieser Zeit da",
+			"Der mittlere Wert der sortierten Zeiten: bei der Hälfte der Fälle war der Rettungswagen innerhalb dieser Zeit da.",
 		"adatok.terms.medianNote":
 			"Bei der anderen Hälfte hat es länger gedauert. Er beschreibt den typischen Fall besser als der Durchschnitt, weil Extremwerte ihn nicht verzerren.",
 		"adatok.terms.pctName": "Perzentil",
 		"adatok.terms.pctDesc":
-			"es sagt, innerhalb welcher Zeit ein bestimmter Prozentsatz der Fälle erreicht wurde",
+			"Es sagt, innerhalb welcher Zeit ein bestimmter Prozentsatz der Fälle erreicht wurde.",
 		"adatok.terms.pctNote":
 			"Der Median ist selbst ein Perzentil, das 50., weil er die Hälfte der Fälle abdeckt. Je höher das Perzentil, desto mehr geht es um die langen Wartezeiten.",
 		"adatok.terms.p75Desc":
-			"die Zeit, in der bei fünfundsiebzig von hundert Fällen der Rettungswagen da war",
+			"Kurz für das 75. Perzentil: die Zeit, in der bei fünfundsiebzig von hundert Fällen der Rettungswagen da war.",
 		"adatok.terms.p75Note":
 			"Bei den übrigen fünfundzwanzig Fällen hat es länger gedauert.",
 		"adatok.terms.p90Desc":
-			"die Zeit, in der bei neunzig von hundert Fällen der Rettungswagen da war",
+			"Kurz für das 90. Perzentil: die Zeit, in der bei neunzig von hundert Fällen der Rettungswagen da war.",
 		"adatok.terms.p90Note":
 			"Die übrigen zehn Fälle haben noch länger gewartet. Diese Zahl zeigt die schweren Fälle, nicht den typischen.",
 		"adatok.terms.lineName": "15-Minuten-Linie",
-		"adatok.terms.lineDesc": "die gestrichelte Linie in den Diagrammen",
+		"adatok.terms.lineDesc": "Die gestrichelte Linie in den Diagrammen.",
 		"adatok.terms.lineNote":
 			"Sie ist keine Vorschrift, die Zahlen lassen sich nur leichter daran messen.",
 

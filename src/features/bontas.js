@@ -30,21 +30,9 @@ export function render(model, mount) {
 	const monthLabel = fmtYmFull(summary?.month ?? model.regionSnapshotAlt?.month);
 
 	const controls = `
-    <div class="card" data-span="12" data-cat="fazis">
-      <div class="card-body">
-        ${segHtml(PRIO_KEY, prioOpts, prio, { label: t("bontas.segPrio") })}
-        ${segHtml(METRIC_KEY, metricOpts, metric, { label: t("bontas.segMetric") })}
-        <div class="card-sub">${esc(
-					t("bontas.segSub", {
-						prio,
-						prioDesc: t(`prio.${prio}`),
-						metric: metricLabel,
-						metricDesc: t(`metricDesc.${metric}`),
-					}),
-				)}</div>
-        ${summary ? `<div class="card-sub">${esc(t("bontas.coverSub", { month: monthLabel }))}</div>` : ""}
-      </div>
-    </div>`;
+    ${segHtml(PRIO_KEY, prioOpts, prio, { label: t("bontas.segPrio") })}
+    ${segHtml(METRIC_KEY, metricOpts, metric, { label: t("bontas.segMetric") })}
+`;
 
 	const method = `
     <div class="card" data-span="6" data-cat="adat">
@@ -81,6 +69,7 @@ export function render(model, mount) {
 	const stackRows = [...summary.rows].sort((a, b) => a.total - b.total);
 
 	mount.innerHTML = `
+    ${controls}
     <div class="kpi-row">
       ${statCard({
 				cat: "fazis",
@@ -122,7 +111,6 @@ export function render(model, mount) {
 				tip: t("bontas.kpiGapTip", { month: monthLabel, calc }),
 			})}
     </div>
-    ${controls}
     <div class="grid12">
       ${chartCard({
 				span: 12,

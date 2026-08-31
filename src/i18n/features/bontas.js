@@ -2,9 +2,6 @@ export default {
 	hu: {
 		"bontas.segPrio": "Prioritás",
 		"bontas.segMetric": "Mutató",
-		"bontas.segSub": "{prio}: {prioDesc} · {metric}: {metricDesc}",
-		"bontas.coverSub":
-			"Ez a bontás egyetlen hónapra érhető el: {month}. A hivatalos oldal ezt az adatot nem jeleníti meg.",
 
 		"bontas.kpiFastLabel": "Legrövidebb hívásfeldolgozás · {prio}",
 		"bontas.kpiFastTip":
@@ -72,9 +69,6 @@ export default {
 	en: {
 		"bontas.segPrio": "Priority",
 		"bontas.segMetric": "Metric",
-		"bontas.segSub": "{prio}: {prioDesc} · {metric}: {metricDesc}",
-		"bontas.coverSub":
-			"This breakdown is available for a single month: {month}. The official site does not display this data.",
 
 		"bontas.kpiFastLabel": "Shortest call handling · {prio}",
 		"bontas.kpiFastTip":
@@ -142,9 +136,6 @@ export default {
 	de: {
 		"bontas.segPrio": "Dringlichkeitsstufe",
 		"bontas.segMetric": "Kennzahl",
-		"bontas.segSub": "{prio}: {prioDesc} · {metric}: {metricDesc}",
-		"bontas.coverSub":
-			"Diese Aufteilung liegt nur für einen Monat vor: {month}. Die offizielle Seite zeigt diese Daten nicht an.",
 
 		"bontas.kpiFastLabel": "Kürzeste Anrufbearbeitung · {prio}",
 		"bontas.kpiFastTip":

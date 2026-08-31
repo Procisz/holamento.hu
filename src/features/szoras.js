@@ -3,7 +3,7 @@ import * as derive from "../data/derive.js";
 import { prioColor } from "../ui/categories.js";
 import { cssToken, makeChart, minAxis, minTooltip, roundOrNull } from "../ui/charts.js";
 import { icon } from "../ui/icons.js";
-import { loadSeg, segHtml, wireSeg } from "../ui/segmented.js";
+import { loadSeg, segHtml, segInline, wireSeg } from "../ui/segmented.js";
 import { cell, dataTable } from "../ui/table.js";
 import {
 	chartCard,
@@ -78,7 +78,6 @@ export function render(model, mount) {
 
 	mount.innerHTML = `
     ${segHtml(AREA_KEY, areaOpts, area, { label: t("szoras.areaSeg") })}
-    ${segHtml(METRIC_KEY, metricOpts, metric, { label: t("szoras.metricSeg") })}
     <div class="kpi-row">
       ${model.meta.priorities
 				.map((p) => {
@@ -130,6 +129,7 @@ export function render(model, mount) {
 							title: t("szoras.ratioEmpty"),
 						})
 			}
+      ${segInline(segHtml(METRIC_KEY, metricOpts, metric, { label: t("szoras.metricSeg") }))}
       ${
 				hasAreaGap
 					? chartCard({

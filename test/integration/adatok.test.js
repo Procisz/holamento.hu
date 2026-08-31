@@ -88,6 +88,21 @@ describe('info tab on the live payload', () => {
 		expect(limits.textContent).toContain('egyetlen hónapra');
 	});
 
+	it('should start every explanatory sentence with a capital letter', async () => {
+		const el = await renderPanel(adatok, real());
+		const lower = [...el.querySelectorAll('p, .def-term')]
+			.map((n) => n.textContent.trim())
+			.filter((t) => t && t[0] === t[0].toLowerCase() && t[0] !== t[0].toUpperCase());
+		expect(lower).toEqual([]);
+	});
+
+	it('should spell out that P75 and P90 are percentile abbreviations', async () => {
+		const el = await renderPanel(adatok, real());
+		const text = el.textContent;
+		expect(text).toContain('75. percentilis rövidítése');
+		expect(text).toContain('90. percentilis rövidítése');
+	});
+
 	it('should carry no hint dots by design', async () => {
 		const el = await renderPanel(adatok, real());
 		expect(el.querySelectorAll('.info-dot')).toHaveLength(0);

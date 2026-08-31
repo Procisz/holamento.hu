@@ -63,8 +63,6 @@ export default {
 		"esetszamok.total": "Összesen",
 
 		"esetszamok.segPrio": "Prioritás",
-		"esetszamok.loadSegSub":
-			"{prio}: {prioDesc}. A választás csak az alábbi szórásdiagramra hat.",
 		"esetszamok.loadTitle": "Terhelés és kiérkezési idő · {prio}",
 		"esetszamok.loadEmptyTitle": "Terhelés és kiérkezési idő",
 		"esetszamok.loadVidekHint":
@@ -157,8 +155,6 @@ export default {
 		"esetszamok.total": "Total",
 
 		"esetszamok.segPrio": "Priority",
-		"esetszamok.loadSegSub":
-			"{prio}: {prioDesc}. The choice only affects the scatter chart below.",
 		"esetszamok.loadTitle": "Load and response time · {prio}",
 		"esetszamok.loadEmptyTitle": "Load and response time",
 		"esetszamok.loadVidekHint":
@@ -255,8 +251,6 @@ export default {
 		"esetszamok.total": "Insgesamt",
 
 		"esetszamok.segPrio": "Dringlichkeit",
-		"esetszamok.loadSegSub":
-			"{prio}: {prioDesc}. Die Auswahl wirkt nur auf das Streudiagramm unten.",
 		"esetszamok.loadTitle": "Belastung und Ausrückzeit · {prio}",
 		"esetszamok.loadEmptyTitle": "Belastung und Ausrückzeit",
 		"esetszamok.loadVidekHint":
