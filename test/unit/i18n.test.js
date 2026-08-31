@@ -87,6 +87,25 @@ describe('t', () => {
 		expect(t('common.casesUnit', { n: null })).toBe('{n} eset');
 	});
 
+	it('should collapse a period doubled by the substituted value', () => {
+		expect(t('common.casesUnit', { n: '2026. aug. 25.' })).toBe('2026. aug. 25. eset');
+		expect(t('adatok.fresh.latest', { month: '2026. júl.' })).not.toContain('..');
+		expect(t('adatok.fresh.latest', { month: '2026. júl.' })).toContain('2026. júl.');
+	});
+
+	it('should leave a long month name with its own sentence period', () => {
+		const out = t('adatok.fresh.latest', { month: '2026. július' });
+		expect(out).toContain('2026. július.');
+	});
+
+	it('should keep an ellipsis intact', () => {
+		expect(t('common.casesUnit', { n: 'a...' })).toBe('a... eset');
+	});
+
+	it('should not touch a string rendered without variables', () => {
+		expect(t('common.search')).toBe('Keresés…');
+	});
+
 	it('should return the key itself when it is unknown', () => {
 		expect(t('no.such.key')).toBe('no.such.key');
 	});
