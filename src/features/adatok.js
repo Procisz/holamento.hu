@@ -1,16 +1,28 @@
 import { t } from "../app/i18n.js";
 import { icon } from "../ui/icons.js";
 import { socialLinks } from "../ui/links.js";
-import { esc, prioBadge } from "../ui/ui.js";
+import { esc } from "../ui/ui.js";
 import { fmtDate, fmtYmFull } from "../utils/fmt.js";
 
 export const id = "adatok";
 export const iconId = "i-info";
 
 const KNOWN_PRIOS = ["P1", "P2", "P3", "P4"];
+const PRIO_ORDER = ["KP1", "P1", "P2", "P3", "P4", "P5"];
+
+const COUNTIES = {
+	DAR: "Bács-Kiskun, Békés, Csongrád-Csanád",
+	DDR: "Baranya, Somogy, Tolna",
+	ÉAR: "Hajdú-Bihar, Jász-Nagykun-Szolnok, Szabolcs-Szatmár-Bereg",
+	ÉMR: "Borsod-Abaúj-Zemplén, Heves, Nógrád",
+	KDR: "Fejér, Komárom-Esztergom, Veszprém",
+	KMR: "Budapest, Pest",
+	NYDR: "Győr-Moson-Sopron, Vas, Zala",
+};
 
 export function render(model, mount) {
-	const meta = (model?.full ?? model)?.meta ?? {};
+	const full = model?.full ?? model;
+	const meta = full?.meta ?? {};
 	const priorities = (Array.isArray(meta.priorities) && meta.priorities.length
 		? meta.priorities
 		: KNOWN_PRIOS
@@ -22,31 +34,43 @@ export function render(model, mount) {
 	const mailLink = `<a href="mailto:holamento.hu@gmail.com">holamento.hu@gmail.com</a>`;
 	const notWord = `<strong>${esc(t("adatok.about.notWord"))}</strong>`;
 
-	const prioItems =
-		priorities
-			.map((p) => `<li>${prioBadge(p)}<span>${esc(t(`prio.${p}`))}</span></li>`)
-			.join("") || fact("i-info", esc(t("common.noData")));
-
 	const terms = [
-		term(
-			"i-clock",
-			t("adatok.terms.responseName"),
-			t("adatok.terms.responseDesc"),
-			t("adatok.terms.responseNote"),
-		),
-		term("i-scale", t("metric.median"), t("adatok.terms.medianDesc"), t("adatok.terms.medianNote")),
-		term("i-gauge", t("metric.p75"), t("adatok.terms.p75Desc")),
-		term("i-hourglass", t("metric.p90"), t("adatok.terms.p90Desc")),
-		term("i-target", t("adatok.terms.lineName"), t("adatok.terms.lineDesc"), t("adatok.terms.lineNote")),
+		term("i-clock", t("adatok.terms.responseName"), "response"),
+		term("i-scale", t("adatok.terms.avgName"), "avg"),
+		term("i-scale", t("metric.median"), "median"),
+		term("i-gauge", t("adatok.terms.pctName"), "pct"),
+		term("i-gauge", t("metric.p75"), "p75"),
+		term("i-hourglass", t("metric.p90"), "p90"),
+		term("i-target", t("adatok.terms.lineName"), "line"),
 	].join("");
+
+	const prioItems = PRIO_ORDER.filter(
+		(p) => p === "KP1" || p === "P5" || priorities.includes(p),
+	)
+		.map((p) => prioRow(p))
+		.join("");
+
+	const regionRows = (meta.regions ?? [])
+		.filter((r) => COUNTIES[r.code])
+		.map(
+			(r) =>
+				`<li><span class="region-code">${esc(r.code)}</span><div class="def-body">
+          <span class="def-term">${esc(r.name)}</span>
+          <p class="def-note">${esc(COUNTIES[r.code])}</p>
+        </div></li>`,
+		)
+		.join("");
 
 	const limits = [
-		fact("i-x", esc(t("adatok.limits.cases"))),
-		fact("i-x", esc(t("adatok.limits.region"))),
-		fact("i-x", esc(t("adatok.limits.geo"))),
-		fact("i-x", esc(t("adatok.limits.unit"))),
-		fact("i-x", esc(t("adatok.limits.quality"))),
-	].join("");
+		"cases",
+		"region",
+		"geo",
+		"unit",
+		"quality",
+		"split",
+	]
+		.map((k) => fact("i-x", esc(t(`adatok.limits.${k}`))))
+		.join("");
 
 	const fresh = [`<p>${esc(t("adatok.fresh.rhythm"))}</p>`];
 	if (meta.updatedDate) {
@@ -79,7 +103,7 @@ export function render(model, mount) {
 				cat: "ido",
 				iconId: "i-search",
 				title: t("adatok.terms.title"),
-				body: `<ul class="fact-list">${terms}</ul>`,
+				body: `<ul class="fact-list def-list">${terms}</ul>`,
 			})}
       ${card({
 				span: 6,
@@ -88,9 +112,23 @@ export function render(model, mount) {
 				title: t("adatok.prio.title"),
 				body: `
           <p>${esc(t("adatok.prio.intro"))}</p>
-          <ul class="fact-list">${prioItems}</ul>
-          <p class="muted small">${esc(t("adatok.prio.p5"))}</p>`,
+          <ul class="fact-list def-list">${prioItems}</ul>
+          <p class="muted small">${esc(t("adatok.prio.note"))}</p>`,
 			})}
+      ${
+				regionRows
+					? card({
+							span: 12,
+							cat: "regio",
+							iconId: "i-map",
+							title: t("adatok.regions.title"),
+							body: `
+          <p>${esc(t("adatok.regions.intro"))}</p>
+          <ul class="fact-list region-list">${regionRows}</ul>
+          <p class="muted small">${esc(t("adatok.regions.note"))}</p>`,
+						})
+					: ""
+			}
       ${card({
 				span: 6,
 				cat: "adat",
@@ -124,9 +162,23 @@ function fact(iconId, html) {
 	return `<li>${icon(iconId)}<span>${html}</span></li>`;
 }
 
-function term(iconId, name, desc, note = "") {
-	const tail = note ? ` ${esc(note)}` : "";
-	return fact(iconId, `<strong>${esc(name)}</strong>: ${esc(desc)}.${tail}`);
+function term(iconId, name, key) {
+	return `<li>${icon(iconId)}<div class="def-body">
+    <span class="def-term">${esc(name)}</span>
+    <p>${esc(t(`adatok.terms.${key}Desc`))}</p>
+    <p class="def-note">${esc(t(`adatok.terms.${key}Note`))}</p>
+  </div></li>`;
+}
+
+function prioRow(code) {
+	const badgeCode = code === "KP1" ? "kp1" : code.toLowerCase();
+	const label =
+		code === "KP1" ? t("adatok.prio.kp1Label") : `${code} · ${t(`prio.${code}`)}`;
+	return `<li><span class="prio-badge" data-prio="${esc(badgeCode)}">${esc(code)}</span><div class="def-body">
+    <span class="def-term">${esc(label)}</span>
+    <p>${esc(t(`adatok.prio.def${code}`))}</p>
+    <p class="def-note">${esc(t("adatok.prio.exLabel"))}: ${esc(t(`adatok.prio.ex${code}`))}</p>
+  </div></li>`;
 }
 
 function link(href, text) {

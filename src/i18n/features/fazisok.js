@@ -18,6 +18,7 @@ export default {
 		"fazisok.totalFootNoCases": "Átlag · P1 esetek · {area}",
 		"fazisok.totalTip":
 			"A segélyhívás indításától a helyszínre érkezésig eltelt idő.\n{calc}: a négy szakasz átlagideje összeadva.\nAz átlagot a kiugróan hosszú esetek felfelé húzhatják.",
+		"fazisok.totalSourceTip": "A forrás közvetlenül is közöl teljes átlagidőt, az {value}.",
 
 		"fazisok.detailTitle": "A szakaszok ideje részletesen",
 		"fazisok.detailSub":
@@ -41,6 +42,8 @@ export default {
 			"A hívás feldolgozása (az első három szakasz együtt) átlagosan {dispatch}, a riasztás és a helyszínre vonulás {travel}.",
 		"fazisok.factTail":
 			"A hosszú várakozások nagyrészt a vonulásból jönnek: a leglassabb esetekben (P90) a vonulás {travel} volt, a másik három szakasz közül egyik sem volt hosszabb ennél: {other}.",
+		"fazisok.factTotalGap":
+			"A négy szakasz átlagának összege {sum}, a forrás által közvetlenül közölt teljes átlagidő {total}, a kettő eltérése {diff}. Ez nagyobb, mint amennyit a kerekítés okozhat, tehát a négy szakasz nem fedi le hézagmentesen a teljes időt.",
 		"fazisok.factScope":
 			"Ezek az adatok csak a legsúlyosabb (P1) esetekre és csak {area} érhetők el, ráadásul egyetlen hónapra: {month}.",
 		"fazisok.factScopePlain":
@@ -67,6 +70,8 @@ export default {
 		"fazisok.totalFootNoCases": "Average · P1 cases · {area}",
 		"fazisok.totalTip":
 			"The time from the start of the emergency call until arrival at the scene.\n{calc}: the average times of the four phases added together.\nUnusually long cases can pull the average upwards.",
+		"fazisok.totalSourceTip":
+			"The source also publishes a total average time directly, that one is {value}.",
 
 		"fazisok.detailTitle": "Phase times in detail",
 		"fazisok.detailSub":
@@ -91,6 +96,8 @@ export default {
 			"Handling the call (the first three phases together) takes {dispatch} on average, alerting and travelling to the scene {travel}.",
 		"fazisok.factTail":
 			"Long waits come mostly from the journey: in the slowest cases (P90) travelling took {travel}, while none of the other three phases lasted longer than this: {other}.",
+		"fazisok.factTotalGap":
+			"The sum of the four phase averages is {sum}, the total average time published directly by the source is {total}, the difference between the two is {diff}. That is more than rounding alone could cause, so the four phases do not cover the total time without a gap.",
 		"fazisok.factScope":
 			"These figures are available for the most serious (P1) cases only, {area} only, and for a single month at that: {month}.",
 		"fazisok.factScopePlain":
@@ -117,6 +124,8 @@ export default {
 		"fazisok.totalFootNoCases": "Mittelwert · P1-Fälle · {area}",
 		"fazisok.totalTip":
 			"Die Zeit vom Beginn des Notrufs bis zum Eintreffen am Einsatzort.\n{calc}: die Durchschnittsdauern der vier Abschnitte addiert.\nBesonders lange Fälle können den Mittelwert nach oben ziehen.",
+		"fazisok.totalSourceTip":
+			"Die Quelle weist auch direkt eine gesamte Durchschnittszeit aus, diese beträgt {value}.",
 
 		"fazisok.detailTitle": "Die Dauer der Abschnitte im Detail",
 		"fazisok.detailSub":
@@ -141,6 +150,8 @@ export default {
 			"Die Bearbeitung des Notrufs (die ersten drei Abschnitte zusammen) dauert im Durchschnitt {dispatch}, Alarmierung und Anfahrt zum Einsatzort {travel}.",
 		"fazisok.factTail":
 			"Lange Wartezeiten entstehen vor allem durch die Anfahrt: in den langsamsten Fällen (P90) dauerte die Anfahrt {travel}, keiner der anderen drei Abschnitte dauerte länger als das: {other}.",
+		"fazisok.factTotalGap":
+			"Die Summe der vier Abschnittsmittelwerte beträgt {sum}, die von der Quelle direkt ausgewiesene gesamte Durchschnittszeit {total}, die Differenz zwischen beiden {diff}. Das ist mehr, als die Rundung allein verursachen könnte, die vier Abschnitte decken die Gesamtzeit also nicht lückenlos ab.",
 		"fazisok.factScope":
 			"Diese Zahlen gibt es nur für die schwersten Fälle (P1), nur {area} und dazu nur für einen einzigen Monat: {month}.",
 		"fazisok.factScopePlain":

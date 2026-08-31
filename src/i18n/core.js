@@ -92,6 +92,7 @@ export const CORE = {
 		"tab.trendek": "Kiérkezési idők",
 		"tab.fazisok": "A hívás útja",
 		"tab.regiok": "Régiók",
+		"tab.bontas": "Időbontás",
 		"tab.esetszamok": "Esetszámok",
 		"tab.szoras": "Egyenlőtlenségek",
 
@@ -146,6 +147,8 @@ export const CORE = {
 		"prio.P2": "sürgős, súlyos állapot",
 		"prio.P3": "kevésbé sürgős eset",
 		"prio.P4": "nem sürgős eset",
+		"prio.P5": "halasztható eset",
+		"prio.KP1": "a legsúlyosabb eset",
 
 		"band.over90": "az esetek több mint 90 százaléka",
 		"band.b7590": "az esetek 75-90 százaléka",
@@ -269,6 +272,7 @@ export const CORE = {
 		"tab.trendek": "Response times",
 		"tab.fazisok": "The path of a call",
 		"tab.regiok": "Regions",
+		"tab.bontas": "Time split",
 		"tab.esetszamok": "Case numbers",
 		"tab.szoras": "Inequalities",
 
@@ -323,6 +327,8 @@ export const CORE = {
 		"prio.P2": "urgent, serious condition",
 		"prio.P3": "less urgent case",
 		"prio.P4": "non urgent case",
+		"prio.P5": "case that can wait",
+		"prio.KP1": "the most serious case",
 
 		"band.over90": "more than 90 percent of cases",
 		"band.b7590": "75 to 90 percent of cases",
@@ -449,6 +455,7 @@ export const CORE = {
 		"tab.trendek": "Ausrückzeiten",
 		"tab.fazisok": "Der Weg des Notrufs",
 		"tab.regiok": "Regionen",
+		"tab.bontas": "Zeitaufteilung",
 		"tab.esetszamok": "Fallzahlen",
 		"tab.szoras": "Ungleichheiten",
 
@@ -505,6 +512,8 @@ export const CORE = {
 		"prio.P2": "dringender, schwerer Zustand",
 		"prio.P3": "weniger dringender Fall",
 		"prio.P4": "nicht dringender Fall",
+		"prio.P5": "aufschiebbarer Fall",
+		"prio.KP1": "der schwerste Fall",
 
 		"band.over90": "mehr als 90 Prozent der Fälle",
 		"band.b7590": "75 bis 90 Prozent der Fälle",

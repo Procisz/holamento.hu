@@ -381,6 +381,27 @@ table.tbl { width: 100%; border-collapse: collapse; font-size: var(--fs-table); 
 .fact-list { list-style: none; display: grid; gap: 10px; font-size: var(--fs-item); }
 .fact-list li { display: flex; gap: 10px; align-items: flex-start; }
 .fact-list .icon { width: 1.05rem; height: 1.05rem; flex: none; margin-top: 1px; color: var(--c, var(--accent)); }
+.fact-list .prio-badge { flex: none; margin-top: 1px; }
+
+.def-list { gap: var(--space-3); }
+.def-list li { align-items: flex-start; }
+.def-body { display: grid; gap: 2px; min-width: 0; }
+.def-body .def-term { font-weight: 700; }
+.def-body p { margin: 0; }
+.def-note { color: var(--text-muted); font-size: var(--fs-small); }
+
+.region-list { gap: var(--space-2); }
+.region-list .region-code {
+  flex: none;
+  min-width: 3.4rem;
+  padding: 2px 7px;
+  border-radius: var(--r-sm);
+  background: var(--surface-3);
+  border: var(--border-w) solid var(--border);
+  font-size: var(--fs-small);
+  font-weight: 700;
+  text-align: center;
+}
 
 .chip-row {
   display: flex;

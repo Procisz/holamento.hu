@@ -106,7 +106,7 @@ const PALETTE = [
   '--pos', '--neg', '--warn',
   '--cat-ido', '--cat-fazis', '--cat-regio', '--cat-eset',
   '--cat-szoras', '--cat-cel', '--cat-adat',
-  '--prio-p1', '--prio-p2', '--prio-p3', '--prio-p4',
+  '--prio-p1', '--prio-p2', '--prio-p3', '--prio-p4', '--prio-p5', '--prio-kp1',
   '--chart-grid', '--overlay-bg', '--shadow-hue', '--shadow-o1', '--shadow-o2',
 ];
 
@@ -156,8 +156,10 @@ const PAIRS = [
   { fg: '--warn', bg: '--surface', min: 2.5, why: 'figyelmeztetés' },
   ...['ido', 'fazis', 'regio', 'eset', 'szoras', 'cel', 'adat']
     .map((c) => ({ fg: `--cat-${c}`, bg: '--surface', min: 2.5, why: `${c} témakör színe` })),
-  ...['p1', 'p2', 'p3', 'p4']
+  ...['p1', 'p2', 'p3', 'p4', 'p5', 'kp1']
     .map((p) => ({ fg: `--prio-${p}`, bg: '--surface', min: 2.5, why: `${p.toUpperCase()} prioritás színe` })),
+  ...['p1', 'p2-badge', 'p3-badge', 'p4', 'p5-badge', 'kp1']
+    .map((p) => ({ fg: '--on-accent', bg: `--prio-${p}`, min: 4.5, why: `${p.toUpperCase()} jelvény felirata` })),
 ];
 
 const themes = collectThemes();

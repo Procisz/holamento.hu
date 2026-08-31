@@ -48,6 +48,14 @@ export default {
 		"regiok.spreadTip":
 			"A területi egyenlőtlenség mértéke hónapról hónapra.\n{calc}: havonta a leglassabb régió értékéből kivonjuk a leggyorsabbét.\nHa nő, a régiók távolodnak egymástól, ha csökken, közelednek.",
 
+		"regiok.changeTitle": "Régiók elmozdulása · {prio} {metric}",
+		"regiok.changeTitleShort": "Régiók elmozdulása",
+		"regiok.changeSub":
+			"{from} és {to} között · a balra nyúló oszlop javulás, a jobbra nyúló romlás",
+		"regiok.changeSeries": "Változás",
+		"regiok.changeTip":
+			"Mennyit mozdult az egyes régiók értéke az időszak alatt.\n{calc}: régiónként az utolsó elérhető hónap értékéből kivonjuk az elsőét.\nA negatív érték, vagyis a balra nyúló oszlop, rövidülő kiérkezést jelent.\nCsak a két végpont különbsége látszik, a köztes hónapok ingadozása nem.\nRövid lefedett időszaknál ez két pont közti egyenes, nem trend.",
+
 		"regiok.tableTitle": "Régiós összkép · {prio}, {month}",
 		"regiok.tableTitleShort": "Régiós összkép",
 		"regiok.tableSub":
@@ -106,6 +114,14 @@ export default {
 		"regiok.spreadTip":
 			"How unevenly the regions perform from month to month.\n{calc}: each month the value of the fastest region is subtracted from that of the slowest.\nIf it grows, the regions are drifting apart, if it falls, they are moving closer.",
 
+		"regiok.changeTitle": "How much the regions moved · {prio} {metric}",
+		"regiok.changeTitleShort": "How much the regions moved",
+		"regiok.changeSub":
+			"Between {from} and {to} · a bar reaching left is an improvement, one reaching right is a decline",
+		"regiok.changeSeries": "Change",
+		"regiok.changeTip":
+			"How much the value of each region moved over the period.\n{calc}: per region, the value of the first available month subtracted from the last one.\nA negative value, a bar reaching left, means a shorter response time.\nOnly the difference of the two end points shows, the swings in between do not.\nOver a short covered period this is a straight line between two points, not a trend.",
+
 		"regiok.tableTitle": "Regional overview · {prio}, {month}",
 		"regiok.tableTitleShort": "Regional overview",
 		"regiok.tableSub":
@@ -163,6 +179,14 @@ export default {
 		"regiok.spreadSeries": "Unterschied",
 		"regiok.spreadTip":
 			"Wie ungleich die Regionen von Monat zu Monat abschneiden.\n{calc}: pro Monat wird vom Wert der langsamsten Region der Wert der schnellsten abgezogen.\nSteigt er, entfernen sich die Regionen voneinander, sinkt er, nähern sie sich an.",
+
+		"regiok.changeTitle": "Veränderung der Regionen · {prio} {metric}",
+		"regiok.changeTitleShort": "Veränderung der Regionen",
+		"regiok.changeSub":
+			"Zwischen {from} und {to} · ein Balken nach links ist eine Verbesserung, einer nach rechts eine Verschlechterung",
+		"regiok.changeSeries": "Veränderung",
+		"regiok.changeTip":
+			"Wie stark sich der Wert jeder Region im Zeitraum bewegt hat.\n{calc}: je Region wird vom Wert des letzten verfügbaren Monats der des ersten abgezogen.\nEin negativer Wert, also ein Balken nach links, bedeutet eine kürzere Ausrückzeit.\nSichtbar ist nur die Differenz der beiden Endpunkte, nicht die Schwankung dazwischen.\nBei einem kurzen abgedeckten Zeitraum ist das eine Gerade zwischen zwei Punkten, kein Trend.",
 
 		"regiok.tableTitle": "Regionale Übersicht · {prio}, {month}",
 		"regiok.tableTitleShort": "Regionale Übersicht",

@@ -1,6 +1,7 @@
 export default {
 	hu: {
 		"szoras.areaSeg": "Terület",
+		"szoras.metricSeg": "Mutató a Budapest-eltéréshez",
 		"szoras.ratioValue": "{v}x",
 		"szoras.kpiLabel": "{p} · P90/medián",
 		"szoras.kpiFoot": "{p90Label}: {p90}, {medLabel}: {med}",
@@ -13,6 +14,14 @@ export default {
 		"szoras.ratioTip":
 			"Az egyenlőtlenség havi alakulása mind a négy sürgősségi kategóriában.\n{calc}: minden hónapban a P90 értéket elosztjuk a mediánnal.\nMinél magasabb a vonal, annál egyenlőtlenebb az ellátás azon a szinten.",
 		"szoras.ratioEmpty": "P90/medián arány",
+
+		"szoras.gapAreaTitle": "Budapest és az országos érték eltérése · {metric}",
+		"szoras.gapAreaSub":
+			"A nulla fölött Budapesten lassabb, alatta gyorsabb a kiérkezés · {from} - {to}",
+		"szoras.gapAreaZero": "Nincs eltérés",
+		"szoras.gapAreaTip":
+			"A budapesti és az országos kiérkezési idő eltérése hónapról hónapra, mind a négy sürgősségi kategóriában.\n{calc}: a kiválasztott mutató ({metric}) budapesti értéke mínusz az országos értéke.\nA nulla vonal fölött Budapesten lassabb, alatta gyorsabb az ellátás.\nP1-nél a görbe a mutató szerint előjelet válthat: a tipikus eset Budapesten lassabb, a leglassabb tíz százalék viszont gyorsabb.",
+		"szoras.gapAreaEmpty": "Budapest és az országos érték eltérése",
 
 		"szoras.gapLabel": "P90 - medián",
 		"szoras.gapTitle": "A P90 és a medián különbsége · {month}",
@@ -35,10 +44,11 @@ export default {
 		"szoras.tableSub":
 			"{month}: régiós bontás, a segélyhívás indításától mérve",
 		"szoras.tableTip":
-			"Minden régió-prioritás páros kiérkezési ideje az időszak utolsó hónapjában.\n{calc}: a {gap} oszlop mutatja, hány perccel várt többet a leglassabb 10 százalék a tipikus esetnél.",
+			"Minden régió-prioritás páros kiérkezési ideje az időszak utolsó hónapjában.\n{calc}: a {gap} oszlop mutatja, hány perccel várt többet a leglassabb 10 százalék a tipikus esetnél.\nA {ratio} oszlop ugyanezt hányadosként adja meg: a P90 osztva a mediánnal.",
 		"szoras.tableEmpty": "Régiók és prioritások teljes listája",
 		"szoras.colRegion": "Régió",
 		"szoras.colPrio": "Prioritás",
+		"szoras.colRatio": "P90/medián",
 
 		"szoras.regionHint":
 			"A régiós bontás csak a forrás legutóbbi hónapjaira érhető el, a kiválasztott időszak utolsó hónapjához nincs ilyen adat.",
@@ -46,6 +56,7 @@ export default {
 
 	en: {
 		"szoras.areaSeg": "Area",
+		"szoras.metricSeg": "Metric for the Budapest gap",
 		"szoras.ratioValue": "{v}x",
 		"szoras.kpiLabel": "{p} · P90/median",
 		"szoras.kpiFoot": "{p90Label}: {p90}, {medLabel}: {med}",
@@ -58,6 +69,15 @@ export default {
 		"szoras.ratioTip":
 			"How the inequality changed month by month across all four priority categories.\n{calc}: in every month the P90 value is divided by the median.\nThe higher the line, the more uneven the care at that level.",
 		"szoras.ratioEmpty": "P90/median ratio",
+
+		"szoras.gapAreaTitle":
+			"The gap between Budapest and the national value · {metric}",
+		"szoras.gapAreaSub":
+			"Above zero Budapest is the slower one, below zero it is the faster one · {from} - {to}",
+		"szoras.gapAreaZero": "No difference",
+		"szoras.gapAreaTip":
+			"The difference between the Budapest and the national response time, month by month, across all four priority categories.\n{calc}: the Budapest value of the selected metric ({metric}) minus the national value.\nAbove the zero line Budapest is slower, below it Budapest is faster.\nIn P1 the line can change sign depending on the metric: the typical case is slower in Budapest, while the slowest ten percent is faster.",
+		"szoras.gapAreaEmpty": "The gap between Budapest and the national value",
 
 		"szoras.gapLabel": "P90 - median",
 		"szoras.gapTitle": "The gap between P90 and the median · {month}",
@@ -80,10 +100,11 @@ export default {
 		"szoras.tableSub":
 			"{month}: regional breakdown, measured from the start of the emergency call",
 		"szoras.tableTip":
-			"The response times of every region and priority pair in the last month of the period.\n{calc}: the {gap} column shows how many minutes longer the slowest 10 percent waited than the typical case.\nClick a column header to reorder the table.",
+			"The response times of every region and priority pair in the last month of the period.\n{calc}: the {gap} column shows how many minutes longer the slowest 10 percent waited than the typical case.\nThe {ratio} column gives the same as a ratio: P90 divided by the median.\nClick a column header to reorder the table.",
 		"szoras.tableEmpty": "Full list of regions and priorities",
 		"szoras.colRegion": "Region",
 		"szoras.colPrio": "Priority",
+		"szoras.colRatio": "P90/median",
 
 		"szoras.regionHint":
 			"The regional breakdown is only available for the most recent months of the source, and there is no such data for the last month of the selected period.",
@@ -91,6 +112,7 @@ export default {
 
 	de: {
 		"szoras.areaSeg": "Gebiet",
+		"szoras.metricSeg": "Kennzahl für den Budapest-Abstand",
 		"szoras.ratioValue": "{v}x",
 		"szoras.kpiLabel": "{p} · P90/Median",
 		"szoras.kpiFoot": "{p90Label}: {p90}, {medLabel}: {med}",
@@ -103,6 +125,15 @@ export default {
 		"szoras.ratioTip":
 			"Die monatliche Entwicklung der Ungleichheit in allen vier Dringlichkeitsstufen.\n{calc}: in jedem Monat wird der P90-Wert durch den Median geteilt.\nJe höher die Linie, desto ungleicher die Versorgung auf dieser Stufe.",
 		"szoras.ratioEmpty": "Verhältnis P90 zu Median",
+
+		"szoras.gapAreaTitle":
+			"Der Abstand zwischen Budapest und dem Landeswert · {metric}",
+		"szoras.gapAreaSub":
+			"Über null ist Budapest langsamer, darunter schneller · {from} - {to}",
+		"szoras.gapAreaZero": "Kein Unterschied",
+		"szoras.gapAreaTip":
+			"Der Unterschied zwischen der Budapester und der landesweiten Ausrückzeit, Monat für Monat, in allen vier Dringlichkeitsstufen.\n{calc}: der Budapester Wert der gewählten Kennzahl ({metric}) minus der Landeswert.\nÜber der Nulllinie ist Budapest langsamer, darunter schneller.\nBei P1 kann die Linie je nach Kennzahl das Vorzeichen wechseln: der typische Fall ist in Budapest langsamer, das langsamste Zehntel dagegen schneller.",
+		"szoras.gapAreaEmpty": "Der Abstand zwischen Budapest und dem Landeswert",
 
 		"szoras.gapLabel": "P90 - Median",
 		"szoras.gapTitle": "Der Abstand zwischen P90 und Median · {month}",
@@ -125,11 +156,12 @@ export default {
 		"szoras.tableSub":
 			"{month}: regionale Aufschlüsselung, gemessen ab dem Beginn des Notrufs",
 		"szoras.tableTip":
-			"Die Ausrückzeiten jedes Paares aus Region und Dringlichkeitsstufe im letzten Monat des Zeitraums.\n{calc}: die Spalte {gap} zeigt, wie viele Minuten das langsamste Zehntel länger wartete als der typische Fall.\nEin Klick auf eine Spaltenüberschrift sortiert die Tabelle neu.",
+			"Die Ausrückzeiten jedes Paares aus Region und Dringlichkeitsstufe im letzten Monat des Zeitraums.\n{calc}: die Spalte {gap} zeigt, wie viele Minuten das langsamste Zehntel länger wartete als der typische Fall.\nDie Spalte {ratio} zeigt dasselbe als Verhältnis: P90 geteilt durch den Median.\nEin Klick auf eine Spaltenüberschrift sortiert die Tabelle neu.",
 		"szoras.tableEmpty":
 			"Vollständige Liste der Regionen und Dringlichkeitsstufen",
 		"szoras.colRegion": "Region",
 		"szoras.colPrio": "Dringlichkeit",
+		"szoras.colRatio": "P90/Median",
 
 		"szoras.regionHint":
 			"Die regionale Aufschlüsselung liegt nur für die jüngsten Monate der Quelle vor, für den letzten Monat des gewählten Zeitraums gibt es keine solchen Daten.",

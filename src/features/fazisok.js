@@ -1,7 +1,7 @@
 import * as derive from "../data/derive.js";
 import { cssToken, makeChart, minTooltip, roundOrNull } from "../ui/charts.js";
 import { catColor, paletteColor, prioColor } from "../ui/categories.js";
-import { fmtCases, fmtMin, fmtMinShort, fmtNum, fmtPct, fmtYm } from "../utils/fmt.js";
+import { fmtCases, fmtMin, fmtMin2, fmtMinShort, fmtNum, fmtPct, fmtSignedMin, fmtSignedMin2, fmtYm } from "../utils/fmt.js";
 import { chartCard, emptyState, esc, statCard, tipDot } from "../ui/ui.js";
 import { icon } from "../ui/icons.js";
 import { PHASE_ORDER } from "../data/model.js";
@@ -9,6 +9,8 @@ import { t } from "../app/i18n.js";
 
 export const id = "fazisok";
 export const iconId = "i-phone";
+
+const ROUNDING_LIMIT = 0.0255;
 
 const PHASE_ICONS = {
 	esr_cad: "i-phone",
@@ -69,7 +71,7 @@ export function render(model, mount) {
 						? t("fazisok.totalFoot", { cases: fmtCases(ph.esetszam), area })
 						: t("fazisok.totalFootNoCases", { area }),
 				),
-				tip: t("fazisok.totalTip", { calc }),
+				tip: totalTip(ph, calc),
 			})}
 		</div>
 		<div class="grid12">
@@ -133,6 +135,14 @@ export function render(model, mount) {
 	}
 }
 
+function totalTip(ph, calc) {
+	const lines = [t("fazisok.totalTip", { calc })];
+	if (ph.total != null) {
+		lines.push(t("fazisok.totalSourceTip", { value: fmtMin(ph.total) }));
+	}
+	return lines.join("\n");
+}
+
 function unavailableCard(model) {
 	const source = model.full ?? model;
 	const sourceMonth = source.phases?.month ?? null;
@@ -193,6 +203,18 @@ function explainerFacts(ph, monthLabel) {
 			html: t("fazisok.factSplit", {
 				dispatch: strong(fmtMin(ph.dispatchAtlag)),
 				travel: strong(fmtMin(ph.travelAtlag)),
+			}),
+		});
+	}
+	const totalGap =
+		ph?.sumAtlag != null && ph?.total != null ? ph.sumAtlag - ph.total : null;
+	if (totalGap != null && Math.abs(totalGap) > ROUNDING_LIMIT) {
+		facts.push({
+			icon: "i-warn",
+			html: t("fazisok.factTotalGap", {
+				sum: strong(fmtMin2(ph.sumAtlag)),
+				total: strong(fmtMin2(ph.total)),
+				diff: strong(fmtSignedMin2(totalGap)),
 			}),
 		});
 	}

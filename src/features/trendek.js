@@ -19,6 +19,7 @@ export const iconId = "i-clock";
 
 const AREA_KEY = "holamento-trendek-area";
 const METRIC_KEY = "holamento-trendek-metric";
+const PRIO_KEY = "holamento-trendek-prio";
 const AREA_IDS = ["Országos", "Budapest"];
 const BAND_RANK = { over90: 4, b7590: 3, b5075: 2, under50: 1 };
 
@@ -30,6 +31,8 @@ export function render(model, mount) {
 	}));
 	const area = loadSeg(AREA_KEY, areaOpts, "Országos");
 	const metric = loadSeg(METRIC_KEY, metricOpts, "median");
+	const prioOpts = model.meta.priorities.map((p) => ({ id: p, label: p }));
+	const spreadPrio = loadSeg(PRIO_KEY, prioOpts, "P1");
 	const metricLabel = t(`metric.${metric}`);
 	const metricDesc = t(`metricDesc.${metric}`);
 	const areaLabel = t(`area.${area}`);
@@ -69,6 +72,22 @@ export function render(model, mount) {
 			});
 		}
 	}
+
+	const spreadSeries = derive.METRIC_IDS.map((m) => ({
+		id: m,
+		name: t(`metric.${m}`),
+		data: (long[m]?.[spreadPrio] ?? []).map(roundOrNull),
+	}));
+	const hasSpread =
+		months.length > 0 && spreadSeries.some((sr) => sr.data.some((v) => v != null));
+
+	const areaCmp = derive.areaCompare(model, spreadPrio, metric);
+	const areaMonths = areaCmp.months ?? [];
+	const areaNat = (areaCmp.orszagos ?? []).map(roundOrNull);
+	const areaBp = (areaCmp.budapest ?? []).map(roundOrNull);
+	const hasArea =
+		areaMonths.length > 0 &&
+		(areaNat.some((v) => v != null) || areaBp.some((v) => v != null));
 
 	const bands = months.length ? derive.band15Series(model, area, "P1") : [];
 	const bandByYm = new Map(bands.map((b) => [b.ym, b.band]));
@@ -121,6 +140,7 @@ export function render(model, mount) {
 	mount.innerHTML = `
     ${segHtml(AREA_KEY, areaOpts, area, { label: t("trendek.segArea") })}
     ${segHtml(METRIC_KEY, metricOpts, metric, { label: t("trendek.segMetric") })}
+    ${segHtml(PRIO_KEY, prioOpts, spreadPrio, { label: t("trendek.segPrio") })}
     ${kpiCards ? `<div class="kpi-row">${kpiCards}</div>` : ""}
     <div class="grid12">
       ${
@@ -146,6 +166,59 @@ export function render(model, mount) {
 							span: 12,
 							iconId: "i-clock",
 							title: t("trendek.mainEmptyTitle"),
+						})
+			}
+      ${
+				hasSpread
+					? chartCard({
+							span: 12,
+							cat: "ido",
+							iconId: "i-gauge",
+							title: esc(t("trendek.spreadTitle", { prio: spreadPrio })),
+							sub: esc(
+								t("trendek.spreadSub", {
+									prio: spreadPrio,
+									from,
+									to,
+									area: areaLabel,
+								}),
+							),
+							id: "ch-tre-spread",
+							tip: t("trendek.spreadTip", { calc }),
+						})
+					: emptyState({
+							span: 12,
+							iconId: "i-gauge",
+							title: t("trendek.spreadEmptyTitle"),
+						})
+			}
+      ${
+				hasArea
+					? chartCard({
+							span: 12,
+							cat: "ido",
+							iconId: "i-map",
+							title: esc(
+								t("trendek.areaTitle", {
+									prio: spreadPrio,
+									metric: metricLabel,
+								}),
+							),
+							sub: esc(
+								t("trendek.areaSub", {
+									prio: spreadPrio,
+									metric: metricLabel,
+									from,
+									to,
+								}),
+							),
+							id: "ch-tre-area",
+							tip: t("trendek.areaTip", { calc }),
+						})
+					: emptyState({
+							span: 12,
+							iconId: "i-map",
+							title: t("trendek.areaEmptyTitle"),
 						})
 			}
       ${
@@ -302,6 +375,73 @@ export function render(model, mount) {
 		});
 	}
 
+	if (hasSpread) {
+		makeChart(mount.querySelector("#ch-tre-spread"), {
+			chart: { type: "line", height: 340 },
+			series: spreadSeries.map((sr) => ({ name: sr.name, data: sr.data })),
+			colors: [catColor("cel"), catColor("adat"), catColor("ido")],
+			stroke: { width: 2.5, curve: "smooth", dashArray: [0, 4, 8] },
+			labels: months.map(fmtYm),
+			xaxis: { tickAmount: 10 },
+			yaxis: { ...minAxis, min: 0 },
+			annotations: {
+				yaxis: [
+					{
+						y: 15,
+						borderColor: cssToken("--text-faint"),
+						strokeDashArray: 5,
+						label: {
+							text: t("trendek.limit15"),
+							position: "left",
+							offsetX: 40,
+							style: {
+								color: cssToken("--text-muted"),
+								background: "transparent",
+							},
+						},
+					},
+				],
+			},
+			tooltip: minTooltip,
+			legend: { position: "top" },
+		});
+	}
+
+	if (hasArea) {
+		makeChart(mount.querySelector("#ch-tre-area"), {
+			chart: { type: "line", height: 340 },
+			series: [
+				{ name: t("area.Országos"), data: areaNat },
+				{ name: t("area.Budapest"), data: areaBp },
+			],
+			colors: [catColor("ido"), catColor("regio")],
+			stroke: { width: 2.5, curve: "smooth" },
+			labels: areaMonths.map(fmtYm),
+			xaxis: { tickAmount: 10 },
+			yaxis: { ...minAxis, min: 0 },
+			annotations: {
+				yaxis: [
+					{
+						y: 15,
+						borderColor: cssToken("--text-faint"),
+						strokeDashArray: 5,
+						label: {
+							text: t("trendek.limit15"),
+							position: "left",
+							offsetX: 40,
+							style: {
+								color: cssToken("--text-muted"),
+								background: "transparent",
+							},
+						},
+					},
+				],
+			},
+			tooltip: minTooltip,
+			legend: { position: "top" },
+		});
+	}
+
 	if (yoyRows.length) {
 		makeChart(mount.querySelector("#ch-tre-yoy"), {
 			chart: { type: "bar", height: 300 },
@@ -320,6 +460,7 @@ export function render(model, mount) {
 
 	wireSeg(mount, AREA_KEY, () => render(model, mount));
 	wireSeg(mount, METRIC_KEY, () => render(model, mount));
+	wireSeg(mount, PRIO_KEY, () => render(model, mount));
 }
 
 

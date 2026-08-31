@@ -61,6 +61,34 @@ export default {
 		"esetszamok.colMix": "Megoszlás",
 		"esetszamok.colDelta": "Változás",
 		"esetszamok.total": "Összesen",
+
+		"esetszamok.segPrio": "Prioritás",
+		"esetszamok.loadSegSub":
+			"{prio}: {prioDesc}. A választás csak az alábbi szórásdiagramra hat.",
+		"esetszamok.loadTitle": "Terhelés és kiérkezési idő · {prio}",
+		"esetszamok.loadEmptyTitle": "Terhelés és kiérkezési idő",
+		"esetszamok.loadVidekHint":
+			"A vidéki kiérkezési idő nem számolható ki: a percentilisek nem vonhatók ki egymásból, ezért csak országos és budapesti idő létezik. A vidéki esetszám viszont igen, azt a fenti kártyák mutatják.",
+		"esetszamok.loadSub":
+			"Egy pont egy hónap: vízszintesen a havi összes eset, függőlegesen a {metric} kiérkezési idő · {area}",
+		"esetszamok.loadXTitle": "Havi összes eset, minden prioritás együtt",
+		"esetszamok.loadSeries": "{prio} kiérkezési idő",
+		"esetszamok.loadTooltipX": "{month} · {cases}",
+		"esetszamok.loadTip":
+			"Minden pont egy hónap: az adott hónap összes esete, minden prioritással együtt, és ugyanannak a hónapnak a {metric} kiérkezési ideje.",
+		"esetszamok.loadCalc":
+			"a havi összes eset és a {prio} {metric} kiérkezési idő hónaponként párba állítva.",
+		"esetszamok.loadNote":
+			"Ha a pontok jobbra felfelé rendeződnek, a nagyobb terhelés hosszabb kiérkezéssel jár együtt.",
+
+		"esetszamok.corrTitle": "Együttmozgás a terheléssel",
+		"esetszamok.corrSub": "Pearson-együttható {n} hónapból · {area}",
+		"esetszamok.corrTip":
+			"Az együttható azt méri, mennyire mozog együtt a havi összes esetszám és az adott prioritás kiérkezési ideje.",
+		"esetszamok.corrTipScale":
+			"Az 1-hez közeli érték együtt mozgást jelent, a nulla körüli azt, hogy egyenes irányú együttmozgás nincs köztük, a negatív pedig ellentétes irányt.",
+		"esetszamok.corrTipWarn":
+			"{n} hónap kevés az erős állításhoz: ez jelzés, nem bizonyíték, és az okot nem mutatja meg.",
 	},
 
 	en: {
@@ -127,6 +155,34 @@ export default {
 		"esetszamok.colMix": "Share",
 		"esetszamok.colDelta": "Change",
 		"esetszamok.total": "Total",
+
+		"esetszamok.segPrio": "Priority",
+		"esetszamok.loadSegSub":
+			"{prio}: {prioDesc}. The choice only affects the scatter chart below.",
+		"esetszamok.loadTitle": "Load and response time · {prio}",
+		"esetszamok.loadEmptyTitle": "Load and response time",
+		"esetszamok.loadVidekHint":
+			"Response times outside Budapest cannot be worked out: percentiles cannot be subtracted from one another, so only nationwide and Budapest times exist. Case numbers outside Budapest can be, and the cards above show them.",
+		"esetszamok.loadSub":
+			"One dot is one month: the total cases of the month across, the {metric} response time up · {area}",
+		"esetszamok.loadXTitle": "Monthly total cases, all priorities together",
+		"esetszamok.loadSeries": "{prio} response time",
+		"esetszamok.loadTooltipX": "{month} · {cases}",
+		"esetszamok.loadTip":
+			"Every dot is one month: the total cases of that month across all priorities, and the {metric} response time of the same month.",
+		"esetszamok.loadCalc":
+			"the monthly total paired with the {prio} {metric} response time, month by month.",
+		"esetszamok.loadNote":
+			"If the dots line up towards the upper right, a heavier load goes together with longer response times.",
+
+		"esetszamok.corrTitle": "Movement together with the load",
+		"esetszamok.corrSub": "Pearson coefficient from {n} months · {area}",
+		"esetszamok.corrTip":
+			"The coefficient measures how closely the monthly total case numbers and the response time of the given priority move together.",
+		"esetszamok.corrTipScale":
+			"A value near 1 means they move together, a value around zero means there is no straight line movement together, a negative one means opposite directions.",
+		"esetszamok.corrTipWarn":
+			"{n} months is too few for a strong claim: this is a signal, not proof, and it says nothing about the cause.",
 	},
 
 	de: {
@@ -197,5 +253,33 @@ export default {
 		"esetszamok.colMix": "Anteil",
 		"esetszamok.colDelta": "Veränderung",
 		"esetszamok.total": "Insgesamt",
+
+		"esetszamok.segPrio": "Dringlichkeit",
+		"esetszamok.loadSegSub":
+			"{prio}: {prioDesc}. Die Auswahl wirkt nur auf das Streudiagramm unten.",
+		"esetszamok.loadTitle": "Belastung und Ausrückzeit · {prio}",
+		"esetszamok.loadEmptyTitle": "Belastung und Ausrückzeit",
+		"esetszamok.loadVidekHint":
+			"Die Ausrückzeit außerhalb von Budapest lässt sich nicht berechnen: Perzentile können nicht voneinander abgezogen werden, daher gibt es nur landesweite und Budapester Zeiten. Die Fallzahl außerhalb von Budapest dagegen schon, sie steht in den Karten oben.",
+		"esetszamok.loadSub":
+			"Ein Punkt ist ein Monat: waagerecht die gesamte Fallzahl des Monats, senkrecht die Ausrückzeit ({metric}) · {area}",
+		"esetszamok.loadXTitle": "Fallzahl pro Monat, alle Stufen zusammen",
+		"esetszamok.loadSeries": "Ausrückzeit {prio}",
+		"esetszamok.loadTooltipX": "{month} · {cases}",
+		"esetszamok.loadTip":
+			"Jeder Punkt ist ein Monat: die gesamte Fallzahl dieses Monats über alle Stufen und die Ausrückzeit ({metric}) desselben Monats.",
+		"esetszamok.loadCalc":
+			"die Monatssumme und die Ausrückzeit {prio} ({metric}), Monat für Monat einander zugeordnet.",
+		"esetszamok.loadNote":
+			"Ordnen sich die Punkte nach rechts oben, geht eine höhere Belastung mit längerer Ausrückzeit einher.",
+
+		"esetszamok.corrTitle": "Gleichlauf mit der Belastung",
+		"esetszamok.corrSub": "Pearson-Koeffizient aus {n} Monaten · {area}",
+		"esetszamok.corrTip":
+			"Der Koeffizient misst, wie stark die monatliche Gesamtfallzahl und die Ausrückzeit der jeweiligen Stufe gemeinsam schwanken.",
+		"esetszamok.corrTipScale":
+			"Ein Wert nahe 1 bedeutet Gleichlauf, ein Wert um null, dass kein geradliniger Gleichlauf besteht, ein negativer Wert eine gegenläufige Richtung.",
+		"esetszamok.corrTipWarn":
+			"{n} Monate sind zu wenig für eine starke Aussage: das ist ein Hinweis, kein Beweis, und über die Ursache sagt es nichts.",
 	},
 };

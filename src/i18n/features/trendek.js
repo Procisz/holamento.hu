@@ -1,5 +1,19 @@
 export default {
 	hu: {
+		"trendek.segPrio": "Prioritás",
+		"trendek.spreadTitle": "A három mutató együtt · {prio}",
+		"trendek.spreadSub":
+			"{prio}: medián, P75 és P90 havonta, {from} és {to} között · {area}",
+		"trendek.spreadTip":
+			"A fenti diagram egy mutatót mutat mind a négy prioritásra, ez a diagram fordítva: egy prioritást mind a három mutatóra.\n{calc}: a görbék közötti rés a tipikus és a leglassabb esetek távolságát mutatja.\nMinél szélesebb a rés, annál nagyobb a különbség a hívások között.",
+		"trendek.spreadEmptyTitle": "Nincs adat a három mutatóhoz",
+
+		"trendek.areaTitle": "Országos és budapesti érték: {prio} · {metric}",
+		"trendek.areaSub":
+			"{prio} {metric} havonta, {from} és {to} között, a két terület egymás mellett",
+		"trendek.areaTip":
+			"Mindkét vonal közölt érték, nem számított különbség, ezért közvetlenül összevethető.\nA budapesti szám benne van az országosban, a vidéki idő nem hozható ki a kettő különbségéből.\n{calc}: a két terület azonos havi értékei egy diagramon.\nA lényeg a két görbe távolsága és annak alakulása.",
+		"trendek.areaEmptyTitle": "Országos és budapesti érték",
 		"trendek.segArea": "Terület",
 		"trendek.segMetric": "Mutató",
 
@@ -46,6 +60,20 @@ export default {
 	},
 
 	en: {
+		"trendek.segPrio": "Priority",
+		"trendek.spreadTitle": "The three metrics together · {prio}",
+		"trendek.spreadSub":
+			"{prio}: median, P75 and P90 by month, between {from} and {to} · {area}",
+		"trendek.spreadTip":
+			"The chart above shows one metric for all four priorities, this one is the other way round: one priority across all three metrics.\n{calc}: the gap between the curves shows the distance between the typical and the slowest cases.\nThe wider the gap, the larger the difference between calls.",
+		"trendek.spreadEmptyTitle": "No data for the three metrics",
+
+		"trendek.areaTitle": "Nationwide and Budapest: {prio} · {metric}",
+		"trendek.areaSub":
+			"{prio} {metric} by month, from {from} to {to}, the two areas side by side",
+		"trendek.areaTip":
+			"Both lines are published values, not a computed difference, so they can be compared directly.\nThe Budapest figure is part of the nationwide one, and the time outside Budapest cannot be derived from the gap.\n{calc}: the monthly values of the two areas on one chart.\nWhat matters is the distance between the two curves and how it moves.",
+		"trendek.areaEmptyTitle": "Nationwide and Budapest values",
 		"trendek.segArea": "Area",
 		"trendek.segMetric": "Measure",
 
@@ -92,6 +120,20 @@ export default {
 	},
 
 	de: {
+		"trendek.segPrio": "Dringlichkeitsstufe",
+		"trendek.spreadTitle": "Die drei Kennzahlen zusammen · {prio}",
+		"trendek.spreadSub":
+			"{prio}: Median, P75 und P90 je Monat, zwischen {from} und {to} · {area}",
+		"trendek.spreadTip":
+			"Das Diagramm darüber zeigt eine Kennzahl für alle vier Stufen, dieses umgekehrt: eine Stufe über alle drei Kennzahlen.\n{calc}: der Abstand zwischen den Kurven zeigt die Distanz zwischen den typischen und den langsamsten Fällen.\nJe breiter der Abstand, desto größer der Unterschied zwischen den Anrufen.",
+		"trendek.spreadEmptyTitle": "Keine Daten für die drei Kennzahlen",
+
+		"trendek.areaTitle": "Landesweit und Budapest: {prio} · {metric}",
+		"trendek.areaSub":
+			"{prio} {metric} je Monat, von {from} bis {to}, beide Gebiete nebeneinander",
+		"trendek.areaTip":
+			"Beide Linien sind veröffentlichte Werte, keine berechnete Differenz, daher direkt vergleichbar.\nDer Budapester Wert steckt im landesweiten Wert, die Zeit außerhalb von Budapest lässt sich aus dem Abstand nicht ableiten.\n{calc}: die monatlichen Werte beider Gebiete in einem Diagramm.\nEntscheidend ist der Abstand der beiden Kurven und seine Entwicklung.",
+		"trendek.areaEmptyTitle": "Landesweiter Wert und Budapest",
 		"trendek.segArea": "Gebiet",
 		"trendek.segMetric": "Kennzahl",
 
