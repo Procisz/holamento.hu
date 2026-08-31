@@ -28,37 +28,40 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Temak ellenorzese
+      - name: Tests and coverage
+        run: npm run test:coverage
+
+      - name: Colour scheme check
         run: npm run check:themes
 
-      - name: Nyelvek es forraskod ellenorzese
+      - name: Dictionary and source check
         run: npm run check:i18n
 
-      - name: Kimenet ellenorzese
+      - name: Build output check
         run: |
-          test -f dist/index.html || { echo "dist/index.html hianyzik"; exit 1; }
-          test -f dist/data.json || { echo "dist/data.json hianyzik"; exit 1; }
-          test -f dist/CNAME || { echo "dist/CNAME hianyzik"; exit 1; }
-          test -f dist/robots.txt || { echo "dist/robots.txt hianyzik"; exit 1; }
-          test -f dist/sitemap.xml || { echo "dist/sitemap.xml hianyzik"; exit 1; }
-          test -f dist/og-image.png || { echo "dist/og-image.png hianyzik"; exit 1; }
-          grep -q "og:image" dist/index.html || { echo "az og:image cimke hianyzik"; exit 1; }
+          test -f dist/index.html || { echo "dist/index.html is missing"; exit 1; }
+          test -f dist/data.json || { echo "dist/data.json is missing"; exit 1; }
+          test -f dist/CNAME || { echo "dist/CNAME is missing"; exit 1; }
+          test -f dist/robots.txt || { echo "dist/robots.txt is missing"; exit 1; }
+          test -f dist/sitemap.xml || { echo "dist/sitemap.xml is missing"; exit 1; }
+          test -f dist/og-image.png || { echo "dist/og-image.png is missing"; exit 1; }
+          grep -q "og:image" dist/index.html || { echo "the og:image tag is missing"; exit 1; }
           APP_JS=$(ls dist/assets/index-*.js 2>/dev/null | head -1)
           CHARTS=$(ls dist/assets/apexcharts*.js 2>/dev/null | head -1)
-          test -n "$APP_JS" || { echo "az alkalmazas JS csomagja hianyzik"; exit 1; }
-          test -n "$CHARTS" || { echo "a diagramkonyvtar kulon csomagja hianyzik"; exit 1; }
-          ls dist/assets/*.css >/dev/null 2>&1 && { echo "kulon CSS fajl maradt, a beagyazas nem futott le"; exit 1; }
-          grep -q "<style>" dist/index.html || { echo "a CSS nem kerult be az index.html-be"; exit 1; }
+          test -n "$APP_JS" || { echo "the application JS bundle is missing"; exit 1; }
+          test -n "$CHARTS" || { echo "the chart library chunk is missing"; exit 1; }
+          ls dist/assets/*.css >/dev/null 2>&1 && { echo "a separate CSS file remains, inlining did not run"; exit 1; }
+          grep -q "<style>" dist/index.html || { echo "the CSS was not inlined into index.html"; exit 1; }
           HTML_SIZE=$(wc -c < dist/index.html)
           APP_SIZE=$(wc -c < "$APP_JS")
-          echo "index.html: ${HTML_SIZE} byte | app JS: ${APP_SIZE} byte | diagramok: $(wc -c < "$CHARTS") byte"
+          echo "index.html: ${HTML_SIZE} bytes | app JS: ${APP_SIZE} bytes | charts: $(wc -c < "$CHARTS") bytes"
           if [ "$APP_SIZE" -lt 100000 ]; then
-            echo "Az alkalmazas csomagja gyanusan kicsi, valami kimaradt"
+            echo "The application bundle is suspiciously small, something is missing"
             exit 1
           fi
           if [ "$HTML_SIZE" -lt 20000 ] || [ "$HTML_SIZE" -gt 120000 ]; then
-            echo "Az index.html merete gyanus: ${HTML_SIZE} byte"
+            echo "The index.html size looks wrong: ${HTML_SIZE} bytes"
             exit 1
           fi
-          grep -q "width<=[0-9]" dist/index.html && { echo "range szintaxisu media query kerult a kimenetbe"; exit 1; }
+          grep -q "width<=[0-9]" dist/index.html && { echo "a range syntax media query reached the output"; exit 1; }
           exit 0

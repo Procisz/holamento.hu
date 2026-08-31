@@ -2,13 +2,16 @@ export default {
 	hu: {
 		"adatok.about.title": "Mi ez az oldal?",
 		"adatok.about.intro":
-			"Az oldal célja, hogy átfogó statisztikai adatokat mutasson az OMSZ mentőinek kiérkezési idejéről.",
-		"adatok.about.independent": "Az oldal {not} tartozik az Országos Mentőszolgálathoz, az üzemeltetést nem ők végzik.",
+			"Az oldal célja, hogy átfogó statisztikai adatokat mutasson az OMSZ mentőinek kiérkezési idejéről, a beérkező hívásokról, esetszámokról, régiós jellemzőkről.",
+		"adatok.about.independent":
+			"Az oldal {not} tartozik az Országos Mentőszolgálathoz, az üzemeltetést nem ők végzik.",
 		"adatok.about.notWord": "nem",
 		"adatok.about.source":
-			"Az oldalon megjelenő statisztikák és számok ugyanabból a publikus adatforrásból származnak, amely az OMSZ hivatalos oldalán is megtalálható: {link}. A holamento.hu nem „jobb”, és nem akar konkurálni az OMSZ-szel, csupán kiegészíti azt. Amennyiben a jövőben az OMSZ is ilyen részletességgel fogja feltárni az összefüggéseket, úgy a holamento.hu-ra már nem is lesz szükség.",
-		"adatok.about.contact": "A projekt ingyenes és nyilvános, a forráskód mindenki számára elérhető: {code}. Mint mindenhol, úgy itt is előfordulhatnak hibák. Amennyiben szerinted valami nem az elvárt módon működik, vagy kérdésed van, írj ide: {mail}.",
-		"adatok.about.code": "Fejlesztő vagy? Nyiss feature- vagy hibajegyet, járulj hozzá a projekt sikeréhez: {link}.",
+			"Az oldalon megjelenő statisztikák és számok ugyanabból az adatforrásból származnak, amely az OMSZ hivatalos oldalán is megtalálható: {link}. A holamento.hu nem „jobb”, és nem akar konkurálni az OMSZ-szel, csupán kiegészíti azt. Amennyiben a jövőben az OMSZ is ilyen részletességgel fogja feltárni az összefüggéseket, úgy a holamento.hu-ra már nem is lesz szükség.",
+		"adatok.about.contact":
+			"A projekt ingyenes és nyilvános, a forráskód mindenki számára elérhető: {code}. Mint mindenhol, úgy itt is előfordulhatnak hibák. Amennyiben szerinted valami nem az elvárt módon működik, vagy kérdésed van, írj ide: {mail}.",
+		"adatok.about.code":
+			"Fejlesztő vagy? Nyiss feature- vagy hibajegyet, járulj hozzá a projekt sikeréhez: {link}.",
 
 		"adatok.terms.title": "Mit jelentenek a számok?",
 		"adatok.terms.responseName": "Kiérkezési idő",
@@ -39,7 +42,8 @@ export default {
 			"A maradék tíz eset ennél is tovább várt. Ez a szám a nehéz eseteket mutatja, nem a tipikusat.",
 		"adatok.terms.lineName": "15 perces vonal",
 		"adatok.terms.lineDesc": "a diagramokon látható szaggatott vonal",
-		"adatok.terms.lineNote": "Nem előírás, csak könnyebb hozzá mérni a számokat.",
+		"adatok.terms.lineNote":
+			"Nem előírás, csak könnyebb hozzá mérni a számokat.",
 
 		"adatok.prio.title": "Mennyire sürgős az eset?",
 		"adatok.prio.intro":
@@ -97,13 +101,16 @@ export default {
 	en: {
 		"adatok.about.title": "What is this site?",
 		"adatok.about.intro":
-			"The purpose of this site is to show comprehensive statistics on the response times of the Hungarian National Ambulance Service.",
-		"adatok.about.independent": "This site is {not} part of the National Ambulance Service, and it is not run by them.",
+			"The purpose of this site is to show comprehensive statistics on the response times of the Hungarian National Ambulance Service, on the incoming calls, the case numbers and the regional patterns.",
+		"adatok.about.independent":
+			"This site is {not} part of the National Ambulance Service, and it is not run by them.",
 		"adatok.about.notWord": "not",
 		"adatok.about.source":
 			"The statistics and figures shown here come from the same public data source that is also used on the official site of the National Ambulance Service: {link}. This site is not “better” and does not want to compete with the ambulance service, it only complements it. If the service itself starts laying out these connections in the same detail, holamento.hu will no longer be needed.",
-		"adatok.about.contact": "The project is free and public, the source code is available to everyone: {code}. As anywhere else, mistakes can happen here too. If you think something does not work the way it should, or you have a question, write to us here: {mail}.",
-		"adatok.about.code": "Are you a developer? Open a feature request or a bug report, and help the project along: {link}.",
+		"adatok.about.contact":
+			"The project is free and public, the source code is available to everyone: {code}. As anywhere else, mistakes can happen here too. If you think something does not work the way it should, or you have a question, write to us here: {mail}.",
+		"adatok.about.code":
+			"Are you a developer? Open a feature request or a bug report, and help the project along: {link}.",
 
 		"adatok.terms.title": "What do the numbers mean?",
 		"adatok.terms.responseName": "Response time",
@@ -127,14 +134,16 @@ export default {
 			"The median is itself a percentile, the 50th, because it covers half of the cases. The higher the percentile, the more it is about the long waits.",
 		"adatok.terms.p75Desc":
 			"the time within which the ambulance arrived in seventy five cases out of a hundred",
-		"adatok.terms.p75Note": "In the remaining twenty five cases it took longer.",
+		"adatok.terms.p75Note":
+			"In the remaining twenty five cases it took longer.",
 		"adatok.terms.p90Desc":
 			"the time within which the ambulance arrived in ninety cases out of a hundred",
 		"adatok.terms.p90Note":
 			"The remaining ten cases waited even longer. This number shows the hard cases, not the typical one.",
 		"adatok.terms.lineName": "15 minute line",
 		"adatok.terms.lineDesc": "the dashed line on the charts",
-		"adatok.terms.lineNote": "It is not a rule, it just makes the numbers easier to measure against.",
+		"adatok.terms.lineNote":
+			"It is not a rule, it just makes the numbers easier to measure against.",
 
 		"adatok.prio.title": "How urgent is the case?",
 		"adatok.prio.intro":
@@ -183,7 +192,8 @@ export default {
 			"The number of cases is only given for the whole country and for Budapest, not region by region.",
 		"adatok.limits.geo":
 			"You cannot tell which time of day or which town had the longer waits.",
-		"adatok.limits.unit": "It also does not show what kind of ambulance was sent out.",
+		"adatok.limits.unit":
+			"It also does not show what kind of ambulance was sent out.",
 		"adatok.limits.quality":
 			"The response time says nothing about the care the patient was given.",
 		"adatok.limits.split":
@@ -192,7 +202,7 @@ export default {
 	de: {
 		"adatok.about.title": "Was ist diese Seite?",
 		"adatok.about.intro":
-			"Diese Seite hat das Ziel, umfassende Statistiken zu den Ausrückzeiten des ungarischen Landesrettungsdienstes zu zeigen.",
+			"Diese Seite hat das Ziel, umfassende Statistiken zu den Ausrückzeiten des ungarischen Landesrettungsdienstes, zu den eingehenden Notrufen, den Fallzahlen und den regionalen Mustern zu zeigen.",
 		"adatok.about.independent":
 			"Diese Seite gehört {not} zum Landesrettungsdienst, und sie wird auch nicht von ihm betrieben.",
 		"adatok.about.notWord": "nicht",

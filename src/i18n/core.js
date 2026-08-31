@@ -3,7 +3,7 @@ export const CORE = {
 		"app.brand": "Hol a mentő?",
 		"app.title": "Hol a mentő? · mentő kiérkezési idők",
 		"app.description":
-			"Független dashboard a magyarországi mentő kiérkezési időkről, az Országos Mentőszolgálat nyilvános statisztikái alapján.",
+			"Független dashboard a magyarországi mentő kiérkezési időkről, az Országos Mentőszolgálat statisztikái alapján.",
 		"app.version": "App verzió: {v}",
 
 		"social.linkedin": "LinkedIn",
@@ -88,7 +88,7 @@ export const CORE = {
 		"range.allShort": "Összes adat",
 
 		"tab.attekintes": "Áttekintés",
-		"tab.adatok": "Az adatokról",
+		"tab.adatok": "Infók",
 		"tab.trendek": "Kiérkezési idők",
 		"tab.fazisok": "A hívás útja",
 		"tab.regiok": "Régiók",
@@ -182,7 +182,7 @@ export const CORE = {
 		"app.brand": "Hol a mentő?",
 		"app.title": "Hol a mentő? · Hungarian ambulance response times",
 		"app.description":
-			"Independent dashboard of Hungarian ambulance response times, based on the public statistics of the National Ambulance Service.",
+			"Independent dashboard of Hungarian ambulance response times, based on the statistics of the National Ambulance Service.",
 		"app.version": "App version: {v}",
 
 		"social.linkedin": "LinkedIn",
@@ -267,7 +267,7 @@ export const CORE = {
 		"range.all": "All available data",
 		"range.allShort": "All data",
 
-		"tab.adatok": "About the data",
+		"tab.adatok": "Info",
 		"tab.attekintes": "Overview",
 		"tab.trendek": "Response times",
 		"tab.fazisok": "The path of a call",
@@ -363,7 +363,7 @@ export const CORE = {
 		"app.brand": "Hol a mentő?",
 		"app.title": "Hol a mentő? · ungarische Rettungsdienst-Ausrückzeiten",
 		"app.description":
-			"Unabhängiges Dashboard zu den ungarischen Rettungsdienst-Ausrückzeiten, auf Basis der öffentlichen Statistiken des Landesrettungsdienstes.",
+			"Unabhängiges Dashboard zu den ungarischen Rettungsdienst-Ausrückzeiten, auf Basis der Statistiken des Landesrettungsdienstes.",
 		"app.version": "App-Version: {v}",
 
 		"social.linkedin": "LinkedIn",
@@ -450,7 +450,7 @@ export const CORE = {
 		"range.all": "Alle verfügbaren Daten",
 		"range.allShort": "Alle Daten",
 
-		"tab.adatok": "Über die Daten",
+		"tab.adatok": "Infos",
 		"tab.attekintes": "Überblick",
 		"tab.trendek": "Ausrückzeiten",
 		"tab.fazisok": "Der Weg des Notrufs",
