@@ -46,9 +46,9 @@ export function t(key, vars) {
 	const raw = DICT[lang]?.[key] ?? DICT[DEFAULT]?.[key] ?? key;
 	if (typeof raw !== 'string') return key;
 	if (!vars) return raw;
-	return raw.replace(/\{(\w+)\}/g, (m, name) =>
-		(vars[name] == null ? m : String(vars[name])),
-	);
+	return raw
+		.replace(/\{(\w+)\}/g, (m, name) => (vars[name] == null ? m : String(vars[name])))
+		.replace(/(?<!\.)\.\.(?!\.)/g, '.');
 }
 
 export function tPlural(key, n, vars) {
