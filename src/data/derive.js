@@ -240,6 +240,24 @@ export function dispatchSummary(model, prio, metric) {
   };
 }
 
+export function regionSnapshotMatrix(model, metric) {
+  return memoized(model, `regionSnapshotMatrix:${metric}`, () => {
+    const snap = model.regionSnapshot;
+    if (!snap) return { month: null, regions: [], series: [] };
+    const byCode = new Map(snap.rows.map((r) => [r.code, r]));
+    const regions = model.meta.regions.filter((r) => byCode.has(r.code));
+    const series = model.meta.priorities.map((prio) => ({
+      prio,
+      values: regions.map((r) => byCode.get(r.code)?.byPriority?.[prio]?.[metric] ?? null),
+    }));
+    return {
+      month: snap.month,
+      regions,
+      series: series.filter((s) => s.values.some((v) => v != null)),
+    };
+  });
+}
+
 export function regionTrendSeries(model, prio, metric) {
   const rt = model.regionTrend;
   return model.meta.regions.map((r) => ({

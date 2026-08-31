@@ -15,6 +15,10 @@ export function segHtml(key, options, active, { label = '' } = {}) {
   </div>`;
 }
 
+export function segInline(html) {
+  return `<div class="seg-inline">${html}</div>`;
+}
+
 export function wireSeg(mount, key, onChange) {
   const host = mount.querySelector(`[data-seg="${CSS.escape(key)}"]`);
   if (!host) return;

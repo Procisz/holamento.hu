@@ -1,12 +1,13 @@
 export default {
 	hu: {
+		"regiok.matrixTitle": "Minden régió, minden prioritás · {metric}",
+		"regiok.matrixTitleShort": "Minden régió, minden prioritás",
+		"regiok.matrixSub":
+			"{month} · a négy sürgősségi kategória egymás mellett, régiónként · a prioritásváltó erre a diagramra nem hat",
+		"regiok.matrixTip":
+			"Egyetlen képen mind a hét régió és mind a négy sürgősségi kategória.\n{calc}: a kiválasztott mutató értéke régiónként és prioritásonként, {month} hónapra.\nAz oszlopok a régiók rövidítéseinél állnak, a teljes név a diagramra mutatva olvasható.\nA sürgősebb kategóriák rövidebb oszlopot adnak, a különbség régiónként eltér.",
 		"regiok.segPrio": "Prioritás",
 		"regiok.segMetric": "Mutató",
-		"regiok.segSub": "{prio}: {prioDesc} · {metric}: {metricDesc}",
-		"regiok.coverSub":
-			"A régiós bontás ezekre a hónapokra érhető el: {from} - {to}.",
-		"regiok.coverNone":
-			"A kiválasztott időszakból ({from} - {to}) nincs régiós bontás.",
 		"regiok.regionHint":
 			"A régiós bontást csak a legutóbbi hónapokra közlik, bővítsd az időszakot vagy válassz későbbi hónapot.",
 
@@ -66,13 +67,14 @@ export default {
 	},
 
 	en: {
+		"regiok.matrixTitle": "Every region, every priority · {metric}",
+		"regiok.matrixTitleShort": "Every region, every priority",
+		"regiok.matrixSub":
+			"{month} · the four priority categories side by side, by region · the priority selector does not affect this chart",
+		"regiok.matrixTip":
+			"All seven regions and all four priority categories in a single picture.\n{calc}: the value of the selected metric by region and priority, for {month}.\nThe bars sit at the region codes, the full name shows on hover.\nThe more urgent categories give shorter bars, and the gap differs from region to region.",
 		"regiok.segPrio": "Priority",
 		"regiok.segMetric": "Measure",
-		"regiok.segSub": "{prio}: {prioDesc} · {metric}: {metricDesc}",
-		"regiok.coverSub":
-			"The regional breakdown is available for these months: {from} - {to}.",
-		"regiok.coverNone":
-			"There is no regional breakdown for the selected period ({from} - {to}).",
 		"regiok.regionHint":
 			"The regional breakdown is only published for the most recent months, widen the period or pick a later one.",
 
@@ -132,13 +134,14 @@ export default {
 	},
 
 	de: {
+		"regiok.matrixTitle": "Jede Region, jede Stufe · {metric}",
+		"regiok.matrixTitleShort": "Jede Region, jede Stufe",
+		"regiok.matrixSub":
+			"{month} · die vier Dringlichkeitsstufen nebeneinander, nach Region · der Stufenwähler wirkt auf dieses Diagramm nicht",
+		"regiok.matrixTip":
+			"Alle sieben Regionen und alle vier Dringlichkeitsstufen in einem Bild.\n{calc}: der Wert der gewählten Kennzahl nach Region und Stufe, für {month}.\nDie Balken stehen an den Kürzeln der Regionen, der vollständige Name erscheint beim Überfahren.\nDringlichere Stufen ergeben kürzere Balken, der Abstand unterscheidet sich je Region.",
 		"regiok.segPrio": "Dringlichkeit",
 		"regiok.segMetric": "Kennzahl",
-		"regiok.segSub": "{prio}: {prioDesc} · {metric}: {metricDesc}",
-		"regiok.coverSub":
-			"Die regionale Aufschlüsselung liegt für diese Monate vor: {from} - {to}.",
-		"regiok.coverNone":
-			"Für den gewählten Zeitraum ({from} - {to}) gibt es keine regionale Aufschlüsselung.",
 		"regiok.regionHint":
 			"Die regionale Aufschlüsselung wird nur für die letzten Monate veröffentlicht, erweitere den Zeitraum oder wähle einen späteren Monat.",
 

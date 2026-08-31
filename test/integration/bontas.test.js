@@ -31,10 +31,10 @@ describe('time split on the live payload', () => {
 		expect(cards[3]).toContain('1,0 perc');
 	});
 
-	it('should state that the breakdown covers a single month', async () => {
+	it('should name the month of the breakdown on its cards', async () => {
 		const el = await renderPanel(bontas, real());
 		expect(el.textContent).toContain('2026. június');
-		expect(el.textContent).toContain('egyetlen hónapra');
+		expect(texts(el, '.fact-list li').some((f) => f.includes('nem jeleníti meg'))).toBe(true);
 	});
 
 	it('should split the total into two parts (the stacked chart)', async () => {

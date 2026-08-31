@@ -2,7 +2,7 @@ import { t } from "../app/i18n.js";
 import * as derive from "../data/derive.js";
 import { catColor, prioColor } from "../ui/categories.js";
 import { cssToken, makeChart, minAxis, minTooltip, roundOrNull, sparkline } from "../ui/charts.js";
-import { loadSeg, segHtml, wireSeg } from "../ui/segmented.js";
+import { loadSeg, segHtml, segInline, wireSeg } from "../ui/segmented.js";
 import { cell, dataTable } from "../ui/table.js";
 import {
 	chartCard,
@@ -140,7 +140,6 @@ export function render(model, mount) {
 	mount.innerHTML = `
     ${segHtml(AREA_KEY, areaOpts, area, { label: t("trendek.segArea") })}
     ${segHtml(METRIC_KEY, metricOpts, metric, { label: t("trendek.segMetric") })}
-    ${segHtml(PRIO_KEY, prioOpts, spreadPrio, { label: t("trendek.segPrio") })}
     ${kpiCards ? `<div class="kpi-row">${kpiCards}</div>` : ""}
     <div class="grid12">
       ${
@@ -168,6 +167,7 @@ export function render(model, mount) {
 							title: t("trendek.mainEmptyTitle"),
 						})
 			}
+      ${segInline(segHtml(PRIO_KEY, prioOpts, spreadPrio, { label: t("trendek.segPrio") }))}
       ${
 				hasSpread
 					? chartCard({

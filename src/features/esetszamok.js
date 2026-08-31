@@ -5,7 +5,7 @@ import { prioColor, catColor } from "../ui/categories.js";
 import { fmtMin, fmtNum, fmtNum2, fmtPct, fmtYm, fmtYmFull, fmtCases, daysInMonth } from "../utils/fmt.js";
 import { cell, dataTable } from "../ui/table.js";
 import { chartCard, emptyState, esc, statCard, prioBadge } from "../ui/ui.js";
-import { loadSeg, segHtml, wireSeg } from "../ui/segmented.js";
+import { loadSeg, segHtml, segInline, wireSeg } from "../ui/segmented.js";
 
 export const id = "esetszamok";
 export const iconId = "i-pulse";
@@ -227,15 +227,7 @@ export function render(model, mount) {
 				rows: tableRows,
 				pageSize: 5,
 			}) : emptyState({ span: 6, iconId: "i-pulse", title: t("esetszamok.tableTitle", { month: fmtYmFull(latest) }) })}
-			${isVidek ? "" : `<div class="card" data-span="12" data-cat="eset">
-				<div class="card-body">
-					${segHtml(PRIO_KEY, prioOpts, prio, { label: t("esetszamok.segPrio") })}
-					<div class="card-sub">${esc(t("esetszamok.loadSegSub", {
-						prio,
-						prioDesc: t("prio." + prio),
-					}))}</div>
-				</div>
-			</div>`}
+			${isVidek ? "" : segInline(segHtml(PRIO_KEY, prioOpts, prio, { label: t("esetszamok.segPrio") }))}
 			${hasLoad ? chartCard({
 				span: 6,
 				cat: "eset",

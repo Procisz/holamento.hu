@@ -71,6 +71,33 @@ describe('regions on the live payload', () => {
 		expect(sub).toContain('júl');
 	});
 
+	it('should show every region and every priority in one chart', async () => {
+		await renderPanel(regiok, real());
+		const opts = chartFor('ch-reg-matrix');
+		expect(opts.series.map((s) => s.name)).toEqual(['P1', 'P2', 'P3', 'P4']);
+		expect(opts.xaxis.categories).toEqual(['DAR', 'DDR', 'ÉAR', 'ÉMR', 'KDR', 'KMR', 'NYDR']);
+		for (const s of opts.series) expect(s.data).toHaveLength(7);
+		expect(opts.series[0].data[0]).toBe(13.69);
+		expect(opts.series[3].data[0]).toBe(44.57);
+	});
+
+	it('should name the region in the all priority chart tooltip', async () => {
+		await renderPanel(regiok, real());
+		const fn = chartFor('ch-reg-matrix').tooltip.x.formatter;
+		expect(fn('DAR', { dataPointIndex: 0 })).toBe('Dél-alföldi');
+		expect(fn('DAR', { dataPointIndex: 99 })).toBe('DAR');
+		expect(fn('DAR', undefined)).toBe('DAR');
+	});
+
+	it('should sit between the change chart and the snapshot table', async () => {
+		const el = await renderPanel(regiok, real());
+		const ids = [...el.querySelectorAll('.grid12 > *')].map(
+			(n) => n.querySelector('[id^="ch-"]')?.id ?? 'other',
+		);
+		expect(ids.indexOf('ch-reg-matrix')).toBe(ids.indexOf('ch-reg-valtozas') + 1);
+		expect(ids.at(-1)).toBe('other');
+	});
+
 	it('should list every region (the snapshot table)', async () => {
 		const el = await renderPanel(regiok, real());
 		const rows = tableRows(el);
@@ -95,6 +122,14 @@ describe('region selectors', () => {
 		await seg(el, 'holamento-regiok-metric', 'p90');
 		expect(seriesOf('ch-reg-trend')[0].data.at(-1)).toBe(23.32);
 		expect(texts(el, '.card-title').some((t) => t.includes('P90'))).toBe(true);
+		expect(chartFor('ch-reg-matrix').series[0].data[0]).toBe(23.32);
+	});
+
+	it('should leave the all priority chart untouched when the priority changes', async () => {
+		const el = await renderPanel(regiok, real());
+		const before = chartFor('ch-reg-matrix').series.map((s) => s.name);
+		await seg(el, 'holamento-regiok-prio', 'P4');
+		expect(chartFor('ch-reg-matrix').series.map((s) => s.name)).toEqual(before);
 	});
 
 	it('should start from the stored selection', async () => {
@@ -109,15 +144,17 @@ describe('regions without data', () => {
 		const p = makePayload({ meta: { regions: [] }, regioTrend: { months: [], byRegion: {} }, topic5: { month: '2026-07', rows: [] } });
 		const el = await renderPanel(regiok, buildModel(p));
 		const cards = el.querySelectorAll('.grid12 > .card');
-		expect(el.querySelectorAll('.grid12 > .card .empty-state').length).toBe(cards.length - 1);
+		expect(cards.length).toBeGreaterThan(0);
+		expect(el.querySelectorAll('.grid12 > .card .empty-state').length).toBe(cards.length);
 		expect(chartFor('ch-reg-trend')).toBeNull();
 		expect(chartFor('ch-reg-valtozas')).toBeNull();
 	});
 
-	it('should explain the coverage when the period holds no regional data', async () => {
+	it('should hint how to widen the period when it holds no regional data', async () => {
 		const f = filterModel(real(), '2025-01', '2025-06');
 		const el = await renderPanel(regiok, f);
-		expect(el.textContent).toContain('nincs régiós bontás');
+		expect(el.querySelectorAll('.empty-state').length).toBeGreaterThan(0);
+		expect(el.textContent).toContain('bővítsd az időszakot');
 	});
 
 	it('should render no change chart for a single month', async () => {

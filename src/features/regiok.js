@@ -1,6 +1,6 @@
 import { t } from "../app/i18n.js";
 import * as derive from "../data/derive.js";
-import { catColor, paletteColor } from "../ui/categories.js";
+import { catColor, paletteColor, prioColor } from "../ui/categories.js";
 import { cssToken, makeChart, minAxis, minTooltip, roundOrNull } from "../ui/charts.js";
 import { loadSeg, segHtml, wireSeg } from "../ui/segmented.js";
 import { cell, dataTable } from "../ui/table.js";
@@ -40,6 +40,8 @@ export function render(model, mount) {
 	const lastSpread = [...spread].reverse().find((s) => s.range != null) ?? null;
 
 	const changeRows = rt ? derive.regionChange(model, prio, metric) : [];
+	const matrix = derive.regionSnapshotMatrix(model, metric);
+	const hasMatrix = matrix.regions.length > 0 && matrix.series.length > 0;
 	const hasChange = changeRows.length > 0;
 	const changeMonths = changeRows
 		.flatMap((r) => [r.firstYm, r.lastYm])
@@ -73,14 +75,10 @@ export function render(model, mount) {
 
 	const calc = t("common.tipCalc");
 	const hint = t("regiok.regionHint");
-	const cover = trendMonths.length
-		? t("regiok.coverSub", {
-				from: fmtYm(trendMonths[0]),
-				to: fmtYm(trendMonths[trendMonths.length - 1]),
-			})
-		: t("regiok.coverNone", { from: rangeFrom, to: rangeTo });
 
 	mount.innerHTML = `
+    ${segHtml(PRIO_KEY, prioOpts, prio, { label: t("regiok.segPrio") })}
+    ${segHtml(METRIC_KEY, metricOpts, metric, { label: t("regiok.segMetric") })}
     <div class="kpi-row">
       ${statCard({
 				cat: "regio",
@@ -127,21 +125,6 @@ export function render(model, mount) {
 			})}
     </div>
     <div class="grid12">
-      <div class="card" data-span="12" data-cat="regio">
-        <div class="card-body">
-          ${segHtml(PRIO_KEY, prioOpts, prio, { label: t("regiok.segPrio") })}
-          ${segHtml(METRIC_KEY, metricOpts, metric, { label: t("regiok.segMetric") })}
-          <div class="card-sub">${esc(
-						t("regiok.segSub", {
-							prio,
-							prioDesc: t("prio." + prio),
-							metric: metricLabel,
-							metricDesc: t("metricDesc." + metric),
-						}),
-					)}</div>
-          <div class="card-sub">${esc(cover)}</div>
-        </div>
-      </div>
       ${
 				hasTrend
 					? chartCard({
@@ -238,6 +221,29 @@ export function render(model, mount) {
 							span: 12,
 							iconId: "i-trend-down",
 							title: t("regiok.changeTitleShort"),
+							hint,
+						})
+			}
+      ${
+				hasMatrix
+					? chartCard({
+							span: 12,
+							cat: "regio",
+							iconId: "i-scale",
+							title: esc(t("regiok.matrixTitle", { metric: metricLabel })),
+							sub: esc(
+								t("regiok.matrixSub", { month: fmtYmFull(matrix.month) }),
+							),
+							id: "ch-reg-matrix",
+							tip: t("regiok.matrixTip", {
+								month: fmtYmFull(matrix.month),
+								calc,
+							}),
+						})
+					: emptyState({
+							span: 12,
+							iconId: "i-scale",
+							title: t("regiok.matrixTitleShort"),
 							hint,
 						})
 			}
@@ -357,6 +363,29 @@ export function render(model, mount) {
 			yaxis: { min: 0, ...minAxis },
 			tooltip: minTooltip,
 			legend: { show: false },
+		});
+	}
+
+	if (hasMatrix) {
+		makeChart(mount.querySelector("#ch-reg-matrix"), {
+			chart: { type: "bar", height: 340 },
+			series: matrix.series.map((s) => ({
+				name: s.prio,
+				data: s.values.map(roundOrNull),
+			})),
+			colors: matrix.series.map((s) => prioColor(s.prio)),
+			plotOptions: { bar: { columnWidth: "78%", borderRadius: 3 } },
+			dataLabels: { enabled: false },
+			xaxis: { categories: matrix.regions.map((r) => r.code) },
+			yaxis: { min: 0, ...minAxis },
+			tooltip: {
+				...minTooltip,
+				x: {
+					formatter: (v, opts) =>
+						matrix.regions[opts?.dataPointIndex]?.name ?? v,
+				},
+			},
+			legend: { position: "top" },
 		});
 	}
 
