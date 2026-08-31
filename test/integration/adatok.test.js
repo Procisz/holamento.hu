@@ -103,6 +103,12 @@ describe('info tab on the live payload', () => {
 		expect(text).toContain('90. percentilis rövidítése');
 	});
 
+	it('should keep the social links out of the intro card', async () => {
+		const el = await renderPanel(adatok, real());
+		expect(el.querySelectorAll('.social-row')).toHaveLength(0);
+		expect(el.querySelectorAll('.social-link')).toHaveLength(0);
+	});
+
 	it('should carry no hint dots by design', async () => {
 		const el = await renderPanel(adatok, real());
 		expect(el.querySelectorAll('.info-dot')).toHaveLength(0);

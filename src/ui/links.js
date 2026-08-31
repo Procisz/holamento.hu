@@ -8,10 +8,10 @@ const ITEMS = [
   { url: COFFEE_URL, iconId: 'i-coffee', key: 'social.coffee' },
 ];
 
-export function socialLinks({ inCard = false } = {}) {
+export function socialLinks() {
   const items = ITEMS.map(
     (it) =>
       `<a class="social-link" href="${esc(it.url)}" target="_blank" rel="noopener">${icon(it.iconId)}<span>${esc(t(it.key))}</span></a>`,
   ).join('');
-  return `<div class="social-row${inCard ? ' in-card' : ''}">${items}</div>`;
+  return `<div class="social-row">${items}</div>`;
 }
