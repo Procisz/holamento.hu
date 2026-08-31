@@ -1,6 +1,5 @@
 import { t } from "../app/i18n.js";
 import { icon } from "../ui/icons.js";
-import { socialLinks } from "../ui/links.js";
 import { esc } from "../ui/ui.js";
 import { fmtDate, fmtYmFull } from "../utils/fmt.js";
 
@@ -95,8 +94,7 @@ export function render(model, mount) {
           <p>${t("adatok.about.independent", { not: notWord })}</p>
           <p>${t("adatok.about.source", { link: statLink })}</p>
           <p>${t("adatok.about.contact", { code: codeLink, mail: mailLink })}</p>
-          <p class="muted small">${t("adatok.about.code", { link: issuesLink })}</p>
-          ${socialLinks({ inCard: true })}`,
+          <p class="muted small">${t("adatok.about.code", { link: issuesLink })}</p>`,
 			})}
       ${card({
 				span: 6,

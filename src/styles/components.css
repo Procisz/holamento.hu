@@ -1118,10 +1118,6 @@ table.tbl {
 	padding-top: var(--space-5);
 	border-top: var(--border-w) solid var(--border);
 }
-.social-row.in-card {
-	justify-content: flex-start;
-	margin-top: var(--space-4);
-}
 .social-link {
 	display: inline-flex;
 	align-items: center;
