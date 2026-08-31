@@ -26,3 +26,7 @@ azt később nem lehet visszakérni. A mentett archivumokból később összeál
 szakaszidők havi idősora és az előzetes-végleges revíziók története. Ha ez megvalósul, a
 tervezett út egy build-időben előállított `public/history.json`, nem az archívum
 kliensoldali betöltése.
+
+### Vice code?
+
+Igen, az oldal supervised AI-driven development eredménye.
