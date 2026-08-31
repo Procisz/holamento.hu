@@ -1,8 +1,8 @@
 import * as derive from "../data/derive.js";
 import { t } from "../app/i18n.js";
-import { makeChart, sparkline } from "../ui/charts.js";
+import { makeChart, minAxis, roundOrNull, sparkline } from "../ui/charts.js";
 import { prioColor, catColor } from "../ui/categories.js";
-import { fmtNum, fmtPct, fmtYm, fmtYmFull, fmtCases, daysInMonth } from "../utils/fmt.js";
+import { fmtMin, fmtNum, fmtNum2, fmtPct, fmtYm, fmtYmFull, fmtCases, daysInMonth } from "../utils/fmt.js";
 import { cell, dataTable } from "../ui/table.js";
 import { chartCard, emptyState, esc, statCard, prioBadge } from "../ui/ui.js";
 import { loadSeg, segHtml, wireSeg } from "../ui/segmented.js";
@@ -11,6 +11,7 @@ export const id = "esetszamok";
 export const iconId = "i-pulse";
 
 const AREA_KEY = "holamento-esetszamok-area";
+const PRIO_KEY = "holamento-esetszamok-prio";
 const AREA_DEFS = [
 	{ id: "orszagos", key: "area.Országos" },
 	{ id: "budapest", key: "area.Budapest" },
@@ -48,6 +49,20 @@ export function render(model, mount) {
 	const hasPerDay = n > 0 && (cases.perDay ?? []).some((v) => v != null);
 	const hasMix = n > 0 && prios.some((p) => (cases.mixPct?.[p] ?? []).some((v) => v != null));
 	const hasBp = bpShare.length > 0 && bpShare.some((v) => v != null);
+
+	const prioOpts = prios.map((p) => ({ id: p, label: p }));
+	const prio = loadSeg(PRIO_KEY, prioOpts, "P1");
+	const isVidek = area === "videk";
+	const areaName = area === "budapest" ? "Budapest" : "Országos";
+	const medianLabel = t("metric.median");
+	const loadPts = isVidek ? [] : derive.loadPoints(model, areaName, prio, "median");
+	const corrRows = isVidek ? [] : derive.loadCorrelation(model, areaName);
+	const hasLoad = loadPts.length > 0;
+	const hasCorr = corrRows.some((r) => r.median != null || r.p75 != null || r.p90 != null);
+	const corrN = corrRows.length
+		? corrRows.reduce((m, r) => Math.min(m, r.n ?? 0), corrRows[0].n ?? 0)
+		: 0;
+	const loadHint = isVidek ? t("esetszamok.loadVidekHint") : "";
 
 	const lastTotal = n ? cases.total[n - 1] : null;
 	const prevTotal = n > 1 ? cases.total[n - 2] : null;
@@ -212,6 +227,63 @@ export function render(model, mount) {
 				rows: tableRows,
 				pageSize: 5,
 			}) : emptyState({ span: 6, iconId: "i-pulse", title: t("esetszamok.tableTitle", { month: fmtYmFull(latest) }) })}
+			${isVidek ? "" : `<div class="card" data-span="12" data-cat="eset">
+				<div class="card-body">
+					${segHtml(PRIO_KEY, prioOpts, prio, { label: t("esetszamok.segPrio") })}
+					<div class="card-sub">${esc(t("esetszamok.loadSegSub", {
+						prio,
+						prioDesc: t("prio." + prio),
+					}))}</div>
+				</div>
+			</div>`}
+			${hasLoad ? chartCard({
+				span: 6,
+				cat: "eset",
+				iconId: "i-scale",
+				title: esc(t("esetszamok.loadTitle", { prio })),
+				sub: esc(t("esetszamok.loadSub", { metric: medianLabel, area: areaLabel })),
+				id: "ch-ese-terheles",
+				tip: tipLines(
+					t("esetszamok.loadTip", { metric: medianLabel }),
+					calc(t("esetszamok.loadCalc", { prio, metric: medianLabel })),
+					t("esetszamok.loadNote"),
+				),
+			}) : emptyState({
+				span: 6,
+				iconId: "i-scale",
+				title: t("esetszamok.loadEmptyTitle"),
+				hint: loadHint,
+			})}
+			${hasCorr ? dataTable({
+				span: 6,
+				cat: "eset",
+				iconId: "i-gauge",
+				title: esc(t("esetszamok.corrTitle")),
+				sub: esc(t("esetszamok.corrSub", { n: fmtNum(corrN), area: areaLabel })),
+				tip: tipLines(
+					t("esetszamok.corrTip"),
+					t("esetszamok.corrTipScale"),
+					t("esetszamok.corrTipWarn", { n: fmtNum(corrN) }),
+				),
+				columns: [
+					{ key: "prio", label: esc(t("esetszamok.colPrio")) },
+					{ key: "median", label: esc(t("metric.median")), num: true },
+					{ key: "p75", label: esc(t("metric.p75")), num: true },
+					{ key: "p90", label: esc(t("metric.p90")), num: true },
+				],
+				rows: corrRows.map((r) => ({
+					prio: cell(r.prio, `${prioBadge(r.prio)} <span class="muted small">${esc(t(`prio.${r.prio}`))}</span>`),
+					median: cell(r.median, fmtNum2(r.median)),
+					p75: cell(r.p75, fmtNum2(r.p75)),
+					p90: cell(r.p90, fmtNum2(r.p90)),
+				})),
+				pageSize: 5,
+			}) : emptyState({
+				span: 6,
+				iconId: "i-gauge",
+				title: t("esetszamok.corrTitle"),
+				hint: loadHint,
+			})}
 		</div>`;
 
 	if (hasCases) {
@@ -285,7 +357,40 @@ export function render(model, mount) {
 		});
 	}
 
+	if (hasLoad) {
+		makeChart(mount.querySelector("#ch-ese-terheles"), {
+			chart: { type: "scatter", height: 300 },
+			series: [{
+				name: t("esetszamok.loadSeries", { prio }),
+				data: loadPts.map((pt) => [pt.cases, roundOrNull(pt.value)]),
+			}],
+			colors: [catColor("eset")],
+			markers: { size: 6 },
+			xaxis: {
+				type: "numeric",
+				tickAmount: 6,
+				title: { text: t("esetszamok.loadXTitle") },
+				labels: { formatter: (v) => fmtNum(v) },
+			},
+			yaxis: minAxis,
+			tooltip: {
+				x: { formatter: (v, opts) => loadTooltipX(loadPts, v, opts) },
+				y: { formatter: (v) => fmtMin(v) },
+			},
+			legend: { show: false },
+		});
+	}
+
 	wireSeg(mount, AREA_KEY, () => render(model, mount));
+	wireSeg(mount, PRIO_KEY, () => render(model, mount));
+}
+
+function loadTooltipX(points, value, opts) {
+	const pt = points[opts?.dataPointIndex ?? -1];
+	return t("esetszamok.loadTooltipX", {
+		month: pt ? fmtYm(pt.ym) : t("common.noDataShort"),
+		cases: fmtCases(value),
+	});
 }
 
 function areaCases(model, areaId) {

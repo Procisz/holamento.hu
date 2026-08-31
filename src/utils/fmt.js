@@ -16,6 +16,7 @@ function fmtOf(kind, options) {
 
 const num = () => fmtOf('n:0', { maximumFractionDigits: 0 });
 const num1 = () => fmtOf('n:1', { maximumFractionDigits: 1 });
+const num2 = () => fmtOf('n:2', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const num1f = () => fmtOf('n:1f', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 const pct = () => fmtOf('n:pct', { style: 'percent', maximumFractionDigits: 1 });
 const dateF = () => fmtOf('d:date', { year: 'numeric', month: 'short', day: 'numeric' });
@@ -24,11 +25,18 @@ const ymLong = () => fmtOf('d:ymLong', { year: 'numeric', month: 'long' });
 
 export const fmtNum = (v) => (v == null || !Number.isFinite(v) ? '-' : num().format(v));
 export const fmtNum1 = (v) => (v == null || !Number.isFinite(v) ? '-' : num1().format(v));
+export const fmtNum2 = (v) => (v == null || !Number.isFinite(v) ? '-' : num2().format(v));
 export const fmtPct = (v) => (v == null || !Number.isFinite(v) ? '-' : pct().format(v));
 
 export const fmtMin = (v) =>
 	(v == null || !Number.isFinite(v) ? '-' : `${num1f().format(v)} ${t('common.minutes')}`);
 export const fmtMinShort = (v) => (v == null || !Number.isFinite(v) ? '-' : num1f().format(v));
+export const fmtMin2 = (v) =>
+	(v == null || !Number.isFinite(v) ? '-' : `${num2().format(v)} ${t('common.minutes')}`);
+export const fmtSignedMin2 = (v) =>
+	(v == null || !Number.isFinite(v)
+		? '-'
+		: `${v > 0 ? '+' : ''}${num2().format(v)} ${t('common.minutes')}`);
 export const fmtSignedMin = (v) =>
 	(v == null || !Number.isFinite(v)
 		? '-'

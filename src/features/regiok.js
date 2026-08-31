@@ -39,6 +39,15 @@ export function render(model, mount) {
 	const hasSpread = spread.some((s) => s.range != null);
 	const lastSpread = [...spread].reverse().find((s) => s.range != null) ?? null;
 
+	const changeRows = rt ? derive.regionChange(model, prio, metric) : [];
+	const hasChange = changeRows.length > 0;
+	const changeMonths = changeRows
+		.flatMap((r) => [r.firstYm, r.lastYm])
+		.filter(Boolean)
+		.sort();
+	const changeFrom = changeMonths[0] ?? null;
+	const changeTo = changeMonths.at(-1) ?? null;
+
 	const nat = derive.longSeries(model, "Országos");
 	const natArr = nat[metric]?.[prio] ?? [];
 	const natVal = natArr.length ? natArr[natArr.length - 1] : null;
@@ -208,6 +217,31 @@ export function render(model, mount) {
 						})
 			}
       ${
+				hasChange
+					? chartCard({
+							span: 12,
+							cat: "regio",
+							iconId: "i-trend-down",
+							title: esc(
+								t("regiok.changeTitle", { prio, metric: metricLabel }),
+							),
+							sub: esc(
+								t("regiok.changeSub", {
+									from: fmtYm(changeFrom),
+									to: fmtYm(changeTo),
+								}),
+							),
+							id: "ch-reg-valtozas",
+							tip: t("regiok.changeTip", { calc }),
+						})
+					: emptyState({
+							span: 12,
+							iconId: "i-trend-down",
+							title: t("regiok.changeTitleShort"),
+							hint,
+						})
+			}
+      ${
 				snapRows.length
 					? dataTable({
 							span: 12,
@@ -323,6 +357,26 @@ export function render(model, mount) {
 			yaxis: { min: 0, ...minAxis },
 			tooltip: minTooltip,
 			legend: { show: false },
+		});
+	}
+
+	if (hasChange) {
+		makeChart(mount.querySelector("#ch-reg-valtozas"), {
+			chart: { type: "bar", height: 320 },
+			series: [
+				{
+					name: t("regiok.changeSeries"),
+					data: changeRows.map((r) => roundOrNull(r.delta)),
+				},
+			],
+			colors: changeRows.map((_, i) => paletteColor(i)),
+			plotOptions: {
+				bar: { horizontal: true, distributed: true, borderRadius: 4 },
+			},
+			dataLabels: { enabled: true, formatter: (v) => fmtMinShort(v) },
+			xaxis: { categories: changeRows.map((r) => r.name), ...minAxis },
+			legend: { show: false },
+			tooltip: minTooltip,
 		});
 	}
 

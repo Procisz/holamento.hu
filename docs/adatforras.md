@@ -42,7 +42,7 @@ Minden időérték perc, az idő a segélyhívás indításától a helyszínre 
 |---|---|
 | `meta` | `generatedAt`, `updatedDate`, `originMonth`, `latestMonth`, `latestIsPreliminary`, `months` (7 hónap, 2026-tól), `monthsFrom2025` (19 hónap), `priorities` (P1-P4), `areas` (Országos, Budapest), `regions` (7 régió, kód + név) |
 | `topic1` | Az utolsó hónap P1 P90 értéke Országos + Budapest bontásban, előző havi értékkel (`p90Prev`) és esetszámmal |
-| `phases` | A hívás 4 szakasza (`esr_cad`, `cad_cad`, `cad_bej`, `bej_erk`), mindegyikre átlag, medián, P75, P90. Csak az utolsó hónapra, csak P1, csak országos. `sum` és `total` a teljes átlagidő |
+| `phases` | A hívás 4 szakasza (`esr_cad`, `cad_cad`, `cad_bej`, `bej_erk`), mindegyikre átlag, medián, P75, P90. Csak az utolsó hónapra, csak P1, csak országos. `sum` a szakaszátlagok összege, `total` a közvetlenül mért teljes átlagidő, a kettő nem egyezik (lásd lent) |
 | `topic2` | A mester-idősor: 19 hónap (2025-01-től), Országos + Budapest, mindkettőre medián / P75 / P90 / esetszám, prioritásonként (P1-P4) |
 | `topic3` | REDUNDÁNS: a medián, P75 és P90 értékei bitre pontosan a `topic2` utolsó 7 hónapja (ellenőrizve mindkét area, minden prioritás). Esetszámot nem tartalmaz, az csak a `topic2`-ben van. A modell nem használja |
 | `topic4` | Régiós bontás (7 régió x P1-P4 x medián/P75/P90) az utolsó LEZÁRT hónapra. FIGYELEM: más mérési alapú, lásd lent |
@@ -56,8 +56,27 @@ A `topic4` értékei szisztematikusan 3,5-5 perccel rövidebbek, mint ugyanazon 
 nagyságrendje egyezik a hívásfeldolgozási szakaszok (esr_cad + cad_cad + cad_bej) idejével,
 tehát a `topic4` nagy valószínűséggel a riasztástól mért idő, nem a segélyhívástól mért.
 Az OMSZ oldala be sem tölti a felületre (az `app.js` beolvassa `map4`-ként, de csak a
-`topic5`-öt rendereli). Amíg a mérési alapja nem tisztázott, a dashboard nem jeleníti meg,
-a séma-ellenőrzés viszont számon tartja.
+`topic5`-öt rendereli). A hivatalos CSV-export `mk(row, label)` függvénye viszont
+`'segélyhívástól'` címkét vár, tehát a két mérési alap megkülönböztetése náluk is
+megvolt, csak kivették a felületről.
+
+Az `Időbontás` fül (`src/features/bontas.js`) ezt a különbséget jeleníti meg
+`derive.dispatchSplit` alapján: régiónként és prioritásonként a `regioTrend` adott havi
+értékéből kivonja a `topic4` értékét, és a maradékot hívásfeldolgozási időként mutatja.
+A fül maga is kiírja, hogy a percentilisek nem adódnak össze, tehát a különbség a két
+mérés eltolódása, nem a hívásfeldolgozás önálló eloszlása. A mediánnál ez jó közelítés,
+a P90-nél nem az.
+
+A `topic4` egyetlen hónapra jön (az utolsó lezárt), így a bontás is egyhavi. Az archívum
+viszont hónapról hónapra megőrzi, tehát idővel idősorrá áll össze.
+
+## A phases.total maradék
+
+A `sum` (a négy szakaszátlag összege) és a `total` (a közvetlenül közölt teljes átlagidő)
+eltér: 17,30 vs 17,22 perc a 2026-07 közlésben. Négy, két tizedesre kerekített szakaszátlag
+összege legfeljebb 0,02 percet téved, a `total` maga is kerekített (0,005), tehát a különbség
+kerekítésből legfeljebb 0,025 perc lehet. A mért 0,08 perc ennél nagyobb, vagyis valódi maradék. Az okát a forrás nem magyarázza. A `fazisok` fül mindkét számot
+kiírja, és jelzi az eltérést, magyarázat nélkül.
 
 ## Korlátok
 
@@ -67,3 +86,7 @@ a séma-ellenőrzés viszont számon tartja.
 - A legfrissebb hónap előzetes (`latestIsPreliminary`), utólag változhat.
 - Percentiliseket nem lehet kivonni egymásból: a "vidék" idői NEM számolhatók ki az
   Országos és Budapest értékekből. A vidéki esetszám viszont igen (Országos - Budapest).
+- Ugyanez korlátozza a `topic4` és a `regioTrend` különbségét is: ugyanarra a
+  sokaságra két különböző kezdőponttal mért percentilis különbsége a mérés eltolódása,
+  nem egy harmadik eloszlás percentilise. Ezért mutatja az `Időbontás` fül a saját
+  módszertanát, és ezért marad a medián az alapértelmezett mutatója.

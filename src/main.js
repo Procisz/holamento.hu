@@ -36,10 +36,11 @@ import * as attekintes from "./features/attekintes.js";
 import * as trendek from "./features/trendek.js";
 import * as fazisok from "./features/fazisok.js";
 import * as regiok from "./features/regiok.js";
+import * as bontas from "./features/bontas.js";
 import * as esetszamok from "./features/esetszamok.js";
 import * as szoras from "./features/szoras.js";
 
-const PANELS = [adatok, attekintes, trendek, fazisok, regiok, esetszamok, szoras];
+const PANELS = [adatok, attekintes, trendek, fazisok, regiok, bontas, esetszamok, szoras];
 
 let appliedPayload = null;
 

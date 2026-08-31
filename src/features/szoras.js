@@ -1,7 +1,7 @@
 import { t } from "../app/i18n.js";
 import * as derive from "../data/derive.js";
 import { prioColor } from "../ui/categories.js";
-import { makeChart, minAxis, minTooltip, roundOrNull } from "../ui/charts.js";
+import { cssToken, makeChart, minAxis, minTooltip, roundOrNull } from "../ui/charts.js";
 import { icon } from "../ui/icons.js";
 import { loadSeg, segHtml, wireSeg } from "../ui/segmented.js";
 import { cell, dataTable } from "../ui/table.js";
@@ -13,18 +13,32 @@ import {
 	statCard,
 	tipDot,
 } from "../ui/ui.js";
-import { fmtMin, fmtMinShort, fmtNum1, fmtYm, fmtYmFull } from "../utils/fmt.js";
+import {
+	fmtMin,
+	fmtMinShort,
+	fmtNum1,
+	fmtSignedMin,
+	fmtYm,
+	fmtYmFull,
+} from "../utils/fmt.js";
 
 export const id = "szoras";
 export const iconId = "i-gauge";
 
 const AREA_KEY = "holamento-szoras-area";
 const AREA_IDS = ["Országos", "Budapest"];
+const METRIC_KEY = "holamento-szoras-metric";
 
 export function render(model, mount) {
 	const areaOpts = AREA_IDS.map((a) => ({ id: a, label: t(`area.${a}`) }));
 	const area = loadSeg(AREA_KEY, areaOpts, AREA_IDS[0]);
 	const areaLabel = t(`area.${area}`);
+	const metricOpts = derive.METRIC_IDS.map((m) => ({
+		id: m,
+		label: t(`metric.${m}`),
+	}));
+	const metric = loadSeg(METRIC_KEY, metricOpts, "median");
+	const metricLabel = metricOpts.find((m) => m.id === metric)?.label ?? metric;
 	const long = derive.longSeries(model, area);
 	const ratios = derive.tailRatios(model, area);
 	const gaps = derive.tailGaps(model, area);
@@ -40,6 +54,7 @@ export function render(model, mount) {
 	const calc = t("common.tipCalc");
 	const regionHint = t("szoras.regionHint");
 	const gapLabel = t("szoras.gapLabel");
+	const ratioLabel = t("szoras.colRatio");
 
 	const ratioSeries = model.meta.priorities.map((p) => ({
 		prio: p,
@@ -52,8 +67,18 @@ export function render(model, mount) {
 		.map((p) => ({ prio: p, gap: gaps.byPrio[p]?.at(-1) ?? null }))
 		.filter((r) => r.gap != null);
 
+	const areaGap = derive.areaGap(model, metric);
+	const areaGapSeries = model.meta.priorities.map((p) => ({
+		prio: p,
+		values: (areaGap.byPrio[p] ?? []).map(roundOrNull),
+	}));
+	const hasAreaGap =
+		areaGap.months.length > 0 &&
+		areaGapSeries.some((s) => s.values.some((v) => v != null));
+
 	mount.innerHTML = `
     ${segHtml(AREA_KEY, areaOpts, area, { label: t("szoras.areaSeg") })}
+    ${segHtml(METRIC_KEY, metricOpts, metric, { label: t("szoras.metricSeg") })}
     <div class="kpi-row">
       ${model.meta.priorities
 				.map((p) => {
@@ -103,6 +128,29 @@ export function render(model, mount) {
 							span: 12,
 							iconId: "i-gauge",
 							title: t("szoras.ratioEmpty"),
+						})
+			}
+      ${
+				hasAreaGap
+					? chartCard({
+							span: 12,
+							cat: "szoras",
+							iconId: "i-scale",
+							title: t("szoras.gapAreaTitle", { metric: esc(metricLabel) }),
+							sub: t("szoras.gapAreaSub", {
+								from: fmtYm(areaGap.months[0]),
+								to: fmtYm(areaGap.months[areaGap.months.length - 1]),
+							}),
+							id: "ch-szo-bp",
+							tip: t("szoras.gapAreaTip", {
+								metric: metricLabel,
+								calc,
+							}),
+						})
+					: emptyState({
+							span: 12,
+							iconId: "i-scale",
+							title: t("szoras.gapAreaEmpty"),
 						})
 			}
       ${
@@ -165,7 +213,11 @@ export function render(model, mount) {
 								prelim,
 							}),
 							sub: t("szoras.tableSub", { month: fmtYm(snapMonth) }),
-							tip: t("szoras.tableTip", { calc, gap: gapLabel }),
+							tip: t("szoras.tableTip", {
+								calc,
+								gap: gapLabel,
+								ratio: ratioLabel,
+							}),
 							columns: [
 								{ key: "name", label: t("szoras.colRegion") },
 								{ key: "prio", label: t("szoras.colPrio") },
@@ -173,10 +225,15 @@ export function render(model, mount) {
 								{ key: "p75", label: t("metric.p75"), num: true },
 								{ key: "p90", label: t("metric.p90"), num: true },
 								{ key: "gap", label: gapLabel, num: true },
+								{ key: "ratio", label: ratioLabel, num: true },
 							],
 							rows: cells.map((c) => {
 								const gap =
 									c.p90 != null && c.median != null ? c.p90 - c.median : null;
+								const ratio =
+									c.p90 != null && c.median != null && c.median !== 0
+										? c.p90 / c.median
+										: null;
 								return {
 									name: cell(c.name, esc(c.name)),
 									prio: cell(c.prio, prioBadge(c.prio)),
@@ -184,6 +241,7 @@ export function render(model, mount) {
 									p75: cell(c.p75, esc(fmtMin(c.p75))),
 									p90: cell(c.p90, esc(fmtMin(c.p90))),
 									gap: cell(gap, esc(fmtMin(gap))),
+									ratio: cell(ratio, esc(ratioText(ratio))),
 								};
 							}),
 							defaultSort: { key: "p90", dir: "desc" },
@@ -212,6 +270,38 @@ export function render(model, mount) {
 		});
 	}
 
+	if (hasAreaGap) {
+		makeChart(mount.querySelector("#ch-szo-bp"), {
+			chart: { type: "line", height: 320 },
+			series: areaGapSeries.map((s) => ({ name: s.prio, data: s.values })),
+			colors: areaGapSeries.map((s) => prioColor(s.prio)),
+			stroke: { width: 2.5, curve: "smooth" },
+			labels: areaGap.months.map(fmtYm),
+			xaxis: { tickAmount: 10 },
+			yaxis: { ...minAxis },
+			annotations: {
+				yaxis: [
+					{
+						y: 0,
+						borderColor: cssToken("--text-faint"),
+						strokeDashArray: 5,
+						label: {
+							text: t("szoras.gapAreaZero"),
+							position: "left",
+							offsetX: 40,
+							style: {
+								color: cssToken("--text-muted"),
+								background: "transparent",
+							},
+						},
+					},
+				],
+			},
+			tooltip: { y: { formatter: (v) => fmtSignedMin(v) } },
+			legend: { position: "top" },
+		});
+	}
+
 	if (gapRows.length) {
 		makeChart(mount.querySelector("#ch-szo-perc"), {
 			chart: { type: "bar", height: 300 },
@@ -229,6 +319,7 @@ export function render(model, mount) {
 	}
 
 	wireSeg(mount, AREA_KEY, () => render(model, mount));
+	wireSeg(mount, METRIC_KEY, () => render(model, mount));
 }
 
 function ratioText(v) {

@@ -42,6 +42,7 @@ export function render(model, mount) {
 	const nat = kpis.find((k) => k.area === AREA) ?? null;
 	const bp = kpis.find((k) => k.area === "Budapest") ?? null;
 	const cases = derive.caseSeries(model, AREA);
+	const bpLong = derive.longSeries(model, "Budapest");
 	const ph = derive.phaseStats(model);
 	const worst = derive.worstCells(model)[0] ?? null;
 	const long = derive.longSeries(model, AREA);
@@ -70,7 +71,7 @@ export function render(model, mount) {
 				iconId: "i-ambulance",
 				label: t("attekintes.kpiP1", { area: areaLabel }),
 				value: fmtMin(nat?.p90),
-				foot: deltaFoot(nat?.delta),
+				foot: kpiFoot(nat),
 				spark: sparkline(long.p90?.[MAIN] ?? []),
 				tip: t("attekintes.kpiP1Tip", {
 					calc: t("common.tipCalc"),
@@ -86,7 +87,8 @@ export function render(model, mount) {
 				iconId: "i-ambulance",
 				label: t("attekintes.kpiP1", { area: t("area.Budapest") }),
 				value: fmtMin(bp?.p90),
-				foot: deltaFoot(bp?.delta),
+				foot: kpiFoot(bp),
+				spark: sparkline(bpLong.p90?.[MAIN] ?? []),
 				tip: t("attekintes.kpiP1Tip", {
 					calc: t("common.tipCalc"),
 					metric: t("metric.p90"),
@@ -323,6 +325,12 @@ function deltaFoot(delta) {
 	return delta != null
 		? t("common.vsPrevMonth", { delta: signedMin(delta) })
 		: t("common.noPrevMonth");
+}
+
+function kpiFoot(kpi) {
+	const parts = [deltaFoot(kpi?.delta)];
+	if (kpi?.esetszam != null) parts.push(esc(fmtCases(kpi.esetszam)));
+	return parts.join(" · ");
 }
 
 function summaryRows(model, long) {

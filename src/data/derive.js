@@ -185,6 +185,61 @@ export function regionSnapshotRows(model, prio, metric) {
   return rows.sort((a, b) => (a.value ?? Infinity) - (b.value ?? Infinity));
 }
 
+export function dispatchSplit(model, prio, metric) {
+  return memoized(model, `dispatchSplit:${prio}:${metric}`, () => {
+    const alt = model.regionSnapshotAlt;
+    const rt = model.regionTrend;
+    if (!alt || !rt) return { month: null, rows: [] };
+    const i = rt.months.indexOf(alt.month);
+    if (i < 0) return { month: alt.month, rows: [] };
+
+    const byCode = new Map(alt.rows.map((r) => [r.code, r]));
+    const rows = model.meta.regions.map((r) => {
+      const total = rt.byRegion[r.code]?.[metric]?.[prio]?.[i] ?? null;
+      const fromAlarm = byCode.get(r.code)?.byPriority?.[prio]?.[metric] ?? null;
+      const beforeAlarm =
+        total != null && fromAlarm != null && total >= fromAlarm ? total - fromAlarm : null;
+      return {
+        code: r.code,
+        name: r.name,
+        total,
+        fromAlarm,
+        beforeAlarm,
+        share: beforeAlarm != null && total ? beforeAlarm / total : null,
+      };
+    });
+    return { month: alt.month, rows: rows.filter((r) => r.beforeAlarm != null) };
+  });
+}
+
+export function dispatchSplitAll(model, metric) {
+  return memoized(model, `dispatchSplitAll:${metric}`, () => {
+    const out = [];
+    for (const p of model.meta.priorities) {
+      for (const r of dispatchSplit(model, p, metric).rows) out.push({ ...r, prio: p });
+    }
+    return out;
+  });
+}
+
+export function dispatchSummary(model, prio, metric) {
+  const { month, rows } = dispatchSplit(model, prio, metric);
+  if (!rows.length) return null;
+  const sorted = [...rows].sort((a, b) => a.beforeAlarm - b.beforeAlarm);
+  const fastest = sorted[0];
+  const slowest = sorted[sorted.length - 1];
+  const shares = rows.map((r) => r.share).filter((v) => v != null);
+  return {
+    month,
+    rows,
+    fastest,
+    slowest,
+    gap: slowest.beforeAlarm - fastest.beforeAlarm,
+    avgBeforeAlarm: avg(rows.map((r) => r.beforeAlarm)),
+    avgShare: shares.length ? avg(shares) : null,
+  };
+}
+
 export function regionTrendSeries(model, prio, metric) {
   const rt = model.regionTrend;
   return model.meta.regions.map((r) => ({
@@ -210,6 +265,115 @@ export function regionSpread(model, prio, metric) {
     }
     return { ym, min, max, range: min != null && max != null ? max - min : null, best, worst };
   });
+}
+
+export function areaCompare(model, prio, metric) {
+  return memoized(model, `areaCompare:${prio}:${metric}`, () => {
+    const o = longSeries(model, 'Országos');
+    const b = longSeries(model, 'Budapest');
+    return {
+      months: o.months,
+      orszagos: o[metric]?.[prio] ?? [],
+      budapest: b[metric]?.[prio] ?? [],
+    };
+  });
+}
+
+export function areaGap(model, metric) {
+  return memoized(model, `areaGap:${metric}`, () => {
+    const o = longSeries(model, 'Országos');
+    const b = longSeries(model, 'Budapest');
+    const byPrio = {};
+    for (const p of model.meta.priorities) {
+      byPrio[p] = o.months.map((_, i) => {
+        const ov = o[metric]?.[p]?.[i];
+        const bv = b[metric]?.[p]?.[i];
+        return ov != null && bv != null ? bv - ov : null;
+      });
+    }
+    return { months: o.months, byPrio };
+  });
+}
+
+export function loadPoints(model, area, prio, metric) {
+  return memoized(model, `loadPoints:${area}:${prio}:${metric}`, () => {
+    const cases = caseSeries(model, area);
+    const s = longSeries(model, area);
+    const arr = s[metric]?.[prio] ?? [];
+    return cases.months
+      .map((ym, i) => ({ ym, cases: cases.total[i] ?? null, value: arr[i] ?? null }))
+      .filter((pt) => pt.cases != null && pt.value != null);
+  });
+}
+
+export function loadCorrelation(model, area) {
+  return memoized(model, `loadCorrelation:${area}`, () => {
+    const cases = caseSeries(model, area);
+    const s = longSeries(model, area);
+    return model.meta.priorities.map((p) => {
+      const row = { prio: p, n: null };
+      for (const m of METRIC_IDS) {
+        row[m] = pearson(cases.total, s[m]?.[p] ?? []);
+        const pc = pairCount(cases.total, s[m]?.[p] ?? []);
+        row.n = row.n == null ? pc : Math.min(row.n, pc);
+      }
+      row.n ??= 0;
+      return row;
+    });
+  });
+}
+
+export function regionChange(model, prio, metric) {
+  return memoized(model, `regionChange:${prio}:${metric}`, () => {
+    const rt = model.regionTrend;
+    return model.meta.regions
+      .map((r) => {
+        const arr = rt.byRegion[r.code]?.[metric]?.[prio] ?? [];
+        const seen = arr
+          .map((v, i) => ({ v, i }))
+          .filter((x) => x.v != null && Number.isFinite(x.v));
+        if (seen.length < 2) return null;
+        const first = seen[0];
+        const last = seen[seen.length - 1];
+        return {
+          code: r.code,
+          name: r.name,
+          first: first.v,
+          last: last.v,
+          firstYm: rt.months[first.i] ?? null,
+          lastYm: rt.months[last.i] ?? null,
+          delta: last.v - first.v,
+          pct: first.v ? (last.v - first.v) / first.v : null,
+        };
+      })
+      .filter(Boolean)
+      .sort((a, b) => a.delta - b.delta);
+  });
+}
+
+function pairCount(xs, ys) {
+  return xs.filter((x, i) => x != null && ys[i] != null).length;
+}
+
+function pearson(xs, ys) {
+  const pairs = xs
+    .map((x, i) => [x, ys[i]])
+    .filter(([x, y]) => x != null && y != null && Number.isFinite(x) && Number.isFinite(y));
+  const n = pairs.length;
+  if (n < 3) return null;
+  const mx = pairs.reduce((s, q) => s + q[0], 0) / n;
+  const my = pairs.reduce((s, q) => s + q[1], 0) / n;
+  let sxy = 0;
+  let sx = 0;
+  let sy = 0;
+  for (const [x, y] of pairs) {
+    const a = x - mx;
+    const b = y - my;
+    sxy += a * b;
+    sx += a * a;
+    sy += b * b;
+  }
+  return sx && sy ? sxy / Math.sqrt(sx * sy) : null;
 }
 
 export function tailRatios(model, area) {
