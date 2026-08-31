@@ -1,6 +1,6 @@
 # Adatforrás: stat.mentok.hu/data.json
 
-Az oldal egyetlen adatforrásból dolgozik: az Országos Mentőszolgálat nyilvános statisztikai
+Az oldal egyetlen adatforrásból dolgozik: az Országos Mentőszolgálat statisztikai
 oldala (https://stat.mentok.hu/) mögötti `data.json`-ból. Az adatokra nincs ráhatásunk, a
 séma az OMSZ oldalához igazodik.
 
@@ -38,16 +38,16 @@ Fejlesztéskor: `npm run pull` frissíti a `public/data.json`-t a live forrásb�
 Minden időérték perc, az idő a segélyhívás indításától a helyszínre érkezésig telik
 (tartalmazza a 112-es hívásfelvételt és az átadást is).
 
-| Kulcs | Tartalom |
-|---|---|
-| `meta` | `generatedAt`, `updatedDate`, `originMonth`, `latestMonth`, `latestIsPreliminary`, `months` (7 hónap, 2026-tól), `monthsFrom2025` (19 hónap), `priorities` (P1-P4), `areas` (Országos, Budapest), `regions` (7 régió, kód + név) |
-| `topic1` | Az utolsó hónap P1 P90 értéke Országos + Budapest bontásban, előző havi értékkel (`p90Prev`) és esetszámmal |
-| `phases` | A hívás 4 szakasza (`esr_cad`, `cad_cad`, `cad_bej`, `bej_erk`), mindegyikre átlag, medián, P75, P90. Csak az utolsó hónapra, csak P1, csak országos. `sum` a szakaszátlagok összege, `total` a közvetlenül mért teljes átlagidő, a kettő nem egyezik (lásd lent) |
-| `topic2` | A mester-idősor: 19 hónap (2025-01-től), Országos + Budapest, mindkettőre medián / P75 / P90 / esetszám, prioritásonként (P1-P4) |
-| `topic3` | REDUNDÁNS: a medián, P75 és P90 értékei bitre pontosan a `topic2` utolsó 7 hónapja (ellenőrizve mindkét area, minden prioritás). Esetszámot nem tartalmaz, az csak a `topic2`-ben van. A modell nem használja |
-| `topic4` | Régiós bontás (7 régió x P1-P4 x medián/P75/P90) az utolsó LEZÁRT hónapra. FIGYELEM: más mérési alapú, lásd lent |
-| `topic5` | Régiós bontás az utolsó (előzetes) hónapra, a segélyhívástól mérve. Értékei egyeznek a `regioTrend` megfelelő havi értékeivel |
-| `regioTrend` | 7 régió x 7 hónap (2026-tól) x medián/P75/P90, prioritásonként. Esetszám NINCS régiós bontásban |
+| Kulcs        | Tartalom                                                                                                                                                                                                                                                          |
+| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `meta`       | `generatedAt`, `updatedDate`, `originMonth`, `latestMonth`, `latestIsPreliminary`, `months` (7 hónap, 2026-tól), `monthsFrom2025` (19 hónap), `priorities` (P1-P4), `areas` (Országos, Budapest), `regions` (7 régió, kód + név)                                  |
+| `topic1`     | Az utolsó hónap P1 P90 értéke Országos + Budapest bontásban, előző havi értékkel (`p90Prev`) és esetszámmal                                                                                                                                                       |
+| `phases`     | A hívás 4 szakasza (`esr_cad`, `cad_cad`, `cad_bej`, `bej_erk`), mindegyikre átlag, medián, P75, P90. Csak az utolsó hónapra, csak P1, csak országos. `sum` a szakaszátlagok összege, `total` a közvetlenül mért teljes átlagidő, a kettő nem egyezik (lásd lent) |
+| `topic2`     | A mester-idősor: 19 hónap (2025-01-től), Országos + Budapest, mindkettőre medián / P75 / P90 / esetszám, prioritásonként (P1-P4)                                                                                                                                  |
+| `topic3`     | REDUNDÁNS: a medián, P75 és P90 értékei bitre pontosan a `topic2` utolsó 7 hónapja (ellenőrizve mindkét area, minden prioritás). Esetszámot nem tartalmaz, az csak a `topic2`-ben van. A modell nem használja                                                     |
+| `topic4`     | Régiós bontás (7 régió x P1-P4 x medián/P75/P90) az utolsó LEZÁRT hónapra. FIGYELEM: más mérési alapú, lásd lent                                                                                                                                                  |
+| `topic5`     | Régiós bontás az utolsó (előzetes) hónapra, a segélyhívástól mérve. Értékei egyeznek a `regioTrend` megfelelő havi értékeivel                                                                                                                                     |
+| `regioTrend` | 7 régió x 7 hónap (2026-tól) x medián/P75/P90, prioritásonként. Esetszám NINCS régiós bontásban                                                                                                                                                                   |
 
 ## A topic4 anomália
 

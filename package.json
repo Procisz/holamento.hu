@@ -5,8 +5,8 @@
 		"email": "holamento.hu@gmail.com"
 	},
 	"private": true,
-	"version": "1.2.0",
-	"description": "Fuggetlen dashboard a magyarorszagi mento kierkezesi idokrol, az Orszagos Mentoszolgalat nyilvanos statisztikai alapjan.",
+	"version": "1.2.1",
+	"description": "Fuggetlen dashboard a magyarorszagi mento kierkezesi idokrol, az Orszagos Mentoszolgalat statisztikai alapjan.",
 	"license": "MIT",
 	"homepage": "https://holamento.hu",
 	"repository": {
@@ -21,6 +21,9 @@
 		"dev": "vite",
 		"build": "vite build",
 		"preview": "vite preview",
+		"test": "vitest run",
+		"test:watch": "vitest",
+		"test:coverage": "vitest run --coverage",
 		"pull": "node scripts/pull-data.mjs",
 		"check:themes": "node scripts/check-themes.mjs",
 		"check:i18n": "node scripts/check-i18n.mjs"
@@ -30,7 +33,10 @@
 	},
 	"devDependencies": {
 		"@csstools/postcss-global-data": "^4.0.0",
+		"@vitest/coverage-v8": "^4.1.11",
+		"jsdom": "^30.0.1",
 		"postcss-custom-media": "^12.0.1",
-		"vite": "^8.2.2"
+		"vite": "^8.2.2",
+		"vitest": "^4.1.11"
 	}
 }

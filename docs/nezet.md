@@ -69,6 +69,32 @@ Egy világos és egy sötét paletta van (`src/styles/tokens.css`), nincs témav
 elrendezés-választó: a fejléc ikonja csak világos / sötét / automatikus között vált
 (`src/app/appearance.js`). Az `npm run check:themes` a két paletta kontrasztarányait méri.
 
+## Tesztek
+
+`npm test` futtatja a Vitest készletet, `npm run test:coverage` a lefedettséggel együtt.
+A CI mindkettőt lefuttatja a build előtt. A tesztek nyelve angol, a magyar szöveg csak
+adatként jelenik meg bennük, például amikor egy kiírt érték ellenőrzése a cél.
+
+- `test/setup.js` a közös környezet: jsdom, rögzített `Europe/Budapest` időzóna, az
+  ApexCharts helyére lépő álpéldány, ami minden diagram opcióit eltárolja.
+- `test/helpers.js` a fixtúrák helye. A `realPayload()` a valódi `public/data.json`-t
+  adja, a `makePayload(patch)` pedig kicsi, szerkeszthető változatot élethű alakban.
+- `test/unit/` a számítási réteget méri: model, derive, range, fetchData, fmt, i18n,
+  táblázat, szegmentált váltó.
+- `test/integration/` mind a nyolc nézetet a modellel együtt rendereli, és a kirajzolt
+  DOM-ra, illetve a diagramoknak átadott opciókra állít.
+
+A diagramkönyvtár álpéldánya azért fontos, mert a rajzolást nem lehet jsdom-ban mérni. A
+tesztek helyette azt ellenőrzik, hogy a nézet milyen sorozatot, címkét és formázót ad át,
+ez ugyanaz a logika, ami a képernyőn is látszik. A `warmCharts()` előre betölti a modult,
+így a `makeChart` szinkron ágon fut, és nincs időzítéstől függő teszt.
+
+Lefedettségi küszöbök a `vitest.config.js`-ben, területenként. A `src/data`, a
+`src/features`, a `src/utils` és a mért `src/ui` modulok soronként és függvényenként
+100 százalékon állnak. Az ágak nem érik el a 100-at: a maradék `??` és `?.` védőág olyan
+modellalakra vonatkozik, amit a `buildModel` nem tud előállítani. A küszöb az elért
+szinten áll, tehát a visszaesést a CI elkapja.
+
 ## Adat API
 
 A nyers `data.json` sémáját és a korlátokat a `docs/adatforras.md` írja le. A nézetek a

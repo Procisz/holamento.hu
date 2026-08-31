@@ -151,12 +151,13 @@ function rowHtml(st, r, i, colCount) {
   if (!expand) return `<tr>${cells}</tr>`;
   const rowId = String(expand.key(r));
   const isOpen = st.open.has(rowId);
-  return `<tr class="dt-row${isOpen ? ' dt-row-open' : ''}" data-row-id="${rowId}"
+  const attr = escAttr(rowId);
+  return `<tr class="dt-row${isOpen ? ' dt-row-open' : ''}" data-row-id="${attr}"
       role="button" tabindex="0" aria-expanded="${isOpen}">
       <td class="dt-chevron">${isOpen ? '▾' : '▸'}</td>${cells}</tr>`
     + (isOpen
       ? `<tr class="dt-panel-row"><td colspan="${colCount}">
-          <div class="expand-wrap"><div class="dt-panel-content" data-row-id="${rowId}"></div></div>
+          <div class="expand-wrap"><div class="dt-panel-content" data-row-id="${attr}"></div></div>
         </td></tr>`
       : '');
 }

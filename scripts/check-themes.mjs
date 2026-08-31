@@ -144,31 +144,31 @@ function collectThemes() {
 }
 
 const PAIRS = [
-  { fg: '--text', bg: '--bg', min: 7.0, why: 'fő szöveg az oldal hátterén' },
-  { fg: '--text', bg: '--surface', min: 7.0, why: 'fő szöveg kártyán' },
-  { fg: '--text-muted', bg: '--surface', min: 4.5, why: 'másodlagos szöveg kártyán' },
-  { fg: '--text-faint', bg: '--surface', min: 4.5, why: 'halvány szöveg kártyán' },
-  { fg: '--text-faint', bg: '--bg', min: 4.5, why: 'halvány szöveg az oldal hátterén' },
-  { fg: '--on-accent', bg: '--accent', min: 4.5, why: 'szöveg a vezérszínen' },
-  { fg: '--accent', bg: '--surface', min: 3.0, why: 'vezérszín kártyán' },
-  { fg: '--pos', bg: '--surface', min: 2.5, why: 'pozitív jelzés' },
-  { fg: '--neg', bg: '--surface', min: 2.5, why: 'negatív jelzés' },
-  { fg: '--warn', bg: '--surface', min: 2.5, why: 'figyelmeztetés' },
+  { fg: '--text', bg: '--bg', min: 7.0, why: 'body text on the page background' },
+  { fg: '--text', bg: '--surface', min: 7.0, why: 'body text on a card' },
+  { fg: '--text-muted', bg: '--surface', min: 4.5, why: 'secondary text on a card' },
+  { fg: '--text-faint', bg: '--surface', min: 4.5, why: 'faint text on a card' },
+  { fg: '--text-faint', bg: '--bg', min: 4.5, why: 'faint text on the page background' },
+  { fg: '--on-accent', bg: '--accent', min: 4.5, why: 'text on the accent colour' },
+  { fg: '--accent', bg: '--surface', min: 3.0, why: 'accent colour on a card' },
+  { fg: '--pos', bg: '--surface', min: 2.5, why: 'positive indicator' },
+  { fg: '--neg', bg: '--surface', min: 2.5, why: 'negative indicator' },
+  { fg: '--warn', bg: '--surface', min: 2.5, why: 'warning indicator' },
   ...['ido', 'fazis', 'regio', 'eset', 'szoras', 'cel', 'adat']
-    .map((c) => ({ fg: `--cat-${c}`, bg: '--surface', min: 2.5, why: `${c} témakör színe` })),
+    .map((c) => ({ fg: `--cat-${c}`, bg: '--surface', min: 2.5, why: `${c} topic colour` })),
   ...['p1', 'p2', 'p3', 'p4', 'p5', 'kp1']
-    .map((p) => ({ fg: `--prio-${p}`, bg: '--surface', min: 2.5, why: `${p.toUpperCase()} prioritás színe` })),
+    .map((p) => ({ fg: `--prio-${p}`, bg: '--surface', min: 2.5, why: `${p.toUpperCase()} priority colour` })),
   ...['p1', 'p2-badge', 'p3-badge', 'p4', 'p5-badge', 'kp1']
-    .map((p) => ({ fg: '--on-accent', bg: `--prio-${p}`, min: 4.5, why: `${p.toUpperCase()} jelvény felirata` })),
+    .map((p) => ({ fg: '--on-accent', bg: `--prio-${p}`, min: 4.5, why: `${p.toUpperCase()} badge label` })),
 ];
 
 const themes = collectThemes();
 if (!themes.size) {
-  console.log('Egyetlen témát sem találtam. Fut a szkript a projekt gyökeréből?');
+  console.log('No colour scheme found. Is the script running from the project root?');
   process.exit(1);
 }
 
-console.log(`\n${themes.size} színséma\n${'='.repeat(60)}`);
+console.log(`\n${themes.size} colour schemes\n${'='.repeat(60)}`);
 
 for (const [key, decls] of [...themes].sort()) {
   const missing = PALETTE.filter((p) => !(p in decls));
@@ -191,15 +191,15 @@ for (const [key, decls] of [...themes].sort()) {
 
   const bad = results.filter((r) => r.ratio == null || r.ratio < r.min);
   const worst = results.filter((r) => r.ratio != null).sort((a, b) => a.ratio - b.ratio)[0];
-  const mark = missing.length || bad.length ? 'HIBA' : ' ok ';
-  console.log(`\n[${mark}] ${key}` + (worst ? `   leggyengébb páros: ${worst.ratio.toFixed(2)} (${worst.why})` : ''));
+  const mark = missing.length || bad.length ? 'FAIL' : ' ok ';
+  console.log(`\n[${mark}] ${key}` + (worst ? `   weakest pair: ${worst.ratio.toFixed(2)} (${worst.why})` : ''));
 
-  if (missing.length) fail(`${key}: hiányzó változó: ${missing.join(', ')}`);
+  if (missing.length) fail(`${key}: missing variable: ${missing.join(', ')}`);
   for (const r of bad) {
-    if (r.ratio == null) fail(`${key}: ${r.fg} vagy ${r.bg} értéke nem olvasható ki`);
-    else fail(`${key}: ${r.why} (${r.fg} / ${r.bg}) csak ${r.ratio.toFixed(2)}, kell: ${r.min}`);
+    if (r.ratio == null) fail(`${key}: cannot resolve ${r.fg} or ${r.bg}`);
+    else fail(`${key}: ${r.why} (${r.fg} / ${r.bg}) is only ${r.ratio.toFixed(2)}, needs ${r.min}`);
   }
 }
 
-console.log(problems ? '\nvannak hibák' : '\nminden ellenőrzés rendben');
+console.log(problems ? '\nthere are problems' : '\nall checks passed');
 process.exit(problems ? 1 : 0);
