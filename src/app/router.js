@@ -5,8 +5,8 @@ import { t } from './i18n.js';
 
 const panels = new Map();
 
-export function registerPanel(id, labelKey, icon, render) {
-  panels.set(id, { labelKey, icon, render });
+export function registerPanel(id, labelKey, icon, load) {
+  panels.set(id, { labelKey, icon, load, mod: null });
 }
 
 export function firstPanelId() {
@@ -187,15 +187,19 @@ window.addEventListener('resize', () => {
   centerTimer = setTimeout(() => centerActiveTab({ animate: false }), 150);
 });
 
-export function renderActive() {
+export async function renderActive() {
   const id = state.activeTab;
-  if (!state.model || state.renderedTabs.has(id)) return;
+  const model = state.model;
+  if (!model || state.renderedTabs.has(id)) return;
+  const entry = panels.get(id);
   const mount = document.getElementById(`panel-${id}`);
   try {
-    panels.get(id).render(state.model, mount);
+    if (!entry.mod) entry.mod = await entry.load();
+    if (state.activeTab !== id || state.model !== model || state.renderedTabs.has(id)) return;
+    entry.mod.render(model, mount);
     state.renderedTabs.add(id);
   } catch (err) {
-    console.error(`Panel render hiba (${id}):`, err);
+    console.error(`Panel render failed (${id}):`, err);
     mount.innerHTML = `<div class="card"><div class="card-body">
       <p class="error-text">${esc(t('common.renderError', { msg: err.message }))}</p></div></div>`;
   }

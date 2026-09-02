@@ -12,7 +12,13 @@ export function render(model, mount) {
 
 A tab felirata nem itt van, hanem az `src/i18n/core.js`-ben, a `tab.<id>` kulcs alatt.
 
-A `render` az első aktiváláskor fut (lazy). Adatfrissítéskor, időszakváltáskor és
+Az új nézetet fel kell venni az `src/app/panels.js` listájába is. Ott dől el a fülek
+sorrendje, és az, hogy a modul kódja hova kerül: a lista első eleme statikus import
+(ez renderel betöltéskor, ezért a fő bundle-ben marad), a többi `() => import(...)`,
+vagyis külön chunk, amit csak az adott fül első megnyitása tölt le. Az `id` és az
+`iconId` a listában és a modulban is szerepel, egyezésüket teszt őrzi.
+
+A `render` az első aktiválásakor fut, a modul betöltése után. Adatfrissítéskor, időszakváltáskor és
 nyelvváltáskor a teljes app újrarenderel (main.js: destroyAllCharts + renderedTabs.clear),
 a nézet nem tart modul-szintű állapotot.
 

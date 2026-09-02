@@ -7,7 +7,7 @@ const PANELS = ['alpha', 'beta', 'gamma'];
 
 function setUpNav(render = () => {}) {
 	document.body.innerHTML = '<nav id="tab-nav"></nav><main id="app-main"></main>';
-	for (const id of PANELS) registerPanel(id, `tab.${id}`, 'i-info', render);
+	for (const id of PANELS) registerPanel(id, `tab.${id}`, 'i-info', () => ({ render }));
 	buildNav();
 }
 
@@ -88,31 +88,148 @@ describe('scroll position on tab change', () => {
 });
 
 describe('panel rendering', () => {
-	it('should render a panel once', () => {
+	it('should render a panel once', async () => {
+		const render = vi.fn();
+		setUpNav(render);
+		activate('alpha');
+		await flush();
+		expect(render).toHaveBeenCalledTimes(1);
+	});
+
+	it('should render only once when activation and renderActive overlap', async () => {
 		const render = vi.fn();
 		setUpNav(render);
 		activate('alpha');
 		renderActive();
+		await flush();
 		expect(render).toHaveBeenCalledTimes(1);
 	});
 
-	it('should show an error card when a panel throws', () => {
+	it('should show an error card when a panel throws', async () => {
 		setUpNav(() => {
 			throw new Error('boom');
 		});
 		const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
 		activate('alpha');
+		await flush();
 		expect(document.querySelector('#panel-alpha .error-text')).not.toBeNull();
 		expect(state.renderedTabs.has('alpha')).toBe(false);
 		spy.mockRestore();
 	});
 
-	it('should do nothing without a model', () => {
+	it('should do nothing without a model', async () => {
 		const render = vi.fn();
 		setUpNav(render);
 		state.model = null;
 		activate('alpha');
+		await flush();
 		expect(render).not.toHaveBeenCalled();
+	});
+});
+
+describe('lazy panel loading', () => {
+	function setUpLazy(loads) {
+		document.body.innerHTML = '<nav id="tab-nav"></nav><main id="app-main"></main>';
+		for (const id of PANELS) registerPanel(id, `tab.${id}`, 'i-info', loads[id]);
+		buildNav();
+	}
+
+	it('should not load a module before its tab is activated', async () => {
+		const load = vi.fn(() => ({ render: () => {} }));
+		setUpLazy({ alpha: () => ({ render: () => {} }), beta: load, gamma: load });
+		activate('alpha');
+		await flush();
+		expect(load).not.toHaveBeenCalled();
+	});
+
+	it('should load a module on first activation and reuse it afterwards', async () => {
+		const render = vi.fn();
+		const load = vi.fn(async () => ({ render }));
+		setUpLazy({ alpha: load, beta: load, gamma: load });
+		activate('alpha');
+		await flush();
+		activate('beta');
+		await flush();
+		activate('alpha');
+		await flush();
+		expect(load).toHaveBeenCalledTimes(2);
+		expect(render).toHaveBeenCalledTimes(2);
+	});
+
+	it('should skip the render when the tab changed while the module was loading', async () => {
+		const render = vi.fn();
+		let release;
+		const gate = new Promise((r) => {
+			release = r;
+		});
+		setUpLazy({
+			alpha: async () => {
+				await gate;
+				return { render };
+			},
+			beta: () => ({ render: () => {} }),
+			gamma: () => ({ render: () => {} }),
+		});
+		activate('alpha');
+		activate('beta');
+		release();
+		await flush();
+		expect(render).not.toHaveBeenCalled();
+		expect(state.renderedTabs.has('alpha')).toBe(false);
+	});
+
+	it('should skip the render when the model changed while the module was loading', async () => {
+		const render = vi.fn();
+		let release;
+		const gate = new Promise((r) => {
+			release = r;
+		});
+		setUpLazy({
+			alpha: async () => {
+				await gate;
+				return { render };
+			},
+			beta: () => ({ render: () => {} }),
+			gamma: () => ({ render: () => {} }),
+		});
+		activate('alpha');
+		state.model = { meta: {} };
+		release();
+		await flush();
+		expect(render).not.toHaveBeenCalled();
+	});
+
+	it('should report a failed module load as a render error', async () => {
+		const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+		setUpLazy({
+			alpha: () => Promise.reject(new Error('offline')),
+			beta: () => ({ render: () => {} }),
+			gamma: () => ({ render: () => {} }),
+		});
+		activate('alpha');
+		await flush();
+		expect(document.querySelector('#panel-alpha .error-text')).not.toBeNull();
+		expect(state.renderedTabs.has('alpha')).toBe(false);
+		spy.mockRestore();
+	});
+
+	it('should retry the load after a failure', async () => {
+		const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+		const render = vi.fn();
+		let attempt = 0;
+		const load = () => {
+			attempt += 1;
+			return attempt === 1 ? Promise.reject(new Error('offline')) : Promise.resolve({ render });
+		};
+		setUpLazy({ alpha: load, beta: () => ({ render: () => {} }), gamma: () => ({ render: () => {} }) });
+		activate('alpha');
+		await flush();
+		activate('beta');
+		await flush();
+		activate('alpha');
+		await flush();
+		expect(render).toHaveBeenCalledTimes(1);
+		spy.mockRestore();
 	});
 });
 
