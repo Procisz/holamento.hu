@@ -31,16 +31,7 @@ import { esc } from "./ui/ui.js";
 import { icon, injectIcons } from "./ui/icons.js";
 import "./styles/index.css";
 
-import * as adatok from "./features/adatok.js";
-import * as attekintes from "./features/attekintes.js";
-import * as trendek from "./features/trendek.js";
-import * as fazisok from "./features/fazisok.js";
-import * as regiok from "./features/regiok.js";
-import * as bontas from "./features/bontas.js";
-import * as esetszamok from "./features/esetszamok.js";
-import * as szoras from "./features/szoras.js";
-
-const PANELS = [adatok, attekintes, trendek, fazisok, regiok, bontas, esetszamok, szoras];
+import { PANELS } from "./app/panels.js";
 
 let appliedPayload = null;
 
@@ -739,7 +730,7 @@ function watchHeaderHeight() {
 	updateLangBtn();
 	updateRangeToggle();
 
-	for (const p of PANELS) registerPanel(p.id, `tab.${p.id}`, p.iconId, p.render);
+	for (const p of PANELS) registerPanel(p.id, `tab.${p.id}`, p.iconId, p.load);
 	buildNav();
 	state.activeTab = initialTab();
 	activate(state.activeTab);
