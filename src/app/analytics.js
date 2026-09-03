@@ -25,3 +25,12 @@ export function initAnalytics() {
 		});
 	}
 }
+
+export function scheduleAnalytics() {
+	const start = () => {
+		if (typeof requestIdleCallback === 'function') requestIdleCallback(initAnalytics, { timeout: 2000 });
+		else setTimeout(initAnalytics, 1);
+	};
+	if (document.readyState === 'complete') start();
+	else addEventListener('load', start, { once: true });
+}

@@ -1,5 +1,5 @@
 import { APP_VERSION, RANGE_BAR_KEY, RANGE_KEY, SOURCE_URL, STALE_WARN_DAYS } from "./config.js";
-import { initAnalytics } from "./app/analytics.js";
+import { scheduleAnalytics } from "./app/analytics.js";
 import { currentMode, initAppearance, setMode } from "./app/appearance.js";
 import { LANGS, currentLang, currentLocale, initLang, setLang, t, tPlural } from "./app/i18n.js";
 import { destroyAllCharts } from "./ui/charts.js";
@@ -720,7 +720,7 @@ function watchHeaderHeight() {
 
 (async function boot() {
 	injectIcons();
-	initAnalytics();
+	scheduleAnalytics();
 	initLang();
 	initAppearance();
 	watchHeaderHeight();

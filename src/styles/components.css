@@ -951,11 +951,15 @@ table.tbl {
 .range-quicks {
 	display: inline-flex;
 	flex-wrap: nowrap;
+	flex-basis: 100%;
 	gap: 5px;
-	min-height: 34px;
+	min-height: calc(1.15 * (var(--fs-small) + var(--fs-micro)) + 8px);
 	max-width: 100%;
 	overflow-x: auto;
 	scrollbar-width: none;
+}
+@media (min-width: 1280px) {
+	.range-quicks { flex-basis: auto; }
 }
 .range-quicks::-webkit-scrollbar {
 	display: none;

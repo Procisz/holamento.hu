@@ -60,6 +60,13 @@ input[type]:disabled,
 a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
+.card-body :is(p, li) a {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+.card-body :is(p, li) a:hover { text-decoration-thickness: 2px; }
+
 :where(a, button, [tabindex]):focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
