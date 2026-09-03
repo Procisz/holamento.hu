@@ -41,6 +41,7 @@
   overflow-x: auto;
   scrollbar-width: none;
   flex: 1;
+  min-height: calc(1.5em + 2 * var(--tab-pad-y) + 2px + 2 * var(--space-1));
 
   padding: var(--space-1);
   border-radius: calc(var(--control-radius) + var(--space-1));
