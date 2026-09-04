@@ -29,7 +29,7 @@
 		"check:i18n": "node scripts/check-i18n.mjs"
 	},
 	"dependencies": {
-		"apexcharts": "^5.3.5"
+		"apexcharts": "^7.1.0"
 	},
 	"devDependencies": {
 		"@csstools/postcss-global-data": "^4.0.0",
