@@ -5,10 +5,34 @@ cd "$(dirname "$0")/.."
 
 log() { echo "$(date -Is) $*"; }
 
+find_node() {
+  if [ -n "${NODE_BIN:-}" ]; then
+    echo "$NODE_BIN"
+    return
+  fi
+  if command -v node >/dev/null 2>&1; then
+    command -v node
+    return
+  fi
+  local candidate
+  for candidate in /usr/local/bin/node /usr/bin/node /opt/node/bin/node "$HOME"/.nvm/versions/node/*/bin/node; do
+    if [ -x "$candidate" ]; then
+      echo "$candidate"
+      return
+    fi
+  done
+}
+
+node_bin="$(find_node)"
+if [ -z "$node_bin" ]; then
+  log "node not found, set NODE_BIN to its absolute path"
+  exit 1
+fi
+
 git fetch --quiet origin main
 git reset --hard --quiet origin/main
 
-if ! node scripts/pull-data.mjs; then
+if ! "$node_bin" scripts/pull-data.mjs; then
   log "download failed"
   exit 1
 fi

@@ -6,10 +6,12 @@ import { loadCharts } from '../src/ui/charts.js';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 
+const FIXTURE = join(ROOT, 'archive/2026-08-25.json');
+
 let cached = null;
 
 export function realPayload() {
-	cached ??= readFileSync(join(ROOT, 'public/data.json'), 'utf8');
+	cached ??= readFileSync(FIXTURE, 'utf8');
 	return JSON.parse(cached);
 }
 
