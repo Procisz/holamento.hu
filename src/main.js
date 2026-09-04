@@ -53,9 +53,32 @@ async function applyData(data, { fromCache }) {
 	});
 	stage("render");
 	await breathe();
-	activate(state.activeTab);
+	await activate(state.activeTab);
 	renderWarnings(model);
 	renderDataAge(model);
+	markReady();
+}
+
+function afterPaint() {
+	return new Promise((resolve) => {
+		let settled = false;
+		const finish = () => {
+			if (settled) return;
+			settled = true;
+			resolve();
+		};
+		requestAnimationFrame(() => requestAnimationFrame(finish));
+		setTimeout(finish, 300);
+	});
+}
+
+function markReady() {
+	if (document.documentElement.dataset.ready) return;
+	const set = () => {
+		document.documentElement.dataset.ready = "1";
+	};
+	requestAnimationFrame(() => requestAnimationFrame(set));
+	setTimeout(set, 400);
 }
 
 function headerSettled() {
@@ -99,6 +122,7 @@ async function hardLoad() {
 		const data = await fetchData(fetchProgress);
 		saveCache(data);
 		await applyData(data, { fromCache: false });
+		await afterPaint();
 		hideOverlay();
 		headerSettled();
 		setRefreshTooltip(t("header.refreshLast", { time: nowHm() }), { kind: "ok", time: nowHm() });
