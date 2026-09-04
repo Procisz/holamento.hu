@@ -81,9 +81,10 @@ export function activate(id) {
   if (booted) centerActiveTab();
 
   const wasBuilt = state.renderedTabs.has(id);
-  renderActive();
+  const rendered = renderActive();
   if (wasBuilt) replayCharts(document.getElementById(`panel-${id}`));
   if (changed) scrollToTop();
+  return rendered;
 }
 
 function scrollToTop() {
