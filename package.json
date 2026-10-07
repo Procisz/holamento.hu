@@ -29,14 +29,14 @@
 		"check:i18n": "node scripts/check-i18n.mjs"
 	},
 	"dependencies": {
-		"apexcharts": "^7.3.0"
+		"apexcharts": "^7.6.1"
 	},
 	"devDependencies": {
 		"@csstools/postcss-global-data": "^4.0.0",
-		"@vitest/coverage-v8": "^5.0.1",
+		"@vitest/coverage-v8": "^5.0.2",
 		"jsdom": "^30.0.1",
 		"postcss-custom-media": "^12.0.1",
-		"vite": "^8.3.0",
+		"vite": "^8.3.1",
 		"vitest": "^5.0.1"
 	}
 }
